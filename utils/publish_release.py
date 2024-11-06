@@ -36,4 +36,4 @@ if arch:
 else:
     name = f"plugin.zip"
 asset = release.upload_asset(os.path.join(path, config['Key'] + '.zip'), name)
-print(asset.browser_download_url)
+print(f"url={asset.browser_download_url}")

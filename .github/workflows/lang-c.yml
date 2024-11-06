@@ -32,11 +32,12 @@ jobs:
       - name: Publish release
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: upload_release
         run: |
-          pip install github
-          python utils/publish_release.py LangC >> $GITHUB_OUTPUT
+          pip install PyGithub
+          python utils/publish_release.py LangC >> "$GITHUB_OUTPUT"
           
       - name: Publish plugin
         run: |
           cd LangC
-          testgenerator-plugin publish -t ${{ secrets.TESTGEN_TOKEN }} -u 
+          testgenerator-plugin publish -t ${{ secrets.TESTGEN_TOKEN }} -u ${{ steps.upload_release.outputs.url }}
