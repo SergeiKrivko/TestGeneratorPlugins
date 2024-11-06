@@ -13,7 +13,7 @@ else:
 
 
 with open(f"{path}/Config.json", 'r', encoding='utf-8') as f:
-    config = json.load(f)
+    config = json.loads(f.read())
 
 version = config['Version']
 # print(f"Version = {repr(version)}")
