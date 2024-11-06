@@ -26,9 +26,12 @@ g = Github(auth=auth)
 
 repo = g.get_repo('SergeiKrivko/TestGeneratorPlugins')
 
-release = repo.get_latest_release()
-# print(repr(release.tag_name), version)
-if release.tag_name != "v" + version:
+try:
+    release = repo.get_latest_release()
+    # print(repr(release.tag_name), version)
+    if release.tag_name != "v" + version:
+        release = repo.create_git_release("v" + version, f"Version {version}", '')
+except Exception:
     release = repo.create_git_release("v" + version, f"Version {version}", '')
 
 if arch:
