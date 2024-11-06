@@ -1,9 +1,9 @@
 name: LangC
 on:
-  push:
-    paths:
-      - .github/workflows/lang-c.yml
-      - LangC/Config.json
+  push
+#    paths:
+#      - .github/workflows/lang-c.yml
+#      - LangC/Config.json
 
 jobs:
   build:
