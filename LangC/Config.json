@@ -1,6 +1,6 @@
 ﻿{
   "Key": "LangC",
-  "Name": "Язык C",
-  "Description": "Поддержка языка C",
+  "Name": "Lang C",
+  "Description": "Support lang C",
   "Version": "1.0.1"
 }
