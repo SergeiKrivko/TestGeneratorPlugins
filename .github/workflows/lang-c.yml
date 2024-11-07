@@ -18,26 +18,7 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       
-      - name: Build
+      - name: Build and upload
         run: |
           dotnet tool install TestGenerator.PluginBuilder --global 
-          cd LangC
-          testgenerator-plugin build 
-          
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with: 
-          python-version: 3.11
-      
-      - name: Publish release
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: upload_release
-        run: |
-          pip install PyGithub
-          python utils/publish_release.py LangC >> "$GITHUB_OUTPUT"
-          
-      - name: Publish plugin
-        run: |
-          cd LangC
-          testgenerator-plugin publish -t ${{ secrets.TESTGEN_TOKEN }} -u ${{ steps.upload_release.outputs.url }}
+          testgenerator-plugin publish -d LangC -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
