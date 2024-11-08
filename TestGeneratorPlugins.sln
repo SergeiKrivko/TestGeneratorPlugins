@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangC", "LangC\LangC.csproj", "{DB833375-A7A0-4664-8291-F9AE348E798B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin", "TestPlugin\TestPlugin.csproj", "{6872A123-7C14-4EC4-8C4D-1CB83DD923D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin.UI", "TestPlugin.UI\TestPlugin.UI.csproj", "{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB833375-A7A0-4664-8291-F9AE348E798B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB833375-A7A0-4664-8291-F9AE348E798B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB833375-A7A0-4664-8291-F9AE348E798B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB833375-A7A0-4664-8291-F9AE348E798B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6872A123-7C14-4EC4-8C4D-1CB83DD923D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6872A123-7C14-4EC4-8C4D-1CB83DD923D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6872A123-7C14-4EC4-8C4D-1CB83DD923D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6872A123-7C14-4EC4-8C4D-1CB83DD923D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
