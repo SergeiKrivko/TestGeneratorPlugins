@@ -1,8 +1,8 @@
-name: LangC
+name: Newtonsoft.Json
 on:
   push:
     paths:
-      - LangC/Config.json
+      - TestPlugin/Config.json
 
 jobs:
   build:
@@ -20,4 +20,4 @@ jobs:
       - name: Build and upload
         run: |
           dotnet tool install TestGenerator.PluginBuilder --global 
-          testgenerator-plugin publish -d LangC -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+          testgenerator-plugin publish -d TestPlugin -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}

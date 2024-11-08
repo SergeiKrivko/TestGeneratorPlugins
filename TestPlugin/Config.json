@@ -1,0 +1,7 @@
+﻿{
+  "Key": "Newtonsoft.Json",
+  "Name": "Newtonsoft.Json Plugin",
+  "Description": "Тестовый плагин, использующий Newtonsoft.Json",
+  "Version": "1.0.1",
+  "Assembly": "TestPlugin.dll"
+}
