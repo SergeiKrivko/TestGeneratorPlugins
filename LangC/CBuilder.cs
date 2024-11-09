@@ -35,14 +35,14 @@ public class CBuilder : BaseBuilder
         {
             var objFile = Path.Join(TempPath, Path.ChangeExtension(Path.GetFileName(file), ".o"));
             oFiles.Add(objFile);
-            var res = await AAppService.Instance.RunProcess($"gcc {Path.Join(Project.Path, file)} " +
-                                                            $"-c {Settings.Get<string>("compilerKeys")} -o {objFile}");
+            var res = await AAppService.Instance.RunProcess($"gcc \"{Path.Join(Project.Path, file)}\" " +
+                                                            $"-c {Settings.Get<string>("compilerKeys")} -o \"{objFile}\"");
             if (res.ExitCode != 0)
                 return res.ExitCode;
         }
 
-        return (await AAppService.Instance.RunProcess($"gcc {string.Join(' ', oFiles)} " +
-                                                      $"-o {Path.Join(Project.Path, "app.exe")}")).ExitCode;
+        return (await AAppService.Instance.RunProcess($"gcc {string.Join(' ', oFiles.Select(f => "\"" + f + "\""))} " +
+                                                      $"-o \"{Path.Join(Project.Path, "app.exe")}\"")).ExitCode;
     }
 
     public override string Command => Path.Join(Project.Path, "app.exe");
