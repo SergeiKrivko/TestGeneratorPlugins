@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin", "TestPlugin\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin.UI", "TestPlugin.UI\TestPlugin.UI.csproj", "{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownViewer", "MarkdownViewer\MarkdownViewer.csproj", "{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A736BF7-0D9C-45A7-8BFE-0A2684C85586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

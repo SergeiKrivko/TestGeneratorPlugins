@@ -1,0 +1,7 @@
+{
+  "Key": "MarkdownViewer",
+  "Name": "Markdown Viewer",
+  "Description": "Some description for Markdown Viewer",
+  "Version": "1.0.0",
+  "Assembly": "MarkdownViewer.dll"
+}
