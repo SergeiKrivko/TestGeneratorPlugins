@@ -2,7 +2,7 @@ name: MarkdownViewer
 on:
   push:
     paths:
-      - TestPlugin/Config.json
+      - MarkdownViewer/Config.json
 
 jobs:
   build:
