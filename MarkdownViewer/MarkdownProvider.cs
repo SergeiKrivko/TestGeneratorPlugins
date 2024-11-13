@@ -6,7 +6,8 @@ namespace MarkdownViewer;
 
 public class MarkdownProvider : IEditorProvider
 {
-    public string Name => "MarkdownViewer";
+    public string Key => "MarkdownViewer";
+    public string Name => "Просмотр Markdown";
     public string[]? Extensions => [".md"];
     public int Priority => 6;
 

@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Markdown.Avalonia" Version="11.0.2" />
-        <PackageReference Include="TestGenerator.Shared" Version="1.1.0" />
+        <PackageReference Include="TestGenerator.Shared" Version="1.2.0" />
     </ItemGroup>
 
 </Project>

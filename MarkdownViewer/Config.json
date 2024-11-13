@@ -2,6 +2,6 @@
   "Key": "MarkdownViewer",
   "Name": "Markdown Viewer",
   "Description": "Some description for Markdown Viewer",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Assembly": "MarkdownViewer.dll"
 }
