@@ -30,5 +30,7 @@ public class LangC : TestGenerator.Shared.Plugin
             ]
         }];
         ProjectTypes = [];
+
+        FileCreators = [new CFileCreator(), new HFileCreator()];
     }
 }
