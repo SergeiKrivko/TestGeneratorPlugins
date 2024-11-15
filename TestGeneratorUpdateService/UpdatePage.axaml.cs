@@ -117,6 +117,7 @@ public partial class UpdatePage : UserControl
     {
         ButtonDownload.IsVisible = false;
         ProgressPanel.IsVisible = true;
+        ReleaseDownloaded = DownloadingStatus.InProgress;
 
         if (LatestVersion == null || ReleaseUrl == null)
             return;
@@ -127,6 +128,7 @@ public partial class UpdatePage : UserControl
 
         ProgressPanel.IsVisible = false;
         ButtonInstall.IsVisible = true;
+        ReleaseDownloaded = DownloadingStatus.Completed;
     }
 
     private void InstallRelease()
