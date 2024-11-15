@@ -2,6 +2,6 @@
   "Key": "TestGeneratorUpdateService",
   "Name": "TestGenerator Update Service",
   "Description": "Позволяет автоматически обновлять TestGenerator",
-  "Version": "1.0.3",
+  "Version": "1.1.0",
   "Assembly": "TestGeneratorUpdateService.dll"
 }

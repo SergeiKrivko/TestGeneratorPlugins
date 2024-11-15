@@ -38,6 +38,9 @@ public partial class UpdatePage : UserControl
 
     private string ReleasesDirectory => Path.Join(AAppService.Instance.AppDataPath, "Temp", "Releases");
 
+    private string? ReleaseLocalPath =>
+        LatestVersion == null ? null : Path.Join(ReleasesDirectory, AssetName(LatestVersion));
+
     private DownloadingStatus ReleaseDownloaded
     {
         get => _settings.Get<DownloadingStatus>("releaseDownloaded", DownloadingStatus.Not);
@@ -96,7 +99,7 @@ public partial class UpdatePage : UserControl
     private async void Update()
     {
         CurrentVersionBlock.Text = $"Текущая версия: {AAppService.Instance.AppVersion}";
-        if (LatestVersion == null || !File.Exists(Path.Join(ReleasesDirectory, AssetName(LatestVersion))))
+        if (LatestVersion == null || !File.Exists(ReleaseLocalPath))
             ReleaseDownloaded = DownloadingStatus.Not;
         await GetLatestVersion();
         if (LatestVersion > AAppService.Instance.AppVersion)
@@ -132,14 +135,33 @@ public partial class UpdatePage : UserControl
         ReleaseDownloaded = DownloadingStatus.Completed;
     }
 
-    private void InstallRelease()
+    private async void InstallRelease()
     {
         if (LatestVersion == null || ReleaseDownloaded != DownloadingStatus.Completed)
             return;
         if (OperatingSystem.IsWindows())
         {
             Process.Start(new ProcessStartInfo
-                { FileName = Path.Join(ReleasesDirectory, AssetName(LatestVersion)), CreateNoWindow = true });
+                { FileName = ReleaseLocalPath, CreateNoWindow = true });
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            Process.Start(new ProcessStartInfo
+                { FileName = "open", Arguments = ReleaseLocalPath, CreateNoWindow = true });
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            var scriptPath = Path.Join(ReleasesDirectory, "install.sh");
+            await File.WriteAllTextAsync(scriptPath,
+                $"echo \"Для установки требуются права суперпользователя. Введите пароль:\"\n" +
+                $"sudo dpkg -r testgenerator\nsudo dpkg -i {ReleaseLocalPath}\n" +
+                $"/opt/SergeiKrivko/TestGenerator/TestGenerator\n");
+            var proc = Process.Start(new ProcessStartInfo
+                { FileName = "chmod", Arguments = $"755 {ReleaseLocalPath}", CreateNoWindow = true });
+            if (proc != null)
+                await proc.WaitForExitAsync();
+            Process.Start(new ProcessStartInfo
+                { FileName = "gnome-terminal", Arguments = $"-- {scriptPath}", CreateNoWindow = true });
         }
 
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
