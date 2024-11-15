@@ -96,6 +96,8 @@ public partial class UpdatePage : UserControl
     private async void Update()
     {
         CurrentVersionBlock.Text = $"Текущая версия: {AAppService.Instance.AppVersion}";
+        if (LatestVersion == null || !File.Exists(Path.Join(ReleasesDirectory, AssetName(LatestVersion))))
+            ReleaseDownloaded = DownloadingStatus.Not;
         await GetLatestVersion();
         if (LatestVersion > AAppService.Instance.AppVersion)
         {
@@ -121,7 +123,6 @@ public partial class UpdatePage : UserControl
 
         if (LatestVersion == null || ReleaseUrl == null)
             return;
-        Console.WriteLine($"$Downloading {ReleaseUrl}");
         var stream = await _httpClient.GetStreamAsync(ReleaseUrl);
         Directory.CreateDirectory(ReleasesDirectory);
         await stream.CopyToAsync(File.Create(Path.Join(ReleasesDirectory, AssetName(LatestVersion))));
