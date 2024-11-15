@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin.UI", "TestPlugin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownViewer", "MarkdownViewer\MarkdownViewer.csproj", "{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGeneratorUpdateService", "TestGeneratorUpdateService\TestGeneratorUpdateService.csproj", "{09FE5283-588E-401A-A7AF-2E9EA8208646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2576C227-2286-4B6F-84BA-6EA6F4F3DCEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,33 @@
+﻿TEXTA 
+COMPUTER SCIENCE 
+Computers today are far more than the number crunchers. Today, computers are used to 
+store and manage information in the form of words, numbers, sounds, and pictures. With the 
+invention of the computer, people began to see the potential for faster management of this 
+information flow. Even though computers were at first used mainly for mathematical calculation, 
+it wasn’t long before businesses began to understand how their ability to handle information could 
+be used as a competitiveadvantage over other companies that had not yet computerized. Soon 
+businesses were racing to convert information into forms that could be managed by computers.  
+By computer science nowadays we mean the study of computers, including their design 
+(architecture) and their uses for computations, data processing, and systems control. The field 
+of computer science includes engineering activities such as the design of computers and of the 
+hardware and software that make up computer systems. It also encompasses theoretical, 
+mathematical activities, such as the design and analysis of algorithms, performance studies of 
+systems and their components by means of techniques like queueing theory, and the estimation 
+of the reliability and availability of systems by probabilistic techniques.  
+Since computer systems are often too large and complicated to allow a designer to predict 
+failure or success without testing, experimentation is incorporated into the development cycle. 
+Computer science is generally considered a discipline separate from computer engineering, 
+although the two disciplines overlap extensively in the area of computer architecture, which is 
+the design and study of computer systems. 
+The major subdisciplines of computer science have traditionally been (1) architecture, 
+which includes all levels of hardware design, as well as the integration of hardware and software 
+components to form computer systems; (2) software, which refers to the programs, or sets of 
+instructions, that tell a computer how to carry out tasks, subdivided into software engineering, 
+programming languages, operating systems, information systems and databases, artificial 
+intelligence, and computer graphics; and (3) theory, which covers computational methods 
+and numerical analysis on the one hand, and data structures and algorithms, on the other. 
+Computer science has indirect relationships with virtually all disciplines that use 
+computers. Applications developed in other fields often involve collaboration with computer 
+scientists. In return, computer scientists get the opportunity to observe novel applications of 
+computers, from which they gain a deeper insight into their usage. These relationships make 
+computer science a highly interdisciplinary field of study. 

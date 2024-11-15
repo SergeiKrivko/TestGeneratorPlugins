@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Reflection;
+using Avalonia;
 using Markdown.Avalonia;
 using TestGenerator.Shared.Types;
 

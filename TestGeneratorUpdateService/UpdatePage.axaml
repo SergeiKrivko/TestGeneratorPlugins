@@ -1,0 +1,20 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TestGeneratorUpdateService.UpdatePage">
+    <StackPanel Orientation="Vertical" Spacing="10">
+        <TextBlock Name="CurrentVersionBlock" FontSize="18">Текущая версия: ?</TextBlock>
+        <Separator></Separator>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Name="StatusBlock" VerticalAlignment="Center" FontSize="16">Установлена последняя версия</TextBlock>
+            <Button Click="RefreshButton_OnClick">↺</Button>
+        </StackPanel>
+        <Button Name="ButtonDownload" Click="ButtonDownload_OnClick">Скачать обновление</Button>
+        <Button Name="ButtonInstall" Click="ButtonInstall_OnClick">Установить обновление</Button>
+        <StackPanel Orientation="Horizontal" Name="ProgressPanel">
+            <TextBlock Name="ProgressNameBlock">Загрузка обновления...</TextBlock>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

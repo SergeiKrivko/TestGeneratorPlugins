@@ -7,11 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="TestGenerator.Shared" Version="1.0.1" />
+        <PackageReference Include="TestGenerator.Shared" Version="1.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TestPlugin.UI\TestPlugin.UI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Assets\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

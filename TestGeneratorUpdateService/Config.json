@@ -1,0 +1,7 @@
+{
+  "Key": "TestGeneratorUpdateService",
+  "Name": "TestGenerator Update Service",
+  "Description": "Позволяет автоматически обновлять TestGenerator",
+  "Version": "1.0.1",
+  "Assembly": "TestGeneratorUpdateService.dll"
+}
