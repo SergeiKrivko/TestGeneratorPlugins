@@ -29,6 +29,7 @@ jobs:
           .\venv\Scripts\Activate.ps1
           pip install -r requirements.txt
           pyinstaller converter.spec
+          mkdir ../Assets
           mv dist/converter ../Assets/converter
       
       - name: Build and upload
@@ -60,11 +61,7 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           pyinstaller converter.spec
-          ls
-          echo ---- build ----
-          ls build
-          echo ---- dist -----
-          ls dist
+          mkdir ../Assets
           mv dist/converter ../Assets/converter
       
       - name: Build and upload
@@ -96,6 +93,7 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           pyinstaller converter.spec
+          mkdir ../Assets
           mv dist/converter ../Assets/converter
       
       - name: Build and upload
