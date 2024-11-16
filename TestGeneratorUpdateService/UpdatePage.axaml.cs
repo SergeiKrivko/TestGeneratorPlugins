@@ -156,12 +156,8 @@ public partial class UpdatePage : UserControl
                 $"echo \"Для установки требуются права суперпользователя. Введите пароль:\"\n" +
                 $"sudo dpkg -r testgenerator\nsudo dpkg -i {ReleaseLocalPath}\n" +
                 $"/opt/SergeiKrivko/TestGenerator/TestGenerator\n");
-            var proc = Process.Start(new ProcessStartInfo
-                { FileName = "chmod", Arguments = $"755 {ReleaseLocalPath}", CreateNoWindow = true });
-            if (proc != null)
-                await proc.WaitForExitAsync();
             Process.Start(new ProcessStartInfo
-                { FileName = "gnome-terminal", Arguments = $"-- {scriptPath}", CreateNoWindow = true });
+                { FileName = "gnome-terminal", Arguments = $"-- bash {scriptPath}", CreateNoWindow = true });
         }
 
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
