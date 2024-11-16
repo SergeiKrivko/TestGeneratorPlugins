@@ -10,6 +10,6 @@ public class MarkdownReports : TestGenerator.Shared.Plugin
         BuildTypes = [];
         ProjectTypes = [];
 
-        FileActions = [new ToDocxAction()];
+        FileActions = [new ToDocxAction(), new ToPdfAction()];
     }
 }

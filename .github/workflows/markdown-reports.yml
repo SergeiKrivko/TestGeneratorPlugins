@@ -30,7 +30,7 @@ jobs:
           pip install -r requirements.txt
           pyinstaller converter.spec
           mkdir ../Assets
-          mv build/converter ../Assets/converter
+          mv dist/converter ../Assets/converter
       
       - name: Build and upload
         run: |
@@ -69,7 +69,7 @@ jobs:
           ls dist
           
           mkdir ../Assets
-          mv build/converter ../Assets/converter
+          mv dist/converter ../Assets/converter
       
       - name: Build and upload
         run: |
@@ -101,7 +101,7 @@ jobs:
           pip install -r requirements.txt
           pyinstaller converter.spec
           mkdir ../Assets
-          mv build/converter ../Assets/converter
+          mv dist/converter ../Assets/converter
       
       - name: Build and upload
         run: |
