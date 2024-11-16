@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownViewer", "MarkdownV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGeneratorUpdateService", "TestGeneratorUpdateService\TestGeneratorUpdateService.csproj", "{09FE5283-588E-401A-A7AF-2E9EA8208646}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownReports", "MarkdownReports\MarkdownReports.csproj", "{D2F168B1-10D9-45CA-9563-36E86DD5E9FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09FE5283-588E-401A-A7AF-2E9EA8208646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F168B1-10D9-45CA-9563-36E86DD5E9FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F168B1-10D9-45CA-9563-36E86DD5E9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F168B1-10D9-45CA-9563-36E86DD5E9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F168B1-10D9-45CA-9563-36E86DD5E9FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

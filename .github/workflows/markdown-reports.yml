@@ -1,0 +1,99 @@
+name: Markdown Reports
+on:
+  push:
+    paths:
+      - MarkdownReports/Config.json
+
+jobs:
+  build-win-x64:
+    name: Build and publish for Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.x'
+          
+      - name: Build python script
+        run: |
+          cd MarkdownReports/PythonSrc
+          python -m venv venv
+          .\venv\Scripts\Activate.ps1
+          pip install -r requirements.txt
+          pyinstaller converter.spec
+          mv dist/converter ../Assets/converter
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d MarkdownReports -r win-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+
+  build-linux-x64:
+    name: Build and publish for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.x'
+          
+      - name: Build python script
+        run: |
+          cd MarkdownReports/PythonSrc
+          python -m venv venv
+          ./venv/bin/activate
+          pip install -r requirements.txt
+          pyinstaller converter.spec
+          mv dist/converter ../Assets/converter
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d MarkdownReports -r linux-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+
+  build-osx-x64:
+    name: Build and publish for macOS (x64)
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.x'
+          
+      - name: Build python script
+        run: |
+          cd MarkdownReports/PythonSrc
+          python -m venv venv
+          ./venv/bin/activate
+          pip install -r requirements.txt
+          pyinstaller converter.spec
+          mv dist/converter ../Assets/converter
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d MarkdownReports -r osx-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}

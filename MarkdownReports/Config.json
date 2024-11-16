@@ -1,0 +1,8 @@
+{
+  "Key": "MarkdownReports",
+  "Name": "Markdown Reports",
+  "Description": "Some description for MarkdownReports",
+  "Version": "1.0.1",
+  "Assembly": "MarkdownReports.dll",
+  "PlatformSpecific": true
+}
