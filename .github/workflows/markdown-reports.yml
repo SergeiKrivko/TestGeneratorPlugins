@@ -1,8 +1,8 @@
 name: Markdown Reports
 on:
   push:
-    paths:
-      - MarkdownReports/Config.json
+#    paths:
+#      - MarkdownReports/Config.json
 
 jobs:
   build-win-x64:
@@ -57,7 +57,7 @@ jobs:
         run: |
           cd MarkdownReports/PythonSrc
           python -m venv venv
-          ./venv/bin/activate
+          source venv/bin/activate
           pip install -r requirements.txt
           pyinstaller converter.spec
           mv dist/converter ../Assets/converter
@@ -88,7 +88,7 @@ jobs:
         run: |
           cd MarkdownReports/PythonSrc
           python -m venv venv
-          ./venv/bin/activate
+          source venv/bin/activate
           pip install -r requirements.txt
           pyinstaller converter.spec
           mv dist/converter ../Assets/converter
