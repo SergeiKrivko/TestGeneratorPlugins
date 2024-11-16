@@ -60,6 +60,11 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           pyinstaller converter.spec
+          ls
+          echo ---- build ----
+          ls build
+          echo ---- dist -----
+          ls dist
           mv dist/converter ../Assets/converter
       
       - name: Build and upload
