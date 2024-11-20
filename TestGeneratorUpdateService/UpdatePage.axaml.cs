@@ -128,7 +128,9 @@ public partial class UpdatePage : UserControl
             return;
         var stream = await _httpClient.GetStreamAsync(ReleaseUrl);
         Directory.CreateDirectory(ReleasesDirectory);
-        await stream.CopyToAsync(File.Create(Path.Join(ReleasesDirectory, AssetName(LatestVersion))));
+        var file = File.Create(Path.Join(ReleasesDirectory, AssetName(LatestVersion)));
+        await stream.CopyToAsync(file);
+        file.Close();
 
         ProgressPanel.IsVisible = false;
         ButtonInstall.IsVisible = true;
