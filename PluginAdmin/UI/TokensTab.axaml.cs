@@ -29,9 +29,9 @@ public partial class TokensTab : UserControl
     
     public async void Update()
     {
-        var tokens = await PluginsHttpService.Instance.GetAllTokens();
         try
         {
+            var tokens = await PluginsHttpService.Instance.GetAllTokens();
             Items.Clear();
             foreach (var plugin in tokens)
             {

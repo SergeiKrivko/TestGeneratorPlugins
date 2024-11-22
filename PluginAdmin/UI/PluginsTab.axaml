@@ -8,7 +8,7 @@
              x:DataType="ui:PluginsTab"
              x:Class="PluginAdmin.UI.PluginsTab">
     <Grid RowDefinitions="Auto *">
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
             <Button Click="CreateButton_OnClick">+</Button>
         </StackPanel>
         <ListBox Grid.Row="1" Name="PluginsListBox" ItemsSource="{Binding Items}">

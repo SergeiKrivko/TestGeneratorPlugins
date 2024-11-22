@@ -9,7 +9,7 @@
              Name="Root"
              x:Class="PluginAdmin.UI.TokensTab">
     <Grid RowDefinitions="Auto *">
-        <StackPanel Orientation="Horizontal" Spacing="10">
+        <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 0 0 10">
             <Button Click="CreateButton_OnClick">+</Button>
             <Button Click="RefreshButton_OnClick">↺</Button>
             <Button Click="DeleteButton_OnClick">✕</Button>

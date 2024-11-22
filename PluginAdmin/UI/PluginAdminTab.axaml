@@ -7,20 +7,10 @@
              x:Class="PluginAdmin.UI.PluginAdminTab">
     <TabControl>
         <TabItem Header="Вход" Name="SignInTab" IsVisible="False">
-            <Grid>
-                <StackPanel Spacing="10" MaxWidth="300">
-                    <TextBlock>Логин:</TextBlock>
-                    <TextBox Name="LoginEdit"></TextBox>
-                    <TextBlock>Пароль:</TextBlock>
-                    <TextBox Name="PasswordEdit" PasswordChar="●"></TextBox>
-                    <Button HorizontalAlignment="Center" Click="SignInButton_OnClick">Войти</Button>
-                </StackPanel>
-            </Grid>
+            <ui:SignInTab Name="SignInView"></ui:SignInTab>
         </TabItem>
         <TabItem Header="User" Name="UserTab">
-            <Grid>
-                <Button Click="SignOutButton_OnClick">Выйти</Button>
-            </Grid>
+            <ui:UserTab Name="UserView"></ui:UserTab>
         </TabItem>
         <TabItem Header="Плагины" Name="PluginsTab">
             <ui:PluginsTab />

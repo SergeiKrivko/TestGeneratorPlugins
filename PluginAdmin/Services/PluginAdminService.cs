@@ -8,7 +8,7 @@ public class PluginAdminService
 {
     private static PluginAdminService? _instance;
 
-    public SettingsSection Settings { get; } = AAppService.Instance.Settings.GetSection("pluginAdmin");
+    public SettingsSection Settings { get; } = AAppService.Instance.GetSettings("pluginAdmin");
 
     public static PluginAdminService Instance
     {
