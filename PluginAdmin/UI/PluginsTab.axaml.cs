@@ -25,13 +25,15 @@ public partial class PluginsTab : UserControl
     {
         try
         {
+            var plugins = await PluginsHttpService.Instance.GetAllPlugins();
+            
             Items.Clear();
-            foreach (var plugin in await PluginsHttpService.Instance.GetAllPlugins())
+            foreach (var plugin in plugins)
             {
                 Items.Add(plugin);
             }
         }
-        catch (ConnectionException e)
+        catch (HttpServiceException)
         {
         }
     }

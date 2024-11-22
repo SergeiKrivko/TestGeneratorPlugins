@@ -38,7 +38,7 @@ public partial class TokensTab : UserControl
                 Items.Add(plugin);
             }
         }
-        catch (ConnectionException e)
+        catch (HttpServiceException)
         {
         }
     }

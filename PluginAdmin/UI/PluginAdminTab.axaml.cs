@@ -44,5 +44,17 @@ public partial class PluginAdminTab : MainTab
         UserTab.IsVisible = true;
         PluginsTab.IsVisible = true;
         TokensTab.IsVisible = true;
+
+        (PluginsTab.Content as PluginsTab)?.Update();
+        (TokensTab.Content as TokensTab)?.Update();
+    }
+
+    private void SignOutButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        PluginAdminService.Instance.Settings.Set("user", null);
+        SignInTab.IsVisible = true;
+        UserTab.IsVisible = false;
+        PluginsTab.IsVisible = false;
+        TokensTab.IsVisible = false;
     }
 }
