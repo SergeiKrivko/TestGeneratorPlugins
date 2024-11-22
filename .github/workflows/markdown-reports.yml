@@ -1,8 +1,8 @@
 name: Markdown Reports
 on:
   push:
-#    paths:
-#      - MarkdownReports/Config.json
+    paths:
+      - MarkdownReports/Config.json
 
 jobs:
   build-win-x64:
