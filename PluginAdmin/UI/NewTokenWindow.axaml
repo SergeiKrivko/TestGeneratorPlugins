@@ -1,0 +1,34 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PluginAdmin.UI.NewTokenWindow"
+        Width="500" Height="400" WindowStartupLocation="CenterOwner" Name="Root"
+        Title="Создание токена">
+    <Panel Margin="10">
+        <Grid Name="OptionsView" RowDefinitions="Auto Auto * Auto">
+            <TextBlock>Название токена:</TextBlock>
+            <TextBox Grid.Row="1" Margin="0 10" Name="TokenNameBox" />
+            <ListBox Grid.Row="2" SelectionMode="Multiple" Name="PluginsList"
+                     ItemsSource="{Binding ElementName=Root, Path=Plugins}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Key}"></TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0 10" Spacing="10" HorizontalAlignment="Right">
+                <Button Click="CancelButton_OnClick">Отмена</Button>
+                <Button Click="CreateButton_OnClick">Создать</Button>
+            </StackPanel>
+        </Grid>
+        <Arc Name="SpinnerView" Classes="Spinner" IsVisible="False" Height="100" Width="100" />
+        <Grid Name="CreatedView" IsVisible="False" RowDefinitions="Auto Auto * Auto">
+            <TextBlock FontSize="16">Токен успешно создан</TextBlock>
+            <TextBox Grid.Row="1" IsReadOnly="True" TextWrapping="Wrap" Name="TokenBox"></TextBox>
+            <TextBlock Grid.Row="2" TextWrapping="Wrap">Сохраните токен в надежном месте. После закрытия этого окна посмотреть его будет нельзя</TextBlock>
+            <Button Grid.Row="3" Click="CancelButton_OnClick">Ок</Button>
+        </Grid>
+    </Panel>
+</Window>

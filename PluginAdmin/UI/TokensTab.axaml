@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:PluginAdmin.Models"
+             xmlns:ui="clr-namespace:PluginAdmin.UI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="ui:TokensTab"
+             Name="Root"
+             x:Class="PluginAdmin.UI.TokensTab">
+    <Grid RowDefinitions="Auto *">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button Click="CreateButton_OnClick">+</Button>
+            <Button Click="RefreshButton_OnClick">↺</Button>
+            <Button Click="DeleteButton_OnClick">✕</Button>
+        </StackPanel>
+        <ListBox Grid.Row="1" Name="TokensListBox" ItemsSource="{Binding Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="models:TokenRead">
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <!-- <Button Grid.Column="1" Command="{Binding ElementName=Root, Path=DeleteCommand}" CommandParameter="{Binding TokenId}">✕</Button> -->
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

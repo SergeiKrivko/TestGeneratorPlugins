@@ -1,0 +1,22 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:PluginAdmin.UI"
+             xmlns:models="clr-namespace:PluginAdmin.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="ui:PluginsTab"
+             x:Class="PluginAdmin.UI.PluginsTab">
+    <Grid RowDefinitions="Auto *">
+        <StackPanel Orientation="Horizontal">
+            <Button Click="CreateButton_OnClick">+</Button>
+        </StackPanel>
+        <ListBox Grid.Row="1" Name="PluginsListBox" ItemsSource="{Binding Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="models:PluginRead">
+                    <TextBlock Text="{Binding Key}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

@@ -1,0 +1,30 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:PluginAdmin.UI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PluginAdmin.UI.PluginAdminTab">
+    <TabControl>
+        <TabItem Header="Вход" Name="SignInTab" IsVisible="False">
+            <Grid>
+                <StackPanel Spacing="10">
+                    <TextBlock>Логин:</TextBlock>
+                    <TextBox Name="LoginEdit"></TextBox>
+                    <TextBlock>Пароль:</TextBlock>
+                    <TextBox Name="PasswordEdit" PasswordChar="●"></TextBox>
+                    <Button HorizontalAlignment="Center" Click="SignInButton_OnClick">Войти</Button>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="User" Name="UserTab">
+
+        </TabItem>
+        <TabItem Header="Плагины" Name="PluginsTab">
+            <ui:PluginsTab />
+        </TabItem>
+        <TabItem Header="Токены" Name="TokensTab">
+            <ui:TokensTab />
+        </TabItem>
+    </TabControl>
+</UserControl>

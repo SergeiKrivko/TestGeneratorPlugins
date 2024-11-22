@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.3" />
+        <PackageReference Include="TestGenerator.Shared" Version="1.6.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="UI\PluginAdminTab.axaml.cs">
+        <DependentUpon>PluginAdminTab.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+</Project>
