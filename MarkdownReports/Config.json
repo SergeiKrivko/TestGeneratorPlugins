@@ -2,7 +2,7 @@
   "Key": "MarkdownReports",
   "Name": "Markdown Reports",
   "Description": "Some description for MarkdownReports",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Assembly": "MarkdownReports.dll",
   "PlatformSpecific": true
 }

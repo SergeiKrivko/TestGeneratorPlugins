@@ -16,20 +16,9 @@ public class ToPdfAction : IFileAction
 
     public async Task Run(string path)
     {
-        var proc = new Process()
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = _scriptPath,
-                Arguments =
-                    $"{path} {Path.Join(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".pdf")}",
-                RedirectStandardError = true,
-                UseShellExecute = false,
-            }
-        };
-        proc.Start();
-        await proc.WaitForExitAsync();
-        if (proc.ExitCode != 0)
-            throw new Exception(await proc.StandardError.ReadToEndAsync());
+        var res = await AAppService.Instance.RunProcess(_scriptPath,
+            $"{path} {Path.Join(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".pdf")}");
+        if (res.ExitCode != 0)
+            throw new Exception(res.Stderr);
     }
 }
