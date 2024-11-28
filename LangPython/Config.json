@@ -1,0 +1,7 @@
+{
+  "Key": "LangPython",
+  "Name": "Язык Python",
+  "Description": "Пподдержка языка Python",
+  "Version": "1.0.0",
+  "Assembly": "LangPython.dll"
+}

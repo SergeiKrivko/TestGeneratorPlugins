@@ -2,6 +2,6 @@
   "Key": "LangC",
   "Name": "Язык C",
   "Description": "Поддержка языка C",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Assembly": "LangC.dll"
 }

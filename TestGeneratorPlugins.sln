@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownReports", "Markdown
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginAdmin", "PluginAdmin\PluginAdmin.csproj", "{AA65CFB4-6A02-4623-8A21-2135A4BDBC6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangPython", "LangPython\LangPython.csproj", "{E01EC6A3-2145-4555-AD1B-B32F5481147B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{AA65CFB4-6A02-4623-8A21-2135A4BDBC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA65CFB4-6A02-4623-8A21-2135A4BDBC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA65CFB4-6A02-4623-8A21-2135A4BDBC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E01EC6A3-2145-4555-AD1B-B32F5481147B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E01EC6A3-2145-4555-AD1B-B32F5481147B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E01EC6A3-2145-4555-AD1B-B32F5481147B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E01EC6A3-2145-4555-AD1B-B32F5481147B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
