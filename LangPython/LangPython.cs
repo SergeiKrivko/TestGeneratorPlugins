@@ -35,13 +35,39 @@ public class LangPython : TestGenerator.Shared.Plugin
     public static SettingsSection ProjectSettings => AAppService.Instance.CurrentProject.GetSettings();
     public static SettingsSection ProjectData => AAppService.Instance.CurrentProject.GetData();
 
+    private static ICollection<string> GetLocations(ICollection<string> locations, Range versions)
+    {
+        var res = new List<string>();
+
+        foreach (var location in locations)
+        {
+            for (int i = versions.Start.Value; i < versions.End.Value; i++)
+            {
+                if (OperatingSystem.IsWindows())
+                    res.Add($@"{location}\Python\Python3{i}\python.exe");
+                else if (OperatingSystem.IsLinux())
+                    res.Add($@"{location}/python3.{i}");
+            }
+        }
+
+        return res;
+    }
+
     public static SideProgram Python { get; } = new SideProgram
     {
         Key = "Python", Validators = [new ProgramOutputValidator("--version", "Python 3.")],
         Locations = new Dictionary<string, ICollection<string>>
         {
             { "Default", ["python"] },
-            { "Windows", [@"C:\Users\sergi\AppData\Local\Programs\Python\Python311\python.exe"] }
+            {
+                "Windows",
+                GetLocations([@"%LOCALAPPDATA%\Programs", @"%APPDATA%\Programs", "%ProgramFiles%", "%ProgramFiles(x86)%"],
+                    new Range(0, 13))
+            },
+            {
+                "Linux",
+                GetLocations(["/usr/bin"], new Range(0, 13))
+            }
         }
     };
 
