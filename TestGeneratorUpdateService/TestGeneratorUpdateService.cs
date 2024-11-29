@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using TestGenerator.Shared.Settings;
 
 namespace TestGeneratorUpdateService;
 
@@ -14,6 +15,6 @@ public class TestGeneratorUpdateService : TestGenerator.Shared.Plugin
         BuildTypes = [];
         ProjectTypes = [];
 
-        SettingsControls?.Add("Обновления", new UpdatePage());
+        SettingsControls?.Add(new SettingsNode("Обновления", new UpdatePage()));
     }
 }

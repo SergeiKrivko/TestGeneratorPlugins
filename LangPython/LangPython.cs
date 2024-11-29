@@ -1,4 +1,8 @@
-﻿using TestGenerator.Shared.Types;
+﻿using Avalonia.Controls;
+using TestGenerator.Shared.Settings;
+using TestGenerator.Shared.SidePrograms;
+using TestGenerator.Shared.Types;
+using TestGenerator.Shared.Utils;
 
 namespace LangPython;
 
@@ -27,13 +31,52 @@ public class LangPython : TestGenerator.Shared.Plugin
         "20.5698C13.9869 20.3913 13.8854 20.1488 13.8845 19.8955C13.8836 19.6422 13.9833 19.3989 14.1617 " +
         "19.2192C14.3402 19.0394 14.5827 18.9379 14.836 18.937Z";
 
+    public static SettingsSection Settings { get; } = AAppService.Instance.GetSettings();
+    public static SettingsSection ProjectSettings => AAppService.Instance.CurrentProject.GetSettings();
+    public static SettingsSection ProjectData => AAppService.Instance.CurrentProject.GetData();
+
+    public static SideProgram Python { get; } = new SideProgram
+    {
+        Key = "Python", Validators = [new ProgramOutputValidator("--version", "Python 3.")],
+        Locations = new Dictionary<string, ICollection<string>>
+        {
+            { "Default", ["python"] },
+            { "Windows", [@"C:\Users\sergi\AppData\Local\Programs\Python\Python311\python.exe"] }
+        }
+    };
+
     public LangPython()
     {
         MainTabs = [];
         SideTabs = [];
 
-        BuildTypes = [];
+        BuildTypes =
+        [
+            new BuildType
+            {
+                Key = "Python",
+                Name = "Python",
+                Icon = PythonIcon,
+                Builder = (id, project, settings) => new PythonBuilder(id, project, settings),
+                SettingsFields = () =>
+                [
+                    new PathField { Key = "mainFile", FieldName = "Файл", Extension = ".py" },
+                ]
+            }
+        ];
         ProjectTypes = [new ProjectType("Python", "Python", PythonIcon)];
+
+        SettingsControls =
+        [
+            new SettingsPage("Языки/Python", Settings.Name ?? "", [
+                new ProgramField { Program = Python, FieldName = "Интерпретатор Python", Key = "interpreter" }
+            ]),
+            new SettingsPage("Проект/Python", ProjectSettings.Name ?? "", [
+                new ProgramField { Program = Python, FieldName = "Интерпретатор Python", Key = "interpreter" }
+            ], SettingsPageType.ProjectSettings, () => AAppService.Instance.CurrentProject.Type == ProjectTypes[0])
+        ];
+
+        FileActions = [new FastRunAction()];
 
         FileIcons[".py"] = PythonIcon;
     }
