@@ -20,12 +20,8 @@ public class FastRunAction : IFileAction
             LangPython.Settings.Get<ProgramFileModel>("interpreter"));
         if (python == null)
             throw new Exception("Интерпретатор Python не найден");
-        Dispatcher.UIThread.Post(() => Start(python.VirtualSystem.ExecuteInConsole($"{python.Path} {path}")));
-    }
-
-    private async void Start(ITerminalController controller)
-    {
         AAppService.Instance.ShowSideTab("Run");
-        await controller.RunAsync();
+        await python.VirtualSystem.ExecuteInConsole($"{python.Path} {await python.VirtualSystem.ConvertPath(path)}")
+            .RunAsync();
     }
 }

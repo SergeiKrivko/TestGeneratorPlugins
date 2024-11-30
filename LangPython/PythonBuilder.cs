@@ -31,10 +31,6 @@ public class PythonBuilder : BaseBuilder
     public override async Task<int> RunConsole(string args, string? workingDirectory = null)
     {
         var python = Python;
-        Console.WriteLine($"{Settings.Get<ProgramFileModel>("interpreter")?.ToString() ?? "null"} " +
-                          $"{LangPython.ProjectSettings.Get<ProgramFileModel>("interpreter")?.ToString() ?? "null"} " +
-                          $"{LangPython.Settings.Get<ProgramFileModel>("interpreter")?.ToString() ?? "null"} ");
-        Console.WriteLine($"Python: {python?.Path ?? "null"}");
         if (python == null)
             return -1;
         var terminalController = python.ExecuteInConsole($"{MainFile} {args}", workingDirectory);

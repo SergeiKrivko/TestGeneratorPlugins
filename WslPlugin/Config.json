@@ -1,0 +1,8 @@
+{
+  "Key": "WSL",
+  "Name": "WSL",
+  "Description": "Добавляет поддержку WSL (Windows Subsystem for Linux)",
+  "Version": "1.0.0",
+  "Assembly": "WslPlugin.dll",
+  "PlatformSpecific": true
+}

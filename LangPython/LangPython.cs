@@ -35,7 +35,7 @@ public class LangPython : TestGenerator.Shared.Plugin
     public static SettingsSection ProjectSettings => AAppService.Instance.CurrentProject.GetSettings();
     public static SettingsSection ProjectData => AAppService.Instance.CurrentProject.GetData();
 
-    private static ICollection<string> GetLocations(ICollection<string> locations, Range versions)
+    private static ICollection<string> GetLocations(ICollection<string> locations, Range versions, string os)
     {
         var res = new List<string>();
 
@@ -43,11 +43,11 @@ public class LangPython : TestGenerator.Shared.Plugin
         {
             for (int i = versions.Start.Value; i < versions.End.Value; i++)
             {
-                if (OperatingSystem.IsWindows())
+                if (os == "Windows")
                     res.Add($@"{location}\Python\Python3{i}\python.exe");
-                else if (OperatingSystem.IsLinux())
+                else if (os == "Linux")
                     res.Add($"{location}/python3.{i}");
-                else if (OperatingSystem.IsMacOS())
+                else if (os == "MacOS")
                     res.Add($"{location}/3.{i}/bin/python3");
             }
         }
@@ -65,15 +65,15 @@ public class LangPython : TestGenerator.Shared.Plugin
                 "Windows",
                 GetLocations(
                     [@"%LOCALAPPDATA%\Programs", @"%APPDATA%\Programs", "%ProgramFiles%", "%ProgramFiles(x86)%"],
-                    new Range(0, 13))
+                    new Range(0, 13), "Windows")
             },
             {
                 "Linux",
-                GetLocations(["/usr/bin"], new Range(0, 13))
+                GetLocations(["/usr/bin"], new Range(0, 13), "Linux")
             },
             {
                 "MacOS",
-                GetLocations(["/Library/Frameworks/Python.framework/Versions"], new Range(0, 13))
+                GetLocations(["/Library/Frameworks/Python.framework/Versions"], new Range(0, 13), "MacOS")
             }
         }
     };
