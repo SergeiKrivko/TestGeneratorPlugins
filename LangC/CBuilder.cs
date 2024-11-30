@@ -11,9 +11,24 @@ public class CBuilder : BaseBuilder
     {
     }
 
-    public async override Task<int> Compile()
+    public string ExePath
     {
-        AAppService.Instance.GetLogger("C").Info("Compiling");
+        get
+        {
+            var path = Settings.Get<string>("exePath", "app.exe");
+            if (Path.IsPathRooted(path))
+                return path;
+            return Path.Join(AAppService.Instance.CurrentProject.Path, path);
+        }
+    }
+
+    public override async Task<int> Compile()
+    {
+        LangC.Logger.Info("Compiling");
+
+        var gcc = Programs.GetGcc();
+        if (gcc == null)
+            return -1;
 
         var cFiles = new List<string>();
         var hFiles = new List<string>();
@@ -33,17 +48,37 @@ public class CBuilder : BaseBuilder
 
         foreach (var file in cFiles)
         {
-            var objFile = Path.Join(TempPath, Path.ChangeExtension(Path.GetFileName(file), ".o"));
+            var objFile = await
+                gcc.VirtualSystem.ConvertPath(Path.Join(TempPath, Path.ChangeExtension(Path.GetFileName(file), ".o")));
             oFiles.Add(objFile);
-            var res = await AAppService.Instance.RunProcess($"gcc \"{Path.Join(Project.Path, file)}\" " +
-                                                            $"-c {Settings.Get<string>("compilerKeys")} -o \"{objFile}\"");
+            var res = await gcc.Execute($"\"{await gcc.VirtualSystem.ConvertPath(Path.Join(Project.Path, file))}\" " +
+                                        $"-c {Settings.Get<string>("compilerKeys")} " +
+                                        $"-o \"{objFile}\"");
             if (res.ExitCode != 0)
                 return res.ExitCode;
         }
 
-        return (await AAppService.Instance.RunProcess($"gcc {string.Join(' ', oFiles.Select(f => "\"" + f + "\""))} " +
-                                                      $"-o \"{Path.Join(Project.Path, "app.exe")}\"")).ExitCode;
+        return (await gcc.Execute(
+            $"{string.Join(' ', oFiles.Select(f => "\"" + f + "\""))} " +
+            $"-o \"{await gcc.VirtualSystem.ConvertPath(ExePath)}\"")).ExitCode;
     }
 
-    public override string Command => Path.Join(Project.Path, "app.exe");
+    public override async Task<int> Run(string args = "", string? workingDirectory = null)
+    {
+        var gcc = Programs.GetGcc();
+        if (gcc == null)
+            return await base.Run(args, workingDirectory);
+        return (await gcc.VirtualSystem.Execute(await gcc.VirtualSystem.ConvertPath(ExePath), args)).ExitCode;
+    }
+
+    public override async Task<int> RunConsole(string args, string? workingDirectory = null)
+    {
+        var gcc = Programs.GetGcc();
+        if (gcc == null)
+            return await base.RunConsole(args, workingDirectory);
+        return await gcc.VirtualSystem
+            .ExecuteInConsole($"{await gcc.VirtualSystem.ConvertPath(ExePath)} {args}", workingDirectory).RunAsync();
+    }
+
+    public override string Command => Path.Join(Project.Path, ExePath);
 }
