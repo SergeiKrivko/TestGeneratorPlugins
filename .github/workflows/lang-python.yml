@@ -1,0 +1,23 @@
+name: LangPython
+on:
+  push:
+    paths:
+      - LangPython/Config.json
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d LangPython -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
