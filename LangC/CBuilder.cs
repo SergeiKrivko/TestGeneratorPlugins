@@ -68,7 +68,7 @@ public class CBuilder : BaseBuilder
         var gcc = Programs.GetGcc();
         if (gcc == null)
             return await base.Run(args, workingDirectory);
-        return (await gcc.VirtualSystem.Execute(await gcc.VirtualSystem.ConvertPath(ExePath), args)).ExitCode;
+        return (await gcc.VirtualSystem.Execute(await gcc.VirtualSystem.ConvertPath(ExePath), args, workingDirectory)).ExitCode;
     }
 
     public override async Task<int> RunConsole(string args, string? workingDirectory = null)

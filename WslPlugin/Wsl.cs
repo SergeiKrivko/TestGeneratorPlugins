@@ -17,9 +17,9 @@ public class Wsl : IVirtualSystem
         return path;
     }
 
-    public async Task<ICompletedProcess> Execute(string filename, string args)
+    public async Task<ICompletedProcess> Execute(string filename, string args, string? workingDirectory = null)
     {
-        return await AAppService.Instance.RunProcess("wsl", $"-e {filename} {args}");
+        return await AAppService.Instance.RunProcess("wsl", $"-e {filename} {args}", workingDirectory);
     }
 
     public async Task<ICompletedProcess> Execute(string command)
