@@ -10,6 +10,7 @@ public class FastRunAction : IFileAction
     public string Name => "Запустить";
     public string? Icon => "";
     public string[] Extensions => [".py"];
+    public bool CreateWindow => false;
     public int Priority => 10;
 
     public async Task Run(string path)

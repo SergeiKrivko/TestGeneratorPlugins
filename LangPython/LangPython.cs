@@ -46,7 +46,9 @@ public class LangPython : TestGenerator.Shared.Plugin
                 if (OperatingSystem.IsWindows())
                     res.Add($@"{location}\Python\Python3{i}\python.exe");
                 else if (OperatingSystem.IsLinux())
-                    res.Add($@"{location}/python3.{i}");
+                    res.Add($"{location}/python3.{i}");
+                else if (OperatingSystem.IsMacOS())
+                    res.Add($"{location}/3.{i}/bin");
             }
         }
 
@@ -58,15 +60,20 @@ public class LangPython : TestGenerator.Shared.Plugin
         Key = "Python", Validators = [new ProgramOutputValidator("--version", "Python 3.")],
         Locations = new Dictionary<string, ICollection<string>>
         {
-            { "Default", ["python"] },
+            { "Default", ["python", "python3"] },
             {
                 "Windows",
-                GetLocations([@"%LOCALAPPDATA%\Programs", @"%APPDATA%\Programs", "%ProgramFiles%", "%ProgramFiles(x86)%"],
+                GetLocations(
+                    [@"%LOCALAPPDATA%\Programs", @"%APPDATA%\Programs", "%ProgramFiles%", "%ProgramFiles(x86)%"],
                     new Range(0, 13))
             },
             {
                 "Linux",
                 GetLocations(["/usr/bin"], new Range(0, 13))
+            },
+            {
+                "MacOS",
+                GetLocations(["/Library/Frameworks/Python.framework/Versions"], new Range(0, 13))
             }
         }
     };
@@ -87,6 +94,9 @@ public class LangPython : TestGenerator.Shared.Plugin
                 SettingsFields = () =>
                 [
                     new PathField { Key = "mainFile", FieldName = "Файл", Extension = ".py" },
+                    new DefaultField([
+                        new ProgramField { Program = Python, FieldName = "Интерпретатор Python", Key = "interpreter" }
+                    ]) { Key = "defaultInterpreter", FieldName = "Интерпретатор по умолчанию", Inversion = true },
                 ]
             }
         ];
@@ -98,7 +108,9 @@ public class LangPython : TestGenerator.Shared.Plugin
                 new ProgramField { Program = Python, FieldName = "Интерпретатор Python", Key = "interpreter" }
             ]),
             new SettingsPage("Проект/Python", ProjectSettings.Name ?? "", [
-                new ProgramField { Program = Python, FieldName = "Интерпретатор Python", Key = "interpreter" }
+                new DefaultField([
+                    new ProgramField { Program = Python, FieldName = "Интерпретатор Python", Key = "interpreter" }
+                ]) { Key = "defaultInterpreter", FieldName = "Интерпретатор по умолчанию", Inversion = true }
             ], SettingsPageType.ProjectSettings, () => AAppService.Instance.CurrentProject.Type == ProjectTypes[0])
         ];
 

@@ -7,9 +7,11 @@ namespace LangPython;
 public class PythonBuilder : BaseBuilder
 {
     private SideProgramFile? Python => LangPython.Python.FromModel(
-        Settings.Get<ProgramFileModel>("interpreter") ??
-        LangPython.ProjectSettings.Get<ProgramFileModel>("interpreter") ??
-        LangPython.Settings.Get<ProgramFileModel>("interpreter"));
+        Settings.Get<bool>("defaultInterpreter")
+            ? LangPython.ProjectSettings.Get<bool>("defaultInterpreter")
+                ? LangPython.Settings.Get<ProgramFileModel>("interpreter")
+                : LangPython.ProjectSettings.Get<ProgramFileModel>("interpreter")
+            : Settings.Get<ProgramFileModel>("interpreter"));
 
     private string MainFile => Settings.Get<string>("mainFile") ?? "";
 
