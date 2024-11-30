@@ -48,7 +48,7 @@ public class LangPython : TestGenerator.Shared.Plugin
                 else if (OperatingSystem.IsLinux())
                     res.Add($"{location}/python3.{i}");
                 else if (OperatingSystem.IsMacOS())
-                    res.Add($"{location}/3.{i}/bin");
+                    res.Add($"{location}/3.{i}/bin/python3");
             }
         }
 
