@@ -17,18 +17,31 @@ public class Wsl : IVirtualSystem
         return path;
     }
 
-    public async Task<ICompletedProcess> Execute(string filename, string args, string? workingDirectory = null)
+    public async Task<ICompletedProcess> Execute(RunProcessArgs.ProcessRunProvider where, RunProcessArgs args)
     {
-        return await AAppService.Instance.RunProcess("wsl", $"-e {filename} {args}", workingDirectory);
+        return await AAppService.Instance.RunProcess(where, GetArgs(args));
     }
 
-    public async Task<ICompletedProcess> Execute(string command)
+    public async Task<ICompletedProcess> Execute(RunProcessArgs args)
     {
-        return await AAppService.Instance.RunProcess("wsl", $"-e {command}");
+        return await AAppService.Instance.RunProcess(GetArgs(args));
     }
 
-    public ITerminalController ExecuteInConsole(string command, string? workingDirectory = null)
+    public async Task<ICollection<ICompletedProcess>> Execute(RunProcessArgs.ProcessRunProvider where, params RunProcessArgs[] args)
     {
-        return AAppService.Instance.RunInConsole($"wsl -e {command}", workingDirectory);
+        return await AAppService.Instance.RunProcess(where, args.Select(GetArgs).ToArray());
     }
+
+    public async Task<ICollection<ICompletedProcess>> Execute(params RunProcessArgs[] args)
+    {
+        return await AAppService.Instance.RunProcess(args.Select(GetArgs).ToArray());
+    }
+
+    private RunProcessArgs GetArgs(RunProcessArgs args) => new RunProcessArgs
+    {
+        Filename = "wsl",
+        Args = $"-e {args.Filename} {args.Args}",
+        WorkingDirectory = args.WorkingDirectory,
+        Stdin = args.Stdin
+    };
 }

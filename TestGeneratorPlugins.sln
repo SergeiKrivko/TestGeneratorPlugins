@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangPython", "LangPython\La
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslPlugin", "WslPlugin\WslPlugin.csproj", "{77B892A1-B1D3-41E1-8AA7-F12FD88EDF2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{77B892A1-B1D3-41E1-8AA7-F12FD88EDF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77B892A1-B1D3-41E1-8AA7-F12FD88EDF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77B892A1-B1D3-41E1-8AA7-F12FD88EDF2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

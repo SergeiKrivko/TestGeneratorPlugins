@@ -1,5 +1,4 @@
-﻿using Avalonia.Threading;
-using TestGenerator.Shared.SidePrograms;
+﻿using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
 
 namespace LangPython;
@@ -8,7 +7,7 @@ public class FastRunAction : IFileAction
 {
     public string Key => "RunPython";
     public string Name => "Запустить";
-    public string? Icon => "";
+    public string Icon => "";
     public string[] Extensions => [".py"];
     public bool CreateWindow => false;
     public int Priority => 10;
@@ -21,7 +20,7 @@ public class FastRunAction : IFileAction
         if (python == null)
             throw new Exception("Интерпретатор Python не найден");
         AAppService.Instance.ShowSideTab("Run");
-        await python.VirtualSystem.ExecuteInConsole($"{python.Path} {await python.VirtualSystem.ConvertPath(path)}")
-            .RunAsync();
+        await python.Execute(RunProcessArgs.ProcessRunProvider.RunTab,
+            new RunProgramArgs { Args = $"{python.Path} {await python.VirtualSystem.ConvertPath(path)}" });
     }
 }

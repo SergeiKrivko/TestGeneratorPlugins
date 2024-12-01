@@ -16,8 +16,11 @@ public class ToDocxAction : IFileAction
 
     public async Task Run(string path)
     {
-        var res = await AAppService.Instance.RunProcess(_scriptPath,
-            $"{path} {Path.Join(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".docx")}");
+        var res = await AAppService.Instance.RunProcess(new RunProcessArgs
+        {
+            Filename = _scriptPath,
+            Args = $"{path} {Path.Join(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".docx")}"
+        });
         if (res.ExitCode != 0)
             throw new Exception(res.Stderr);
     }

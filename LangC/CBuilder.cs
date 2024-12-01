@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using TestGenerator.Shared;
+using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
 
@@ -51,33 +52,51 @@ public class CBuilder : BaseBuilder
             var objFile = await
                 gcc.VirtualSystem.ConvertPath(Path.Join(TempPath, Path.ChangeExtension(Path.GetFileName(file), ".o")));
             oFiles.Add(objFile);
-            var res = await gcc.Execute($"\"{await gcc.VirtualSystem.ConvertPath(Path.Join(Project.Path, file))}\" " +
-                                        $"-c {Settings.Get<string>("compilerKeys")} " +
-                                        $"-o \"{objFile}\"");
+            var res = await gcc.Execute(new RunProgramArgs
+            {
+                Args = $"\"{await gcc.VirtualSystem.ConvertPath(Path.Join(Project.Path, file))}\" " +
+                       $"-c {Settings.Get<string>("compilerKeys")} " +
+                       $"-o \"{objFile}\""
+            });
             if (res.ExitCode != 0)
                 return res.ExitCode;
         }
 
         return (await gcc.Execute(
-            $"{string.Join(' ', oFiles.Select(f => "\"" + f + "\""))} " +
-            $"-o \"{await gcc.VirtualSystem.ConvertPath(ExePath)}\"")).ExitCode;
+            new RunProgramArgs
+            {
+                Args = $"{string.Join(' ', oFiles.Select(f => "\"" + f + "\""))} " +
+                       $"-o \"{await gcc.VirtualSystem.ConvertPath(ExePath)}\""
+            })).ExitCode;
     }
 
-    public override async Task<int> Run(string args = "", string? workingDirectory = null)
+    public override async Task<ICompletedProcess> Run(string args = "", string? workingDirectory = null,
+        string? stdin = null)
     {
         var gcc = Programs.GetGcc();
         if (gcc == null)
-            return await base.Run(args, workingDirectory);
-        return (await gcc.VirtualSystem.Execute(await gcc.VirtualSystem.ConvertPath(ExePath), args, workingDirectory)).ExitCode;
+            return await base.Run(args, workingDirectory, stdin);
+        return await gcc.VirtualSystem.Execute(new RunProcessArgs
+        {
+            Filename = await gcc.VirtualSystem.ConvertPath(ExePath), 
+            Args = args, 
+            WorkingDirectory = workingDirectory,
+            Stdin = stdin
+        });
     }
 
-    public override async Task<int> RunConsole(string args, string? workingDirectory = null)
+    public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null, string? stdin = null)
     {
         var gcc = Programs.GetGcc();
         if (gcc == null)
-            return await base.RunConsole(args, workingDirectory);
-        return await gcc.VirtualSystem
-            .ExecuteInConsole($"{await gcc.VirtualSystem.ConvertPath(ExePath)} {args}", workingDirectory).RunAsync();
+            return await base.RunConsole(args, workingDirectory, stdin);
+        return await gcc.VirtualSystem.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProcessArgs
+        {
+            Filename = await gcc.VirtualSystem.ConvertPath(ExePath), 
+            Args = args, 
+            WorkingDirectory = workingDirectory,
+            Stdin = stdin
+        });
     }
 
     public override string Command => Path.Join(Project.Path, ExePath);

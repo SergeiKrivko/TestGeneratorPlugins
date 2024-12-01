@@ -19,21 +19,23 @@ public class PythonBuilder : BaseBuilder
     {
     }
 
-    public override async Task<int> Run(string args = "", string? workingDirectory = null)
+    public override async Task<ICompletedProcess> Run(string args = "", string? workingDirectory = null,
+        string? stdin = null)
     {
         var python = Python;
         if (python == null)
-            return -1;
-        var res = await python.Execute($"\"{MainFile}\" {args}");
-        return res.ExitCode;
+            throw new Exception("Python interpreter not found");
+        return await python.Execute(new RunProgramArgs
+            { Args = $"\"{MainFile}\" {args}", WorkingDirectory = workingDirectory });
     }
 
-    public override async Task<int> RunConsole(string args, string? workingDirectory = null)
+    public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null,
+        string? stdin = null)
     {
         var python = Python;
         if (python == null)
-            return -1;
-        var terminalController = python.ExecuteInConsole($"{MainFile} {args}", workingDirectory);
-        return await terminalController.RunAsync();
+            throw new Exception("Python interpreter not found");
+        return await python.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProgramArgs
+            { Args = $"\"{MainFile}\" {args}", WorkingDirectory = workingDirectory });
     }
 }
