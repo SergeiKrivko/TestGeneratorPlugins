@@ -1,0 +1,12 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:settings="clr-namespace:TestGenerator.Shared.Settings;assembly=TestGenerator.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Tests.Ui.GroupEditor">
+    <StackPanel Spacing="5" Margin="10">
+        <TextBlock>Название:</TextBlock>
+        <TextBox Name="NameBox" TextChanged="NameBox_OnTextChanged"></TextBox>
+    </StackPanel>
+</UserControl>

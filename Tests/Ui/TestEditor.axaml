@@ -1,0 +1,34 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Tests.Ui.TestEditor">
+    <Grid RowDefinitions="* *" ColumnDefinitions="* *" Margin="5">
+        <StackPanel Spacing="5" Margin="5">
+            <TextBlock>Название:</TextBlock>
+            <TextBox Name="NameBox" TextChanged="NameBox_OnTextChanged"></TextBox>
+            <TextBlock>Аргументы:</TextBlock>
+            <TextBox Name="ArgsBox" TextChanged="ArgsBox_OnTextChanged"></TextBox>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <TextBlock VerticalAlignment="Center">Ожидаемый код возврата:</TextBlock>
+                <ComboBox Name="ExitCodeOperatorBox" Width="60" SelectionChanged="ExitCodeOperatorBox_OnSelectionChanged"/>
+                <TextBox Name="ExitCodeBox" TextChanged="ExitCodeBox_OnTextChanged" MinWidth="100"></TextBox>
+            </StackPanel>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto *" Margin="5">
+            <StackPanel Orientation="Horizontal" Spacing="5" Margin="5">
+                <TextBlock>Входные данные:</TextBlock>
+            </StackPanel>
+            <TextBox Grid.Row="1" AcceptsReturn="True" Name="StdinBox" LostFocus="StdinBox_OnLostFocus" />
+        </Grid>
+        
+        <Grid Grid.Row="1" Grid.Column="1" RowDefinitions="Auto *" Margin="5">
+            <StackPanel Orientation="Horizontal" Spacing="5" Margin="5">
+                <TextBlock>Выходные данные:</TextBlock>
+            </StackPanel>
+            <TextBox Grid.Row="1" AcceptsReturn="True" Name="StdoutBox" LostFocus="StdoutBox_OnLostFocus" />
+        </Grid>
+    </Grid>
+</UserControl>

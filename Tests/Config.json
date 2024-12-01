@@ -1,0 +1,7 @@
+{
+  "Key": "Tests",
+  "Name": "Tests",
+  "Description": "Some description for Tests",
+  "Version": "1.0.0",
+  "Assembly": "Tests.dll"
+}

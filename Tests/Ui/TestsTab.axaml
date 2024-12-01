@@ -1,0 +1,43 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="clr-namespace:Tests.Core"
+             xmlns:ui="clr-namespace:Tests.Ui"
+             xmlns:types="clr-namespace:TestGenerator.Shared.Types;assembly=TestGenerator.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Tests.Ui.TestsTab">
+    <Grid ColumnDefinitions="300 *">
+        <Border BorderThickness="0 0 1 0" BorderBrush="Gray">
+            <Grid RowDefinitions="Auto *">
+                <StackPanel Orientation="Horizontal" Margin="5" Spacing="5">
+                    <ComboBox Name="BuildsBox" VerticalAlignment="Center" SelectionChanged="BuildsBox_OnSelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="types:ABuild">
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Click="AddButton_OnClick" Width="22" Height="22">
+                        <PathIcon Data="{DynamicResource IconPlus}" Width="16" Height="16" />
+                    </Button>
+                    <Button Name="RunButton" Click="RunButton_OnClick" Width="22" Height="22">
+                        <PathIcon Data="{DynamicResource IconPlay}" Width="16" Height="16"></PathIcon>
+                    </Button>
+                </StackPanel>
+                <TreeView Grid.Row="1" BorderThickness="0" Name="Tree" SelectionChanged="Tree_OnSelectionChanged">
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="core:TestsGroup" ItemsSource="{Binding Children}">
+                            <ui:GroupItem Group="{Binding Path=.}"></ui:GroupItem>
+                        </TreeDataTemplate>
+                        <TreeDataTemplate DataType="core:Test">
+                            <ui:TestItem Test="{Binding Path=.}"></ui:TestItem>
+                        </TreeDataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </Grid>
+        </Border>
+        <ui:GroupEditor Grid.Column="1" Name="GroupEditor" IsVisible="False" />
+        <ui:TestEditor Grid.Column="1" Name="TestEditor" IsVisible="False" />
+    </Grid>
+</UserControl>
