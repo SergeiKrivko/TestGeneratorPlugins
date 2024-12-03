@@ -2,18 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:Tests.Ui"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Tests.Ui.TestEditor">
     <Grid RowDefinitions="* *" ColumnDefinitions="* *" Margin="5">
         <StackPanel Spacing="5" Margin="5">
             <TextBlock>Название:</TextBlock>
-            <TextBox Name="NameBox" TextChanged="NameBox_OnTextChanged"></TextBox>
+            <TextBox Name="NameBox" LostFocus="NameBox_OnLostFocus"></TextBox>
             <TextBlock>Аргументы:</TextBlock>
-            <TextBox Name="ArgsBox" TextChanged="ArgsBox_OnTextChanged"></TextBox>
+            <TextBox Name="ArgsBox" LostFocus="ArgsBox_OnLostFocus"></TextBox>
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <TextBlock VerticalAlignment="Center">Ожидаемый код возврата:</TextBlock>
                 <ComboBox Name="ExitCodeOperatorBox" Width="60" SelectionChanged="ExitCodeOperatorBox_OnSelectionChanged"/>
-                <TextBox Name="ExitCodeBox" TextChanged="ExitCodeBox_OnTextChanged" MinWidth="100"></TextBox>
+                <TextBox Name="ExitCodeBox" LostFocus="ExitCodeBox_OnLostFocus" MinWidth="100"></TextBox>
             </StackPanel>
         </StackPanel>
         
@@ -30,5 +31,7 @@
             </StackPanel>
             <TextBox Grid.Row="1" AcceptsReturn="True" Name="StdoutBox" LostFocus="StdoutBox_OnLostFocus" />
         </Grid>
+        
+        <ui:ResultsView Grid.Row="0" Grid.Column="1" Name="ResultsView" Margin="5" />
     </Grid>
 </UserControl>

@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Tests.Ui.TestResultView" IsVisible="False">
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <Grid RowDefinitions="Auto *">
+            <Border BorderBrush="Gray" BorderThickness="0 0 0 1">
+                <Button BorderThickness="0" Click="Button_OnClick" HorizontalContentAlignment="Left">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <PathIcon Name="IconSuccess" Data="{DynamicResource IconCheckmark}" Foreground="Green" />
+                        <PathIcon Name="IconWarning" Data="{DynamicResource IconWarning}" Foreground="Orange" />
+                        <PathIcon Name="IconFailed" Data="{DynamicResource IconClose}" Foreground="Red" />
+                        <PathIcon Name="IconNone" />
+                        <TextBlock Name="NameBlock" />
+                    </StackPanel>
+                </Button>
+            </Border>
+            <Panel Grid.Row="1" Name="ChildPanel"></Panel>
+        </Grid>
+    </Border>
+</UserControl>

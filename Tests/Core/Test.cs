@@ -1,4 +1,6 @@
-﻿using TestGenerator.Shared.Types;
+﻿using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
+using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
 
 namespace Tests.Core;
@@ -7,7 +9,7 @@ public class Test
 {
     public Guid Id { get; }
     private SettingsFile Settings { get; }
-    private SettingsSection Results { get; }
+    internal SettingsSection ResultsSection { get; }
 
     private AProject Project { get; }
 
@@ -26,6 +28,8 @@ public class Test
         get => Settings.Get<string>("args", "");
         set
         {
+            if (value == Args)
+                return;
             Settings.Set("args", value);
             SetChangingStatus(ChangingStatus.CriticalChanges);
         }
@@ -36,6 +40,8 @@ public class Test
         get => Settings.Get<string>("stdin", "");
         set
         {
+            if (value == Stdin)
+                return;
             Settings.Set("stdin", value);
             SetChangingStatus(ChangingStatus.CriticalChanges);
         }
@@ -111,42 +117,36 @@ public class Test
         }
     }
 
-    public int ResExitCode
-    {
-        get => Results.Get<int>("exitCode");
-        set => Results.Set("exitCode", value);
-    }
+    public ObservableCollection<TestResult> Results { get; } = [];
 
-    public string ResStdout
-    {
-        get => Results.Get<string>("stdout", "");
-        set => Results.Set("stdout", value);
-    }
-
-    public string ResStderr
-    {
-        get => Results.Get<string>("stderr", "");
-        set => Results.Set("stderr", value);
-    }
-
-    public void SetChangingStatus(ChangingStatus status)
+    private void SetChangingStatus(ChangingStatus status)
     {
         if (status > IsChanged)
         {
             IsChanged = status;
         }
+        if (status == ChangingStatus.OutputChanges)
+            ValidateResults();
 
         Changed?.Invoke();
     }
 
     public event Action? Changed;
+    public event Action? ResultsChanged;
 
     private Test(AProject project, Guid id)
     {
         Id = id;
         Project = project;
         Settings = SettingsFile.Open(Path.Join(Project.Path, AProject.TestGeneratorDir, "Tests", $"{id}.xml"));
-        Results = Settings.GetSection("results");
+        ResultsSection = Settings.GetSection("results");
+        
+        foreach (var result in Settings.Get<TestResult[]>("results", []))
+        {
+            var provider = Tests.Service.ResultProviders.FirstOrDefault(p => p.Key == result.Provider);
+            if (provider != null)
+                Results.Add(provider.Load(this));
+        }
     }
 
     public static Test FromFile(string path)
@@ -167,37 +167,23 @@ public class Test
 
     public async Task Run(ABuild build)
     {
+        Results.Clear();
         Status = TestStatus.InProgress;
         var res = await build.Run(Args, Stdin);
-        ResExitCode = res.ExitCode;
-        ResStdout = res.Stdout;
-        ResStderr = res.Stderr;
-        Status = CheckOutput() ? TestStatus.Success : TestStatus.Failed;
+        LastTestTime = DateTime.Now;
+        IsChanged = ChangingStatus.NotChanged;
+
+        Results.Add(TestsService.ExitCodeResultProvider.New(this, res.ExitCode));
+        Results.Add(TestsService.StdoutResultProvider.New(this, res.Stdout));
+        Results.Add(TestsService.StderrResultProvider.New(this, res.Stderr));
+        Status = Results.All(r => r.Status != TestResult.TestResultStatus.Failed) ? TestStatus.Success : TestStatus.Failed;
+        Settings.Set("results", Results.ToArray());
     }
 
-    private bool CheckExitCode()
+    private void ValidateResults()
     {
-        switch (ExitCodeOperator)
-        {
-            case "==":
-                return ResExitCode == ExitCode;
-            case "!=":
-                return ResExitCode != ExitCode;
-            case ">":
-                return ResExitCode > ExitCode;
-            case ">=":
-                return ResExitCode >= ExitCode;
-            case "<":
-                return ResExitCode < ExitCode;
-            case "<=":
-                return ResExitCode <= ExitCode;
-            default:
-                return true;
-        }
-    }
-
-    private bool CheckOutput()
-    {
-        return CheckExitCode();
+        Status = Results.All(r => r.Refresh() != TestResult.TestResultStatus.Failed) ? TestStatus.Success : TestStatus.Failed;
+        ResultsChanged?.Invoke();
+        Settings.Set("results", Results.ToArray());
     }
 }

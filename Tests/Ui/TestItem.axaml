@@ -11,6 +11,7 @@
         <PathIcon Name="IconInProgress" Data="{DynamicResource IconTime}" Foreground="Gray"></PathIcon>
         <PathIcon Name="IconTimeout" Data="{DynamicResource IconTime}" Foreground="Red"></PathIcon>
         <PathIcon Name="IconUnknown" Data="{DynamicResource IconHelp}" Foreground="Gray"></PathIcon>
+        <PathIcon Name="IconWarning" Data="{DynamicResource IconWarning}" Foreground="Orange"></PathIcon>
         <TextBlock Name="NameBlock" VerticalAlignment="Center"></TextBlock>
     </StackPanel>
 </UserControl>

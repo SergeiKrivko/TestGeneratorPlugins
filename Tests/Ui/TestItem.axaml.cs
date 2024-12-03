@@ -43,6 +43,7 @@ public partial class TestItem : UserControl
             IconUnknown.IsVisible = Test?.Status == Test.TestStatus.Unknown;
             IconTimeout.IsVisible = Test?.Status == Test.TestStatus.Timeout;
             IconCancelled.IsVisible = Test?.Status == Test.TestStatus.Canceled;
+            IconWarning.IsVisible = Test?.IsChanged == Test.ChangingStatus.CriticalChanges;
         });
     }
 }

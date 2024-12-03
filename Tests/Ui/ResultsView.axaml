@@ -1,0 +1,32 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="clr-namespace:Tests.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Tests.Ui.ResultsView">
+    <Panel Name="RootPanel">
+        <ListBox Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="core:TestResult">
+                    <Grid ColumnDefinitions="Auto * *">
+                        <PathIcon Data="{DynamicResource IconCheckmark}" Foreground="Green"
+                                  IsVisible="{Binding IsSuccess}">
+                        </PathIcon>
+                        <PathIcon Grid.Column="0" Data="{DynamicResource IconClose}" Foreground="Red"
+                                  IsVisible="{Binding IsFailed}">
+                        </PathIcon>
+                        <PathIcon Grid.Column="0" Data="{DynamicResource IconWarning}" Foreground="Orange"
+                                  IsVisible="{Binding IsWarning}">
+                        </PathIcon>
+                        <PathIcon Grid.Column="0" Foreground="White"
+                                  IsVisible="{Binding IsNone}">
+                        </PathIcon>
+                        <TextBlock Grid.Column="1" Margin="5 0" Text="{Binding Name}" />
+                        <TextBlock Grid.Column="2" Text="{Binding ShortResult}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Panel>
+</UserControl>

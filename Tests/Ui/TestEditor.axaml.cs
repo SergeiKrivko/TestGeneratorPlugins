@@ -10,6 +10,7 @@ namespace Tests.Ui;
 public partial class TestEditor : UserControl
 {
     private Test? _test;
+
     public Test? Test
     {
         get => _test;
@@ -19,13 +20,13 @@ public partial class TestEditor : UserControl
             Load();
         }
     }
-    
+
     public TestEditor()
     {
         InitializeComponent();
         ExitCodeOperatorBox.ItemsSource = new ObservableCollection<string>(["?", "==", "!=", ">", ">=", "<", "<="]);
     }
-    
+
     private void Load()
     {
         if (Test == null)
@@ -37,23 +38,25 @@ public partial class TestEditor : UserControl
         ExitCodeBox.IsVisible = ExitCodeOperatorBox.SelectedItem as string != "?";
         StdinBox.Text = Test.Stdin;
         StdoutBox.Text = Test.Stdout;
+
+        ResultsView.Test = Test;
     }
 
-    private void NameBox_OnTextChanged(object? sender, TextChangedEventArgs e)
+    private void NameBox_OnLostFocus(object? sender, RoutedEventArgs e)
     {
         if (Test == null)
             return;
         Test.Name = NameBox.Text ?? "";
     }
 
-    private void ArgsBox_OnTextChanged(object? sender, TextChangedEventArgs e)
+    private void ArgsBox_OnLostFocus(object? sender, RoutedEventArgs e)
     {
         if (Test == null)
             return;
         Test.Args = ArgsBox.Text ?? "";
     }
 
-    private void ExitCodeBox_OnTextChanged(object? sender, TextChangedEventArgs e)
+    private void ExitCodeBox_OnLostFocus(object? sender, RoutedEventArgs e)
     {
         if (Test == null)
             return;
@@ -82,6 +85,6 @@ public partial class TestEditor : UserControl
     {
         if (Test == null)
             return;
-        Test.Stdout = StdinBox.Text ?? "";
+        Test.Stdout = StdoutBox.Text ?? "";
     }
 }
