@@ -2,7 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Reactive;
+using Avalonia.Threading;
 using Tests.Core;
 
 namespace Tests.Ui;
@@ -33,7 +35,11 @@ public partial class GroupItem : UserControl
 
     private void Update()
     {
-        NameBlock.Text = Group?.Name;
+        Dispatcher.UIThread.Post(() =>
+        {
+            NameBlock.Text = Group?.Name;
+            UpdateCount();
+        });
     }
 
     private void NewTest()
@@ -47,5 +53,40 @@ public partial class GroupItem : UserControl
     private void AddButton_OnClick(object? sender, RoutedEventArgs e)
     {
         NewTest();
+    }
+
+    private void RemoveMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Group == null)
+            return;
+        Tests.Service.Remove(Group);
+    }
+
+    private void AddGroupMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Group?.Groups.Add(TestsGroup.New());
+    }
+
+    private void AddTestMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Group?.Tests.Add(Test.New());
+    }
+
+    private void UpdateCount()
+    {
+        var total = Group?.Count();
+        var success = Group?.Count(Test.TestStatus.Success);
+        var failed = Group?.Count(Test.TestStatus.Failed);
+        TestsCountBlock.Text = TestsCountBlockSuccess.Text = TestsCountBlockFailed.Text = $"{success} / {total}";
+        TestsCountBlock.IsVisible = failed == 0 && success < total;
+        TestsCountBlockFailed.IsVisible = failed > 0;
+        TestsCountBlockSuccess.IsVisible = total > 0 && failed == 0 && success == total;
+    }
+
+    private async void RunMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Group == null)
+            return;
+        await Tests.Service.Run(Group);
     }
 }

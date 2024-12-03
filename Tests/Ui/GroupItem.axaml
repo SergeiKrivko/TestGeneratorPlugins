@@ -3,11 +3,42 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Tests.Ui.GroupItem">
-    <Grid ColumnDefinitions="* Auto">
-        <TextBlock Name="NameBlock" VerticalAlignment="Center"></TextBlock>
-        <Button Grid.Column="1" Width="22" Height="22" VerticalAlignment="Center" Click="AddButton_OnClick">
-            <PathIcon Width="16" Height="16" Data="{DynamicResource IconPlus}"></PathIcon>
-        </Button>
-    </Grid>
+             x:Class="Tests.Ui.GroupItem" Margin="-5">
+    <Border Margin="0" Background="Transparent">
+        <Grid ColumnDefinitions="* Auto" Margin="5">
+            <TextBlock Name="NameBlock" VerticalAlignment="Center"></TextBlock>
+            <!-- <Button Grid.Column="1" Width="22" Height="22" VerticalAlignment="Center" Click="AddButton_OnClick"> -->
+            <!--     <PathIcon Width="16" Height="16" Data="{DynamicResource IconPlus}"></PathIcon> -->
+            <!-- </Button> -->
+            <TextBlock Grid.Column="1" Name="TestsCountBlock"></TextBlock>
+            <TextBlock Grid.Column="1" Name="TestsCountBlockSuccess" IsVisible="False" Foreground="Green"></TextBlock>
+            <TextBlock Grid.Column="1" Name="TestsCountBlockFailed" IsVisible="False" Foreground="Red"></TextBlock>
+        </Grid>
+        
+        <Border.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Добавить группу" Click="AddGroupMenuItem_OnClick">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconPlus}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Добавить тест" Click="AddTestMenuItem_OnClick">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconPlus}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Удалить" Click="RemoveMenuItem_OnClick">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconTrash}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Запустить" Click="RunMenuItem_OnClick">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconPlay}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+        </Border.ContextMenu>
+    </Border>
+    
 </UserControl>

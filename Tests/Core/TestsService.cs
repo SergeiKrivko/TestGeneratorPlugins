@@ -37,6 +37,34 @@ public class TestsService
         }
     }
 
+    public bool Remove(Test test)
+    {
+        foreach (var group in Groups)
+        {
+            if (group.Remove(test))
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool Remove(TestsGroup group)
+    {
+        if (Groups.Contains(group))
+        {
+            Groups.Remove(group);
+            return true;
+        }
+
+        foreach (var g in Groups)
+        {
+            if (g.Remove(group))
+                return true;
+        }
+
+        return false;
+    }
+
     public async Task Run()
     {
         var build = await AAppService.Instance.Request<ABuild?>("getBuild",
@@ -51,7 +79,7 @@ public class TestsService
 
         async Task<int> TestingBackgroundFunc(IBackgroundTask task)
         {
-            var totalCount = Groups.Sum(g => g.Count);
+            var totalCount = Groups.Sum(g => g.Count());
             var i = 0;
             foreach (var group in Groups)
             {
@@ -60,7 +88,61 @@ public class TestsService
                     i++;
                     task.Status = test.Name;
                     task.Progress = i * 100.0 / totalCount;
+                    group.UpdateTestsStatus();
                 }
+            }
+
+            return 0;
+        }
+
+        await build.RunPreProcConsole();
+
+        await AAppService.Instance.RunBackgroundTask("Тестирование", TestingBackgroundFunc).Wait();
+
+        await build.RunPostProcConsole();
+    }
+
+    public async Task Run(Test test)
+    {
+        var build = await AAppService.Instance.Request<ABuild?>("getBuild",
+            Tests.ProjectSettings.Get<Guid>("selectedBuild"));
+        if (build == null)
+            return;
+
+        test.Status = Test.TestStatus.InProgress;
+
+        async Task<int> TestingBackgroundFunc()
+        {
+            await test.Run(build);
+            return 0;
+        }
+
+        await build.RunPreProcConsole();
+
+        await AAppService.Instance.RunBackgroundTask("Тестирование", TestingBackgroundFunc).Wait();
+
+        await build.RunPostProcConsole();
+    }
+
+    public async Task Run(TestsGroup group)
+    {
+        var build = await AAppService.Instance.Request<ABuild?>("getBuild",
+            Tests.ProjectSettings.Get<Guid>("selectedBuild"));
+        if (build == null)
+            return;
+
+        group.Status = Test.TestStatus.InProgress;
+
+        async Task<int> TestingBackgroundFunc(IBackgroundTask task)
+        {
+            var totalCount = group.Count();
+            var i = 0;
+            await foreach (var test in group.Run(build))
+            {
+                i++;
+                task.Status = test.Name;
+                task.Progress = i * 100.0 / totalCount;
+                group.UpdateTestsStatus();
             }
 
             return 0;
@@ -84,17 +166,29 @@ public class TestsService
             switch (test.ExitCodeOperator)
             {
                 case "==":
-                    return code == test.ExitCode ? TestResult.TestResultStatus.Success : TestResult.TestResultStatus.Failed;
+                    return code == test.ExitCode
+                        ? TestResult.TestResultStatus.Success
+                        : TestResult.TestResultStatus.Failed;
                 case "!=":
-                    return code != test.ExitCode ? TestResult.TestResultStatus.Success : TestResult.TestResultStatus.Failed;
+                    return code != test.ExitCode
+                        ? TestResult.TestResultStatus.Success
+                        : TestResult.TestResultStatus.Failed;
                 case ">":
-                    return code > test.ExitCode ? TestResult.TestResultStatus.Success : TestResult.TestResultStatus.Failed;
+                    return code > test.ExitCode
+                        ? TestResult.TestResultStatus.Success
+                        : TestResult.TestResultStatus.Failed;
                 case ">=":
-                    return code >= test.ExitCode ? TestResult.TestResultStatus.Success : TestResult.TestResultStatus.Failed;
+                    return code >= test.ExitCode
+                        ? TestResult.TestResultStatus.Success
+                        : TestResult.TestResultStatus.Failed;
                 case "<":
-                    return code < test.ExitCode ? TestResult.TestResultStatus.Success : TestResult.TestResultStatus.Failed;
+                    return code < test.ExitCode
+                        ? TestResult.TestResultStatus.Success
+                        : TestResult.TestResultStatus.Failed;
                 case "<=":
-                    return code <= test.ExitCode ? TestResult.TestResultStatus.Success : TestResult.TestResultStatus.Failed;
+                    return code <= test.ExitCode
+                        ? TestResult.TestResultStatus.Success
+                        : TestResult.TestResultStatus.Failed;
                 default:
                     return TestResult.TestResultStatus.Success;
             }

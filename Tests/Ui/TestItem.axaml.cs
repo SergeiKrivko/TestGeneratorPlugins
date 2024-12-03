@@ -46,4 +46,18 @@ public partial class TestItem : UserControl
             IconWarning.IsVisible = Test?.IsChanged == Test.ChangingStatus.CriticalChanges;
         });
     }
+
+    private void RemoveMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Test == null)
+            return;
+        Tests.Service.Remove(Test);
+    }
+
+    private async void RunMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Test == null)
+            return;
+        await Tests.Service.Run(Test);
+    }
 }

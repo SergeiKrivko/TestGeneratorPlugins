@@ -3,15 +3,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Tests.Ui.TestItem">
-    <StackPanel Spacing="5" Orientation="Horizontal">
-        <PathIcon Name="IconSuccess" Data="{DynamicResource IconCheckmark}" Foreground="Green"></PathIcon>
-        <PathIcon Name="IconFailed" Data="{DynamicResource IconClose}" Foreground="Red"></PathIcon>
-        <PathIcon Name="IconCancelled" Data="{DynamicResource IconClose}" Foreground="Gray"></PathIcon>
-        <PathIcon Name="IconInProgress" Data="{DynamicResource IconTime}" Foreground="Gray"></PathIcon>
-        <PathIcon Name="IconTimeout" Data="{DynamicResource IconTime}" Foreground="Red"></PathIcon>
-        <PathIcon Name="IconUnknown" Data="{DynamicResource IconHelp}" Foreground="Gray"></PathIcon>
-        <PathIcon Name="IconWarning" Data="{DynamicResource IconWarning}" Foreground="Orange"></PathIcon>
-        <TextBlock Name="NameBlock" VerticalAlignment="Center"></TextBlock>
-    </StackPanel>
+             x:Class="Tests.Ui.TestItem" Margin="-5">
+    <Border Margin="0" Background="Transparent">
+        <StackPanel Spacing="5" Orientation="Horizontal" Margin="5">
+            <PathIcon Name="IconSuccess" Data="{DynamicResource IconCheckmark}" Foreground="Green"></PathIcon>
+            <PathIcon Name="IconFailed" Data="{DynamicResource IconClose}" Foreground="Red"></PathIcon>
+            <PathIcon Name="IconCancelled" Data="{DynamicResource IconClose}" Foreground="Gray"></PathIcon>
+            <PathIcon Name="IconInProgress" Data="{DynamicResource IconTime}" Foreground="Gray"></PathIcon>
+            <PathIcon Name="IconTimeout" Data="{DynamicResource IconTime}" Foreground="Red"></PathIcon>
+            <PathIcon Name="IconUnknown" Data="{DynamicResource IconHelp}" Foreground="Gray"></PathIcon>
+            <PathIcon Name="IconWarning" Data="{DynamicResource IconWarning}" Foreground="Orange"></PathIcon>
+            <TextBlock Name="NameBlock" VerticalAlignment="Center"></TextBlock>
+        </StackPanel>
+        
+        <Border.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Удалить" Click="RemoveMenuItem_OnClick">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconTrash}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Запустить" Click="RunMenuItem_OnClick">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconPlay}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+        </Border.ContextMenu>
+    </Border>
 </UserControl>

@@ -93,7 +93,8 @@ public class TestsGroup
         }
     }
 
-    public int Count => Groups.Sum(g => g.Count) + Tests.Count;
+    public int Count() => Groups.Sum(g => g.Count()) + Tests.Count;
+    public int Count(Test.TestStatus status) => Groups.Sum(g => g.Count(status)) + Tests.Count(t => t.Status == status);
 
     public async IAsyncEnumerable<Test> Run(ABuild build)
     {
@@ -122,6 +123,28 @@ public class TestsGroup
             {
                 test.Status = value;
             }
+            Changed?.Invoke();
         }
+    }
+
+    public bool Remove(Test test)
+    {
+        if (!Tests.Contains(test))
+            return false;
+        Tests.Remove(test);
+        return true;
+    }
+
+    public bool Remove(TestsGroup group)
+    {
+        if (!Groups.Contains(group))
+            return false;
+        Groups.Remove(group);
+        return true;
+    }
+
+    public void UpdateTestsStatus()
+    {
+        Changed?.Invoke();
     }
 }
