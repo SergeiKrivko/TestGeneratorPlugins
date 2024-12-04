@@ -2,6 +2,6 @@
   "Key": "Tests",
   "Name": "Tests",
   "Description": "Some description for Tests",
-  "Version": "1.2.0",
+  "Version": "1.3.0",
   "Assembly": "Tests.dll"
 }

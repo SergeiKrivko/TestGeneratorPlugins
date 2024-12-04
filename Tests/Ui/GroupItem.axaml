@@ -27,6 +27,21 @@
                         <PathIcon Data="{DynamicResource IconPlus}" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Вырезать">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconCut}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Копировать">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconCopy}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Вставить">
+                    <MenuItem.Icon>
+                        <PathIcon Data="{DynamicResource IconPaste}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Удалить" Click="RemoveMenuItem_OnClick">
                     <MenuItem.Icon>
                         <PathIcon Data="{DynamicResource IconTrash}" />

@@ -47,7 +47,6 @@ public partial class GroupItem : UserControl
         if (Group == null)
             return;
         Group.Tests.Add(Test.New());
-        Tests.Service.Save();
     }
 
     private void AddButton_OnClick(object? sender, RoutedEventArgs e)

@@ -186,4 +186,15 @@ public class Test
         ResultsChanged?.Invoke();
         Settings.Set("results", Results.ToArray());
     }
+
+    public string Pack() => File.ReadAllText(Path.Join(Project.Path, AProject.TestGeneratorDir, "Tests", $"{Id}.xml"));
+
+    public static Test Unpack(string data)
+    {
+        var id = Guid.NewGuid();
+        File.WriteAllText(Path.Join(AAppService.Instance.CurrentProject.Path, AProject.TestGeneratorDir, "Tests", $"{id}.xml"), data);
+        return new Test(AAppService.Instance.CurrentProject, id);
+    }
+
+    public void Delete() => Settings.Delete();
 }

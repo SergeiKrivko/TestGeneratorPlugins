@@ -11,7 +11,8 @@
         <Border BorderThickness="0 0 1 0" BorderBrush="Gray">
             <Grid RowDefinitions="Auto *">
                 <StackPanel Orientation="Horizontal" Margin="5" Spacing="5">
-                    <ComboBox Name="BuildsBox" VerticalAlignment="Center" SelectionChanged="BuildsBox_OnSelectionChanged">
+                    <ComboBox Name="BuildsBox" VerticalAlignment="Center"
+                              SelectionChanged="BuildsBox_OnSelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="types:ABuild">
                                 <TextBlock Text="{Binding Name}"></TextBlock>
@@ -25,13 +26,15 @@
                         <PathIcon Data="{DynamicResource IconPlay}" Width="16" Height="16"></PathIcon>
                     </Button>
                 </StackPanel>
-                <TreeView Grid.Row="1" BorderThickness="0" Name="Tree" SelectionChanged="Tree_OnSelectionChanged">
+                <TreeView Grid.Row="1" BorderThickness="0" Name="Tree" SelectionChanged="Tree_OnSelectionChanged"
+                          SelectionMode="Multiple" KeyDown="Tree_OnKeyDown">
                     <TreeView.DataTemplates>
                         <TreeDataTemplate DataType="core:TestsGroup" ItemsSource="{Binding Children}">
                             <ui:GroupItem Group="{Binding Path=.}"></ui:GroupItem>
                         </TreeDataTemplate>
                         <TreeDataTemplate DataType="core:Test">
-                            <ui:TestItem Test="{Binding Path=.}"></ui:TestItem>
+                            <ui:TestItem Test="{Binding Path=.}" CutRequested="OnCutRequested"
+                                         CopyRequested="OnCopyRequested" PasteRequested="OnPasteRequested" />
                         </TreeDataTemplate>
                     </TreeView.DataTemplates>
                 </TreeView>

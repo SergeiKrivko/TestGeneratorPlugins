@@ -77,6 +77,7 @@ public class TestsGroup
 
                 break;
         }
+        global::Tests.Tests.Service.Save();
     }
 
     private void ReloadChildren()
@@ -131,6 +132,7 @@ public class TestsGroup
     {
         if (!Tests.Contains(test))
             return false;
+        test.Delete();
         Tests.Remove(test);
         return true;
     }
@@ -143,8 +145,43 @@ public class TestsGroup
         return true;
     }
 
+    public bool InsertAfter(Test existing, ICollection<Test> newTests)
+    {
+        if (!Tests.Contains(existing))
+            return false;
+        var index = Tests.IndexOf(existing);
+        foreach (var test in newTests)
+        {
+            Tests.Insert(index++, test);
+        }
+        return true;
+    }
+
     public void UpdateTestsStatus()
     {
         Changed?.Invoke();
+    }
+
+    public PackedTestGroup Pack() => new PackedTestGroup
+    {
+        Name = Name, 
+        Groups = Groups.Select(group => group.Pack()).ToArray(),
+        Tests = Tests.Select(test => test.Pack()).ToArray()
+    };
+
+    public static TestsGroup Unpack(PackedTestGroup packedGroup)
+    {
+        var res = New();
+        res.Name = packedGroup.Name;
+        foreach (var group in packedGroup.Groups)
+        {
+            res.Groups.Add(Unpack(group));
+        }
+        foreach (var test in packedGroup.Tests)
+        {
+            res.Tests.Add(Test.Unpack(test));
+        }
+
+        return res;
     }
 }

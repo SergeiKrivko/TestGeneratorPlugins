@@ -13,6 +13,10 @@ public partial class TestItem : UserControl
     public static readonly StyledProperty<Test?> TestProperty =
         AvaloniaProperty.Register<TestItem, Test?>(nameof(Test));
 
+    public event Action? CutRequested;
+    public event Action? CopyRequested;
+    public event Action? PasteRequested;
+
     public Test? Test
     {
         get => GetValue(TestProperty);
@@ -59,5 +63,20 @@ public partial class TestItem : UserControl
         if (Test == null)
             return;
         await Tests.Service.Run(Test);
+    }
+
+    private void CutMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        CutRequested?.Invoke();
+    }
+
+    private void CopyMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        CopyRequested?.Invoke();
+    }
+
+    private void PasteMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        PasteRequested?.Invoke();
     }
 }

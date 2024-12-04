@@ -65,6 +65,17 @@ public class TestsService
         return false;
     }
 
+    public bool InsertAfter(Test existing, ICollection<Test> newTests)
+    {
+        foreach (var group in Groups)
+        {
+            if (group.InsertAfter(existing, newTests))
+                return true;
+        }
+
+        return false;
+    }
+
     public async Task Run()
     {
         var build = await AAppService.Instance.Request<ABuild?>("getBuild",
