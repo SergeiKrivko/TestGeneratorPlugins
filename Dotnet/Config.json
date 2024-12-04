@@ -1,0 +1,7 @@
+{
+  "Key": "Dotnet",
+  "Name": ".Net",
+  "Description": "Поддержка .Net",
+  "Version": "1.0.0",
+  "Assembly": "Dotnet.dll"
+}

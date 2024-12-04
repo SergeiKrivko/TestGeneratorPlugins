@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslPlugin", "WslPlugin\WslP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotnet", "Dotnet\Dotnet.csproj", "{36AF64D0-E5C1-43C0-802F-FA043B583C5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FA18C77-47BD-45B8-B65E-01E64F9C94DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36AF64D0-E5C1-43C0-802F-FA043B583C5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36AF64D0-E5C1-43C0-802F-FA043B583C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36AF64D0-E5C1-43C0-802F-FA043B583C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36AF64D0-E5C1-43C0-802F-FA043B583C5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
