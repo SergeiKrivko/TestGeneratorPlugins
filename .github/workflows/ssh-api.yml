@@ -31,6 +31,8 @@ jobs:
           dotnet publish -r osx-x64 --sc
           
       - name: Publish
-        run:
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           cd SshPlugin
-          upload_releases.py
+          python3 upload_releases.py
