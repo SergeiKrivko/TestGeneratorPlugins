@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - SshPlugin/SshPlugin.Api/version.txt
+      - .github/workflows/ssh-api.yml
 
 jobs:
   build:
@@ -25,9 +26,9 @@ jobs:
       - name: Build
         run: |
           cd SshPlugin/SshPlugin.Api
-          dotnet publish -r win-x64 --cs
-          dotnet publish -r linux-x64 --cs
-          dotnet publish -r osx-x64 --cs
+          dotnet publish -r win-x64 --sc
+          dotnet publish -r linux-x64 --sc
+          dotnet publish -r osx-x64 --sc
           
       - name: Publish
         run:
