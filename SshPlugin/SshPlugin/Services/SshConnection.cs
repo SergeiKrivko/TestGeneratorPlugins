@@ -1,6 +1,5 @@
 ﻿using Renci.SshNet;
 using TestGenerator.Shared.SidePrograms;
-using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
 using AuthenticationMethod = SshPlugin.Models.AuthenticationMethod;
 
@@ -15,6 +14,7 @@ public class SshConnection
     private readonly Repository _repository;
     private readonly SshBridgeService _bridgeService = new();
     private FilesService _filesService;
+    private InstallationService _installationService;
     private SshClient _sshClient = new("localhost", 22, "root", "password");
     private SftpClient _sftpClient = new("localhost", 22, "root", "password");
     private ShellStream? _stream;
@@ -98,12 +98,20 @@ public class SshConnection
         set => Settings.Set("isEnabled", value);
     }
 
+    public bool Autoupdate
+    {
+        get => Settings.Get("autoupdate", true);
+        set => Settings.Set("autoupdate", value);
+    }
+
     public SshConnection(Guid id)
     {
         Id = id;
         Settings = SettingsFile.Open(Path.Join(DataPath, $"{Id}.xml"));
         _repository = new Repository(DataPath, Id);
-        _filesService = new FilesService(Id, _repository, _bridgeService, new SftpService(_sftpClient));
+        var sftp = new SftpService(_sftpClient);
+        _filesService = new FilesService(Id, _repository, _bridgeService, sftp);
+        _installationService = new InstallationService(this, _sshClient, sftp);
     }
 
     public async Task<bool> Reconnect()
@@ -126,13 +134,21 @@ public class SshConnection
                     throw new Exception();
             }
 
-            _filesService = new FilesService(Id, _repository, _bridgeService, new SftpService(_sftpClient));
+            var sftp = new SftpService(_sftpClient);
+            _filesService = new FilesService(Id, _repository, _bridgeService, sftp);
+            _installationService = new InstallationService(this, _sshClient, sftp);
 
             await Connect();
         }
         catch (Exception)
         {
             return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(HostProgramPath))
+        {
+            OperatingSystem = await _installationService.DetectOperatingSystem();
+            HostProgramPath = await _installationService.DetectProgramPath();
         }
 
         return IsConnected;
@@ -175,10 +191,12 @@ public class SshConnection
         if (!await Reconnect())
             return;
 
-        _stream = _sshClient.CreateShellStreamNoTerminal(bufferSize: 1024);
-        _stream.WriteLine("export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1");
-        _stream.WriteLine($"chmod 755 {HostProgramPath}/SshPlugin.Api");
-        _stream.WriteLine($"{HostProgramPath}/SshPlugin.Api");
+        _stream = await _installationService.StartProgram();
+        if (_stream == null)
+        {
+            Disconnect();
+            return;
+        }
 
         await _bridgeService.Connect(Id, _stream);
 
@@ -188,13 +206,6 @@ public class SshConnection
             FilesService = _filesService, BridgeService = _bridgeService,
         };
         SideProgram.VirtualSystems.Add(_virtualSystem);
-    }
-
-    public async Task<string> RunCommand(string command)
-    {
-        var c = _sshClient.CreateCommand(command);
-        await c.ExecuteAsync();
-        return c.Result;
     }
 
     private string DataPath { get; } = SshPlugin.DataPath;

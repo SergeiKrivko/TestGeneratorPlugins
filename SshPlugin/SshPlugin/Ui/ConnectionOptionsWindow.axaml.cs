@@ -1,7 +1,9 @@
-﻿using Avalonia;
+﻿using System.Collections.ObjectModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using SshPlugin.Models;
 using SshPlugin.Services;
 using TestGenerator.Shared.Settings;
 
@@ -11,6 +13,13 @@ public partial class ConnectionOptionsWindow : Window
 {
     private SshConnection Connection { get; }
     private readonly bool _isNew;
+
+    private static ObservableCollection<OperatingSystemModel> OperatingSystems { get; } =
+    [
+        new OperatingSystemModel { Key = "win-x64", DisplayName = "Windows" },
+        new OperatingSystemModel { Key = "linux-x64", DisplayName = "Linux" },
+        new OperatingSystemModel { Key = "osx-x64", DisplayName = "macOS" }
+    ];
     
     public ConnectionOptionsWindow(SshConnection connection, bool isNew = false)
     {
@@ -18,6 +27,7 @@ public partial class ConnectionOptionsWindow : Window
         Connection = connection;
         
         InitializeComponent();
+        OsBox.ItemsSource = OperatingSystems;
         Load();
     }
 
@@ -29,7 +39,7 @@ public partial class ConnectionOptionsWindow : Window
         UsernameBox.Text = Connection.Username;
         PasswordBox.Text = Connection.Password;
         
-        OsBox.SelectedValue = Connection.OperatingSystem;
+        OsBox.SelectedValue = OperatingSystems.FirstOrDefault(s => s.Key == Connection.OperatingSystem);
         HostProgramPathBox.Text = Connection.HostProgramPath;
     }
 
@@ -42,7 +52,7 @@ public partial class ConnectionOptionsWindow : Window
         Connection.Password = PasswordBox.Text ?? "";
         
         Connection.HostProgramPath = HostProgramPathBox.Text ?? "";
-        Connection.OperatingSystem = OsBox.SelectedValue as string ?? "Linux";
+        Connection.OperatingSystem = (OsBox.SelectedValue as OperatingSystemModel)?.Key ?? "linux-x64";
     }
 
     private async void CheckConnectionButton_OnClick(object? sender, RoutedEventArgs e)
@@ -60,6 +70,8 @@ public partial class ConnectionOptionsWindow : Window
         ConnectedMarker.IsVisible = status;
         ErrorMarker.IsVisible = !status;
         CheckConnectionButton.IsVisible = true;
+        
+        Load();
     }
 
     private void ButtonCancel_OnClick(object? sender, RoutedEventArgs e)
@@ -78,7 +90,13 @@ public partial class ConnectionOptionsWindow : Window
         if (_isNew)
         {
             SshPlugin.Connections.Add(Connection);
+            InitNewConnection();
         }
         Close();
+    }
+
+    private async void InitNewConnection()
+    {
+        await Connection.Init();
     }
 }

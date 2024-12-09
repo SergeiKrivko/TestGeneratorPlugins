@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:settings="clr-namespace:TestGenerator.Shared.Settings;assembly=TestGenerator.Shared"
+        xmlns:models="clr-namespace:SshPlugin.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="SshPlugin.Ui.ConnectionOptionsWindow"
         WindowStartupLocation="CenterOwner" Height="500" Width="400"
@@ -46,9 +47,11 @@
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <TextBlock VerticalAlignment="Center">Операционная система:</TextBlock>
                 <ComboBox Name="OsBox">
-                    <ComboBoxItem>Windows</ComboBoxItem>
-                    <ComboBoxItem>Linux</ComboBoxItem>
-                    <ComboBoxItem>macOS</ComboBoxItem>
+                    <ComboBox.DataTemplates>
+                        <DataTemplate DataType="models:OperatingSystemModel">
+                            <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                        </DataTemplate>
+                    </ComboBox.DataTemplates>
                 </ComboBox>
             </StackPanel>
             <TextBlock>Путь установки программы:</TextBlock>

@@ -14,7 +14,7 @@ public class SshBridgeService
     public async Task Connect(Guid connectionId, ShellStream stream)
     {
         _client = new BridgeClient(new StreamBrideStream(stream));
-        _client.OnLog += Console.WriteLine;
+        _client.OnLog += log => SshPlugin.Logger.Debug($"API log: {log}");
         
         await PostConnectionId(connectionId);
     }
