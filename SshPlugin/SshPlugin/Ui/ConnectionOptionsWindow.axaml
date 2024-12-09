@@ -1,0 +1,64 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:settings="clr-namespace:TestGenerator.Shared.Settings;assembly=TestGenerator.Shared"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SshPlugin.Ui.ConnectionOptionsWindow"
+        WindowStartupLocation="CenterOwner" Height="500" Width="400"
+        Title="ConnectionOptionsWindow">
+    <Grid RowDefinitions="* Auto" Margin="5">
+        <StackPanel Orientation="Vertical" Spacing="5" Margin="5">
+            <TextBlock>Название</TextBlock>
+            <TextBox Name="NameBox"></TextBox>
+            <Grid ColumnDefinitions="Auto * Auto 100">
+                <TextBlock Grid.Column="0" Margin="0 0 5 0" VerticalAlignment="Center">Хост:</TextBlock>
+                <TextBox Grid.Column="1" Name="HostBox"></TextBox>
+                <TextBlock Grid.Column="2" Margin="5">:</TextBlock>
+                <NumericUpDown Grid.Column="3" Name="PortBox"></NumericUpDown>
+            </Grid>
+            <Grid ColumnDefinitions="Auto *">
+                <TextBlock Width="130" VerticalAlignment="Center">Имя пользователя:</TextBlock>
+                <TextBox Grid.Column="1" Name="UsernameBox"></TextBox>
+            </Grid>
+            <Grid ColumnDefinitions="Auto *">
+                <TextBlock Width="130" VerticalAlignment="Center">Пароль:</TextBlock>
+                <TextBox Grid.Column="1" Name="PasswordBox" PasswordChar="●"></TextBox>
+            </Grid>
+            
+            <Separator></Separator>
+            
+            <StackPanel Orientation="Horizontal" Spacing="5" Margin="0 5">
+                <StackPanel Name="ConnectedMarker" Orientation="Horizontal" Spacing="5" IsVisible="False">
+                    <PathIcon Foreground="Green" Data="{DynamicResource IconCheckmark}"></PathIcon>
+                    <TextBlock Foreground="Green" VerticalAlignment="Center">Подключено</TextBlock>
+                </StackPanel>
+                <StackPanel Name="ErrorMarker" Orientation="Horizontal" Spacing="5" IsVisible="False">
+                    <PathIcon Foreground="Red" Data="{DynamicResource IconClose}"></PathIcon>
+                    <TextBlock Foreground="Red" VerticalAlignment="Center">Ошибка подключения</TextBlock>
+                </StackPanel>
+                <Arc Classes="Spinner" Width="32" Height="32" StrokeThickness="2" Name="Spinner" IsVisible="False" />
+                <Button Name="CheckConnectionButton" Click="CheckConnectionButton_OnClick">Проверить подключение</Button>
+            </StackPanel>
+            
+            <Separator></Separator>
+            
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <TextBlock VerticalAlignment="Center">Операционная система:</TextBlock>
+                <ComboBox Name="OsBox">
+                    <ComboBoxItem>Windows</ComboBoxItem>
+                    <ComboBoxItem>Linux</ComboBoxItem>
+                    <ComboBoxItem>macOS</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <TextBlock>Путь установки программы:</TextBlock>
+            <TextBox Name="HostProgramPathBox"></TextBox>
+            
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5" Margin="5">
+            <Button Name="ButtonCancel" Click="ButtonCancel_OnClick">Отмена</Button>
+            <Button Name="ButtonSave" Click="ButtonSave_OnClick">Сохранить</Button>
+        </StackPanel>
+    </Grid>
+</Window>

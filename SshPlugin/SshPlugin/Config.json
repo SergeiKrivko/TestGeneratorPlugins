@@ -1,0 +1,7 @@
+{
+  "Key": "SshPlugin",
+  "Name": "SshPlugin",
+  "Description": "Some description for SshPlugin",
+  "Version": "1.0.0",
+  "Assembly": "SshPlugin.dll"
+}

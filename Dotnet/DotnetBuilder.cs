@@ -52,7 +52,7 @@ public class DotnetBuilder : BaseBuilder
         if (!string.IsNullOrEmpty(Settings.Get<string>("configuration")))
             command += $" --configuration {Settings.Get<string>("configuration")}";
 
-        return await dotnet.Execute(new RunProgramArgs
+        return await dotnet.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProgramArgs
             { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin });
     }
 }

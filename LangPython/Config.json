@@ -2,6 +2,6 @@
   "Key": "LangPython",
   "Name": "Язык Python",
   "Description": "Поддержка языка Python",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Assembly": "LangPython.dll"
 }

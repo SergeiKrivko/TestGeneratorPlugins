@@ -1,0 +1,29 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SshPlugin.Ui.SshConnectionItem">
+    <StackPanel Spacing="10" Margin="5">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Name="NameBlock" FontSize="18"></TextBlock>
+            <TextBlock Name="HostBlock" VerticalAlignment="Center"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="5">
+            <StackPanel Name="ConnectedMarker" Orientation="Horizontal" Spacing="5">
+                <PathIcon Foreground="Green" Data="{DynamicResource IconCheckmark}"></PathIcon>
+                <TextBlock Foreground="Green" VerticalAlignment="Center">Подключено</TextBlock>
+            </StackPanel>
+            <StackPanel Name="NotConnectedMarker" Orientation="Horizontal" Spacing="5">
+                <PathIcon Foreground="Gray" Data="{DynamicResource IconClose}"></PathIcon>
+                <TextBlock Foreground="Gray" VerticalAlignment="Center">Не подключено</TextBlock>
+            </StackPanel>
+            <Button Name="ButtonConnect" Click="ButtonConnect_OnClick">Подключиться</Button>
+            <Button Name="ButtonDisconnect" Click="ButtonDisconnect_OnClick">Отключиться</Button>
+            <Button Name="ButtonSettings" Click="ButtonSettings_OnClick">Настройки</Button>
+            <Button Name="ButtonDelete" Foreground="Red" Click="ButtonDelete_OnClick">
+                <PathIcon Data="{DynamicResource IconTrash}"></PathIcon>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

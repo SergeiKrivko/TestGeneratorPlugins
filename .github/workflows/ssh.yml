@@ -1,8 +1,8 @@
-name: .Net
+name: Ssh Plugin
 on:
   push:
     paths:
-      - Dotnet/Config.json
+      - SshPlugin/SshPlugin/Config.json
 
 jobs:
   build:
@@ -20,4 +20,4 @@ jobs:
       - name: Build and upload
         run: |
           dotnet tool install TestGenerator.PluginBuilder --global 
-          dotnet testgen-plugin publish -d Dotnet -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+          dotnet testgen-plugin publish -d SshPlugin/SshPlugin -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}

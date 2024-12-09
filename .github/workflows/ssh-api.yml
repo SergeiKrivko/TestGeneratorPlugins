@@ -1,0 +1,35 @@
+name: Ssh Api
+on:
+  push:
+    paths:
+      - SshPlugin/SshPlugin.Api/version.txt
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Build
+        run: |
+          cd SshPlugin/SshPlugin.Api
+          dotnet publish -r win-x64 --cs
+          dotnet publish -r linux-x64 --cs
+          dotnet publish -r osx-x64 --cs
+          
+      - name: Publish
+        run:
+          cd SshPlugin
+          upload_releases.py

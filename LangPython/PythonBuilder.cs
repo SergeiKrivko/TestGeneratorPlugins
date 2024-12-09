@@ -26,7 +26,7 @@ public class PythonBuilder : BaseBuilder
         if (python == null)
             throw new Exception("Python interpreter not found");
         return await python.Execute(new RunProgramArgs
-            { Args = $"\"{MainFile}\" {args}", WorkingDirectory = workingDirectory });
+            { Args = $"\"{await python.VirtualSystem.ConvertPath(MainFile)}\" {args}", WorkingDirectory = workingDirectory });
     }
 
     public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null,
@@ -36,6 +36,6 @@ public class PythonBuilder : BaseBuilder
         if (python == null)
             throw new Exception("Python interpreter not found");
         return await python.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProgramArgs
-            { Args = $"\"{MainFile}\" {args}", WorkingDirectory = workingDirectory });
+            { Args = $"\"{await python.VirtualSystem.ConvertPath(MainFile)}\" {args}", WorkingDirectory = workingDirectory });
     }
 }
