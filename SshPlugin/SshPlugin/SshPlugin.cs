@@ -17,12 +17,6 @@ public class SshPlugin : TestGenerator.Shared.Plugin
     
     public SshPlugin()
     {
-        MainTabs = [];
-        SideTabs = [];
-
-        BuildTypes = [];
-        ProjectTypes = [];
-
         SettingsControls = [new SettingsNode("SSH", new SshPage())];
 
         Connections.CollectionChanged += (sender, args) =>
@@ -31,11 +25,12 @@ public class SshPlugin : TestGenerator.Shared.Plugin
 
     public override async Task Init()
     {
+        await Task.Delay(1000);
         foreach (var id in Settings.Get<Guid[]>("connections", []))
         {
             var connection = new SshConnection(id);
             Connections.Add(connection);
-            if (connection.IsEnabled)
+            if (connection.AutoConnect)
                 await connection.Init();
         }
     }

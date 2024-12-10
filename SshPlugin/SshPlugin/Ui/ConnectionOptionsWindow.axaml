@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:settings="clr-namespace:TestGenerator.Shared.Settings;assembly=TestGenerator.Shared"
         xmlns:models="clr-namespace:SshPlugin.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="SshPlugin.Ui.ConnectionOptionsWindow"
@@ -22,13 +21,21 @@
                 <TextBlock Width="130" VerticalAlignment="Center">Имя пользователя:</TextBlock>
                 <TextBox Grid.Column="1" Name="UsernameBox"></TextBox>
             </Grid>
-            <Grid ColumnDefinitions="Auto *">
-                <TextBlock Width="130" VerticalAlignment="Center">Пароль:</TextBlock>
-                <TextBox Grid.Column="1" Name="PasswordBox" PasswordChar="●"></TextBox>
+            <Grid ColumnDefinitions="Auto * Auto">
+                <ComboBox Name="AuthMethodBox" Width="125" VerticalAlignment="Center"
+                          SelectionChanged="AuthMethodBox_OnSelectionChanged" Margin="0 0 5 0">
+                    <ComboBoxItem>Пароль</ComboBoxItem>
+                    <ComboBoxItem>Private key</ComboBoxItem>
+                </ComboBox>
+                <TextBox Grid.Column="1" Grid.ColumnSpan="2" Name="PasswordBox" PasswordChar="●"></TextBox>
+                <TextBox Grid.Column="1" Name="PrivateKeyPathBox"></TextBox>
+                <Button Grid.Column="2" Click="SelectPrivateKeyButton_OnClick" Name="SelectPrivateKeyButton">
+                    <PathIcon Data="{DynamicResource IconDirectory}"></PathIcon>
+                </Button>
             </Grid>
-            
+
             <Separator></Separator>
-            
+
             <StackPanel Orientation="Horizontal" Spacing="5" Margin="0 5">
                 <StackPanel Name="ConnectedMarker" Orientation="Horizontal" Spacing="5" IsVisible="False">
                     <PathIcon Foreground="Green" Data="{DynamicResource IconCheckmark}"></PathIcon>
@@ -41,9 +48,10 @@
                 <Arc Classes="Spinner" Width="32" Height="32" StrokeThickness="2" Name="Spinner" IsVisible="False" />
                 <Button Name="CheckConnectionButton" Click="CheckConnectionButton_OnClick">Проверить подключение</Button>
             </StackPanel>
-            
+
             <Separator></Separator>
-            
+
+            <CheckBox Name="AutoConnectCheckbox">Подключаться автоматически</CheckBox>
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <TextBlock VerticalAlignment="Center">Операционная система:</TextBlock>
                 <ComboBox Name="OsBox">
@@ -56,7 +64,7 @@
             </StackPanel>
             <TextBlock>Путь установки программы:</TextBlock>
             <TextBox Name="HostProgramPathBox"></TextBox>
-            
+
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5" Margin="5">

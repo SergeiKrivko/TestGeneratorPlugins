@@ -126,16 +126,22 @@ internal class InstallationService
             }
         }
 
-        return RunProgram();
+        return await RunProgram();
     }
 
-    private ShellStream RunProgram()
+    private async Task<ShellStream> RunProgram()
     {
         var stream = _sshClient.CreateShellStreamNoTerminal(bufferSize: 1024);
-        stream.WriteLine("export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1");
-        if (_connection.OperatingSystem != "win-x64")
-            stream.WriteLine($"chmod 755 {ProgramExeName}");
-        stream.WriteLine($"{ProgramExeName}");
+        if (_connection.OperatingSystem == "win-x64")
+            stream.WriteLine("set DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1");
+        else
+        {
+            stream.WriteLine("export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1");
+            stream.WriteLine($"chmod 755 \"{ProgramExeName}\"");
+        }
+
+        stream.WriteLine($"\"{ProgramExeName}\"");
+        await stream.FlushAsync();
         return stream;
     }
 
@@ -152,7 +158,7 @@ internal class InstallationService
         SshPlugin.Logger.Debug($"Uname output: {JsonSerializer.Serialize(res)}");
         if (res.Contains("Linux"))
             return "linux-x64";
-        if (res.Contains("macOS"))
+        if (res.Contains("Darwin"))
             return "osx-x64";
         return "win-x64";
     }
@@ -166,6 +172,9 @@ internal class InstallationService
             case "linux-x64":
                 // return "~/.local/share/SergeiKrivko/SshApi";
                 return "/opt/SergeiKrivko/SshApi";
+            case "osx-x64":
+                return (await RunCommand("echo \"/Users/$USER/Library/Application Support/SergeiKrivko/SshApi\""))
+                    .Trim();
             default:
                 return "";
         }

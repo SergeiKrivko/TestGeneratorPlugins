@@ -71,7 +71,6 @@ public partial class SshConnectionItem : UserControl
     {
         if (Connection == null)
             return;
-        Connection.IsEnabled = true;
         await Connection.Init();
     }
 
@@ -79,7 +78,6 @@ public partial class SshConnectionItem : UserControl
     {
         if (Connection == null)
             return;
-        Connection.IsEnabled = false;
         Connection.Disconnect();
     }
 }

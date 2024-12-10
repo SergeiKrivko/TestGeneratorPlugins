@@ -92,10 +92,10 @@ public class SshConnection
         set => Settings.Set("operatingSystem", value);
     }
 
-    public bool IsEnabled
+    public bool AutoConnect
     {
-        get => Settings.Get("isEnabled", true);
-        set => Settings.Set("isEnabled", value);
+        get => Settings.Get("autoConnect", true);
+        set => Settings.Set("autoConnect", value);
     }
 
     public bool Autoupdate

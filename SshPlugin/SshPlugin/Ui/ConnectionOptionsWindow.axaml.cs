@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using SshPlugin.Models;
 using SshPlugin.Services;
 using TestGenerator.Shared.Settings;
@@ -37,8 +38,14 @@ public partial class ConnectionOptionsWindow : Window
         HostBox.Text = Connection.Host;
         PortBox.Value = Connection.Port;
         UsernameBox.Text = Connection.Username;
+        AuthMethodBox.SelectedIndex = Connection.AuthenticationMethod == AuthenticationMethod.PrivateKey ? 1 : 0;
+        PasswordBox.IsVisible = Connection.AuthenticationMethod == AuthenticationMethod.Password;
+        PrivateKeyPathBox.IsVisible = Connection.AuthenticationMethod == AuthenticationMethod.PrivateKey;
+        SelectPrivateKeyButton.IsVisible = Connection.AuthenticationMethod == AuthenticationMethod.PrivateKey;
         PasswordBox.Text = Connection.Password;
-        
+        PrivateKeyPathBox.Text = Connection.PrivateKeyFile;
+
+        AutoConnectCheckbox.IsChecked = Connection.AutoConnect;
         OsBox.SelectedValue = OperatingSystems.FirstOrDefault(s => s.Key == Connection.OperatingSystem);
         HostProgramPathBox.Text = Connection.HostProgramPath;
     }
@@ -49,8 +56,13 @@ public partial class ConnectionOptionsWindow : Window
         Connection.Host = HostBox.Text ?? "";
         Connection.Port = (int?)PortBox.Value ?? 22;
         Connection.Username = UsernameBox.Text ?? "";
+        Connection.AuthenticationMethod = AuthMethodBox.SelectedIndex == 1
+            ? AuthenticationMethod.PrivateKey
+            : AuthenticationMethod.Password;
         Connection.Password = PasswordBox.Text ?? "";
-        
+        Connection.PrivateKeyFile = PrivateKeyPathBox.Text ?? "";
+
+        Connection.AutoConnect = AutoConnectCheckbox.IsChecked == true;
         Connection.HostProgramPath = HostProgramPathBox.Text ?? "";
         Connection.OperatingSystem = (OsBox.SelectedValue as OperatingSystemModel)?.Key ?? "linux-x64";
     }
@@ -98,5 +110,30 @@ public partial class ConnectionOptionsWindow : Window
     private async void InitNewConnection()
     {
         await Connection.Init();
+    }
+
+    private void AuthMethodBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        PasswordBox.IsVisible = AuthMethodBox.SelectedIndex == 0;
+        PrivateKeyPathBox.IsVisible = AuthMethodBox.SelectedIndex == 1;
+        SelectPrivateKeyButton.IsVisible = AuthMethodBox.SelectedIndex == 1;
+    }
+
+    private async void SelectPrivateKeyButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel == null)
+            return;
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+        {
+            Title = "Выберите файл",
+            AllowMultiple = false
+        });
+
+        if (files.Count >= 1)
+        {
+            PrivateKeyPathBox.Text = files[0].Path.LocalPath;
+        }
     }
 }
