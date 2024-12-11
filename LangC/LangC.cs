@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.Text.RegularExpressions;
+using Avalonia.Controls;
 using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
@@ -63,5 +64,7 @@ public class LangC : TestGenerator.Shared.Plugin
 
         FileIcons[".c"] = CIcon;
         FileIcons[".h"] = HIcon;
+        RegexFileIcons[new Regex(@"[/\\]CMakeLists\.txt$")] = "M21.2 20.4H2.8L8.7 15.4L21.2 20.4Z M21.75 20.15L13.9 17L12.5 1.89999L21.75 20.15Z M13 11.2L2.89999 19.7L12.1 1.5L13 11.2Z";
+        RegexFileIcons[new Regex(@"[/\\]cmake-build-\w+$")] = "M1 6C1 3 4 3 4 3H7.5C8 3 8.5 3.375 9 3.75C9.5 4.125 10 4.5 10.5 4.5H20.5C23.5 4.5 23.5 7.5 23.5 7.5V18C23.5 21.1354 20.5 21 20.5 21H4C4 21 1 21 1 18V6ZM4 4.5C4 4.5 2.5 4.5 2.5 6V18C2.5 18 2.5 19.5 4 19.5H20.5C20.5 19.5 22 19.5 22 18V7.5C22 7.5 22 6 20.5 6H10.5C9.75 6 9.25 5.625 8.75 5.25C8.25 4.875 7.75 4.5 7 4.5H4Z M18.1517 18.5H6.5L10.2361 15.3254L18.1517 18.5Z M18.5 18.3413L13.529 16.3413L12.6425 6.75395L18.5 18.3413Z M12.9591 12.6587L6.56332 18.0556L12.3892 6.5L12.9591 12.6587Z";
     }
 }
