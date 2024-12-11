@@ -3,7 +3,7 @@ using Avalonia;
 using Markdown.Avalonia;
 using TestGenerator.Shared.Types;
 
-namespace MarkdownViewer;
+namespace WebViewProvider;
 
 public class MarkdownProvider : IEditorProvider
 {

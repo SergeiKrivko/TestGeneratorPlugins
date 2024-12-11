@@ -1,4 +1,4 @@
-﻿namespace MarkdownViewer;
+﻿namespace WebViewProvider;
 
 public class MarkdownViewer : TestGenerator.Shared.Plugin
 {

@@ -1,0 +1,57 @@
+name: Web View
+on:
+  push:
+    paths:
+      - WebView/Config.json
+
+jobs:
+  build-win-x64:
+    name: Build and publish for Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d WebView -r win-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+
+  build-linux-x64:
+    name: Build and publish for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d WebView -r linux-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+
+  build-osx-x64:
+    name: Build and publish for macOS (x64)
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Build and upload
+        run: |
+          dotnet tool install TestGenerator.PluginBuilder --global 
+          dotnet testgen-plugin publish -d WebView -r osx-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}

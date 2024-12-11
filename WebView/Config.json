@@ -1,0 +1,8 @@
+{
+  "Key": "WebView",
+  "Name": "Web View",
+  "Description": "Встроенный браузер для присмотра файлов (pdf, html, svg) и веб-страниц",
+  "Version": "1.0.0",
+  "Assembly": "WebView.dll",
+  "PlatformSpecific": true
+}
