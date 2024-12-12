@@ -13,6 +13,8 @@ public abstract class BaseFileCreator : IFileCreator
     
     protected abstract string Extension { get; }
 
+    public bool Enabled => AAppService.Instance.CurrentProject.Type.Key == "C";
+
     public SettingsControl? GetSettingsControl()
     {
         var settingsControl = new SettingsControl();
@@ -26,6 +28,6 @@ public abstract class BaseFileCreator : IFileCreator
         if (filename != null && !filename.EndsWith(Extension))
             filename += Extension;
         if (!string.IsNullOrWhiteSpace(filename))
-            File.Create(Path.Join(root, filename.Trim()));
+            File.Create(Path.Join(root, filename.Trim())).Close();
     }
 }

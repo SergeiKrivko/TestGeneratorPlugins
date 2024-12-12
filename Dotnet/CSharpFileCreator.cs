@@ -10,6 +10,7 @@ public class CSharpFileCreator : IFileCreator
     public virtual string Name => "Class / Interface";
     public virtual int Priority => 5;
     public virtual string? Icon => LangCSharp.CSharpIcon;
+    public bool Enabled => AAppService.Instance.CurrentProject.Type.Key == "CSharp";
 
     public SettingsControl? GetSettingsControl()
     {
@@ -24,6 +25,6 @@ public class CSharpFileCreator : IFileCreator
         if (filename != null && !filename.EndsWith(".cs"))
             filename += ".cs";
         if (!string.IsNullOrWhiteSpace(filename))
-            File.Create(Path.Join(root, filename.Trim()));
+            File.Create(Path.Join(root, filename.Trim())).Close();
     }
 }
