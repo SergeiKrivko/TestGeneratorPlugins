@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Reactive;
 using Git.Models;
 using Git.Services;
 using TestGenerator.Shared.Types;
@@ -24,7 +25,11 @@ public partial class GitTab : SideTab
     {
         InitializeComponent();
         GitStatusTree.ItemsSource = GitService.Instance.Groups;
-        AAppService.Instance.Subscribe<string>("projectChanged", Update);
+        IsVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(next =>
+        {
+            if (next.NewValue.Value)
+                Update(AAppService.Instance.CurrentProject.Path);
+        }));
     }
 
     private async void Update(string path)
