@@ -1,0 +1,7 @@
+{
+  "Key": "Git",
+  "Name": "Git",
+  "Description": "Some description for Git",
+  "Version": "1.0.0",
+  "Assembly": "Git.dll"
+}

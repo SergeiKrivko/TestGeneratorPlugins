@@ -98,24 +98,31 @@ public partial class UpdatePage : UserControl
 
     private async void Update()
     {
-        CurrentVersionBlock.Text = $"Текущая версия: {AAppService.Instance.AppVersion}";
-        if (LatestVersion == null || !File.Exists(ReleaseLocalPath))
-            ReleaseDownloaded = DownloadingStatus.Not;
-        await GetLatestVersion();
-        if (LatestVersion > AAppService.Instance.AppVersion)
+        try
         {
-            StatusBlock.Text = $"Доступно обновление до {LatestVersion}";
-            ButtonDownload.IsVisible = ReleaseDownloaded == DownloadingStatus.Not;
-            ButtonInstall.IsVisible = ReleaseDownloaded == DownloadingStatus.Completed;
-        }
-        else
-        {
-            StatusBlock.Text = "Установлена последняя версия";
-            ButtonDownload.IsVisible = false;
-            ButtonInstall.IsVisible = false;
-        }
+            CurrentVersionBlock.Text = $"Текущая версия: {AAppService.Instance.AppVersion}";
+            if (LatestVersion == null || !File.Exists(ReleaseLocalPath))
+                ReleaseDownloaded = DownloadingStatus.Not;
+            await GetLatestVersion();
+            if (LatestVersion > AAppService.Instance.AppVersion)
+            {
+                StatusBlock.Text = $"Доступно обновление до {LatestVersion}";
+                ButtonDownload.IsVisible = ReleaseDownloaded == DownloadingStatus.Not;
+                ButtonInstall.IsVisible = ReleaseDownloaded == DownloadingStatus.Completed;
+            }
+            else
+            {
+                StatusBlock.Text = "Установлена последняя версия";
+                ButtonDownload.IsVisible = false;
+                ButtonInstall.IsVisible = false;
+            }
 
-        ProgressPanel.IsVisible = ReleaseDownloaded == DownloadingStatus.InProgress;
+            ProgressPanel.IsVisible = ReleaseDownloaded == DownloadingStatus.InProgress;
+        }
+        catch (Exception e)
+        {
+            TestGeneratorUpdateService.Logger.Error(e.Message);
+        }
     }
 
     private async Task DownloadRelease()
