@@ -7,6 +7,7 @@ using Avalonia.Reactive;
 using Git.Models;
 using Git.Services;
 using TestGenerator.Shared.Types;
+using Timer = System.Timers.Timer;
 
 namespace Git.UI;
 
@@ -21,22 +22,31 @@ public partial class GitTab : SideTab
 
     private IEnumerable<GitGroup> _gitGroups = [];
 
+    private DateTime? _lastUpateTime;
+
     public GitTab()
     {
         InitializeComponent();
         GitStatusTree.ItemsSource = GitService.Instance.Groups;
         IsVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(next =>
         {
-            if (next.NewValue.Value)
+            if (next.OldValue.Value == false && next.NewValue.Value)
+            {
                 Update(AAppService.Instance.CurrentProject.Path);
+            }
         }));
+        AAppService.Instance.Subscribe<string>("projectChanged", Update);
     }
 
     private async void Update(string path)
     {
+        if (!IsVisible || DateTime.UtcNow - _lastUpateTime < TimeSpan.FromMilliseconds(1000))
+            return;
+        _lastUpateTime = DateTime.UtcNow;
         try
         {
             await GitService.Instance.GitStatus(path);
+            await BranchService.Instance.Refresh();
         }
         catch (Exception e)
         {
@@ -59,7 +69,8 @@ public partial class GitTab : SideTab
     {
         var message = MessageBox.Text ?? "";
         await AAppService.Instance.RunBackgroundTask("Commit",
-            () => GitService.Instance.GitCommit(Files().Where(f => f.Selected).Select(f => f.FullPath), message)).Wait();
+                () => GitService.Instance.GitCommit(Files().Where(f => f.Selected).Select(f => f.FullPath), message))
+            .Wait();
         Update(AAppService.Instance.CurrentProject.Path);
     }
 

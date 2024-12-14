@@ -32,14 +32,16 @@ public class GitService
         }
     };
 
-    public static SideProgramFile GetGit() => GitProgram.FromModel(Git.Settings.Get<ProgramFileModel>("git")) ??
-                                              throw new Exception("git not found");
+    public static SideProgramFile? GetGit() => GitProgram.FromModel(Git.Settings.Get<ProgramFileModel>("git"));
 
     public async Task GitStatus(string path)
     {
         var files = new List<GitFile>();
-
-        var proc = await GetGit().Execute(new RunProgramArgs
+        var git = GetGit();
+        if (git == null)
+            return;
+        
+        var proc = await git.Execute(new RunProgramArgs
             { Args = "status --porcelain --ignored", WorkingDirectory = path });
         foreach (var line in proc.Stdout.Split('\n').Where(l => l.Length > 2))
         {
@@ -52,7 +54,7 @@ public class GitService
             }
             catch (JsonException)
             {
-                Git.Logger.Warning($"JsonException: can not decode '{filename}'");
+                // Git.Logger.Warning($"JsonException: can not decode '{filename}'");
                 continue;
             }
             filename = Path.GetFullPath(Path.Join(path, filename));
@@ -99,6 +101,8 @@ public class GitService
     public async Task<int> GitCommit(IEnumerable<string> files, string message)
     {
         var git = GetGit();
+        if (git == null)
+            return -1;
         var proc1 = await git.Execute(new RunProgramArgs
         {
             Args = "reset",

@@ -2,6 +2,6 @@
   "Key": "Git",
   "Name": "Git",
   "Description": "Some description for Git",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Assembly": "Git.dll"
 }
