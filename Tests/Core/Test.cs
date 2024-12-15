@@ -86,7 +86,7 @@ public class Test
     public ChangingStatus IsChanged
     {
         get => Settings.Get("isChanged", ChangingStatus.NotChanged);
-        set => Settings.Set("isChanged", value);
+        private set => Settings.Set("isChanged", value);
     }
 
     public enum ChangingStatus
@@ -165,11 +165,12 @@ public class Test
         return new Test(AAppService.Instance.CurrentProject, Guid.NewGuid()) { Name = "-" };
     }
 
-    public async Task Run(ABuild build)
+    public async Task Run(ABuild build, CancellationToken token)
     {
+        await Task.Delay(1000, token);
         Results.Clear();
         Status = TestStatus.InProgress;
-        var res = await build.Run(Args, Stdin);
+        var res = await build.Run(Args, Stdin, token);
         LastTestTime = DateTime.Now;
         IsChanged = ChangingStatus.NotChanged;
 

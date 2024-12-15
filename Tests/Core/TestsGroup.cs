@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using TestGenerator.Shared.Types;
 
@@ -97,16 +98,16 @@ public class TestsGroup
     public int Count() => Groups.Sum(g => g.Count()) + Tests.Count;
     public int Count(Test.TestStatus status) => Groups.Sum(g => g.Count(status)) + Tests.Count(t => t.Status == status);
 
-    public async IAsyncEnumerable<Test> Run(ABuild build)
+    public async IAsyncEnumerable<Test> Run(ABuild build, [EnumeratorCancellation] CancellationToken token)
     {
         foreach (var group in Groups)
         {
-            await foreach (var i in group.Run(build))
+            await foreach (var i in group.Run(build, token))
                 yield return i;
         }
         foreach (var test in Tests)
         {
-            await test.Run(build);
+            await test.Run(build, token);
             yield return test;
         }
     }

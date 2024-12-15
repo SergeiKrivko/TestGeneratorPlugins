@@ -69,7 +69,7 @@ public partial class GitTab : SideTab
     {
         var message = MessageBox.Text ?? "";
         await AAppService.Instance.RunBackgroundTask("Commit",
-                () => GitService.Instance.GitCommit(Files().Where(f => f.Selected).Select(f => f.FullPath), message))
+                token => GitService.Instance.GitCommit(Files().Where(f => f.Selected).Select(f => f.FullPath), message, token))
             .Wait();
         Update(AAppService.Instance.CurrentProject.Path);
     }

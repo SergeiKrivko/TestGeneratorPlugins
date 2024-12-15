@@ -88,13 +88,13 @@ public class TestsService
             group.Status = Test.TestStatus.InProgress;
         }
 
-        async Task<int> TestingBackgroundFunc(IBackgroundTask task)
+        async Task<int> TestingBackgroundFunc(IBackgroundTask task, CancellationToken token)
         {
             var totalCount = Groups.Sum(g => g.Count());
             var i = 0;
             foreach (var group in Groups)
             {
-                await foreach (var test in group.Run(build))
+                await foreach (var test in group.Run(build, token))
                 {
                     i++;
                     task.Status = test.Name;
@@ -108,7 +108,8 @@ public class TestsService
 
         await build.RunPreProcConsole();
 
-        await AAppService.Instance.RunBackgroundTask("Тестирование", TestingBackgroundFunc).Wait();
+        await AAppService.Instance
+            .RunBackgroundTask("Тестирование", TestingBackgroundFunc, BackgroundTaskFlags.CanBeCancelled).Wait();
 
         await build.RunPostProcConsole();
     }
@@ -122,15 +123,16 @@ public class TestsService
 
         test.Status = Test.TestStatus.InProgress;
 
-        async Task<int> TestingBackgroundFunc()
+        async Task<int> TestingBackgroundFunc(CancellationToken token)
         {
-            await test.Run(build);
+            await test.Run(build, token);
             return 0;
         }
 
         await build.RunPreProcConsole();
 
-        await AAppService.Instance.RunBackgroundTask("Тестирование", TestingBackgroundFunc).Wait();
+        await AAppService.Instance
+            .RunBackgroundTask("Тестирование", TestingBackgroundFunc, BackgroundTaskFlags.CanBeCancelled).Wait();
 
         await build.RunPostProcConsole();
     }
@@ -144,11 +146,11 @@ public class TestsService
 
         group.Status = Test.TestStatus.InProgress;
 
-        async Task<int> TestingBackgroundFunc(IBackgroundTask task)
+        async Task<int> TestingBackgroundFunc(IBackgroundTask task, CancellationToken token)
         {
             var totalCount = group.Count();
             var i = 0;
-            await foreach (var test in group.Run(build))
+            await foreach (var test in group.Run(build, token))
             {
                 i++;
                 task.Status = test.Name;

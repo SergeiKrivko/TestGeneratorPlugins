@@ -17,27 +17,27 @@ public class Wsl : IVirtualSystem
         return path;
     }
 
-    public async Task<ICompletedProcess> Execute(RunProcessArgs.ProcessRunProvider where, RunProcessArgs args)
+    public async Task<ICompletedProcess> Execute(RunProcessArgs.ProcessRunProvider where, RunProcessArgs args, CancellationToken token = new())
     {
-        return await AAppService.Instance.RunProcess(where, GetArgs(args));
+        return await AAppService.Instance.RunProcess(where, GetArgs(args), token);
     }
 
-    public async Task<ICompletedProcess> Execute(RunProcessArgs args)
+    public async Task<ICompletedProcess> Execute(RunProcessArgs args, CancellationToken token = new())
     {
-        return await AAppService.Instance.RunProcess(GetArgs(args));
+        return await AAppService.Instance.RunProcess(GetArgs(args), token);
     }
 
-    public async Task<ICollection<ICompletedProcess>> Execute(RunProcessArgs.ProcessRunProvider where, params RunProcessArgs[] args)
+    public async Task<ICollection<ICompletedProcess>> Execute(RunProcessArgs.ProcessRunProvider where, RunProcessArgs[] args, CancellationToken token = new())
     {
-        return await AAppService.Instance.RunProcess(where, args.Select(GetArgs).ToArray());
+        return await AAppService.Instance.RunProcess(where, args.Select(GetArgs).ToArray(), token);
     }
 
-    public async Task<ICollection<ICompletedProcess>> Execute(params RunProcessArgs[] args)
+    public async Task<ICollection<ICompletedProcess>> Execute(RunProcessArgs[] args, CancellationToken token = new())
     {
-        return await AAppService.Instance.RunProcess(args.Select(GetArgs).ToArray());
+        return await AAppService.Instance.RunProcess(args.Select(GetArgs).ToArray(), token);
     }
 
-    private RunProcessArgs GetArgs(RunProcessArgs args) => new RunProcessArgs
+    private static RunProcessArgs GetArgs(RunProcessArgs args) => new RunProcessArgs
     {
         Filename = "wsl",
         Args = $"-e {args.Filename} {args.Args}",

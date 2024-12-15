@@ -98,7 +98,7 @@ public class GitService
         };
     }
 
-    public async Task<int> GitCommit(IEnumerable<string> files, string message)
+    public async Task<int> GitCommit(IEnumerable<string> files, string message, CancellationToken token = new())
     {
         var git = GetGit();
         if (git == null)
@@ -107,7 +107,7 @@ public class GitService
         {
             Args = "reset",
             WorkingDirectory = AAppService.Instance.CurrentProject.Path
-        });
+        }, token);
         if (proc1.ExitCode != 0)
         {
             Git.Logger.Error(proc1.Stderr);
@@ -118,7 +118,7 @@ public class GitService
         {
             Args = $"add {string.Join(' ', files.Select(f => JsonSerializer.Serialize(f)))}",
             WorkingDirectory = AAppService.Instance.CurrentProject.Path
-        });
+        }, token);
         if (proc2.ExitCode != 0)
         {
             Git.Logger.Error(proc2.Stderr);
@@ -129,7 +129,7 @@ public class GitService
         {
             Args = $"commit -m {JsonSerializer.Serialize(message)}",
             WorkingDirectory = AAppService.Instance.CurrentProject.Path
-        });
+        }, token);
         if (proc3.ExitCode != 0)
         {
             Git.Logger.Error(proc3.Stderr);
