@@ -2,23 +2,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:PluginAdmin.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PluginAdmin.UI.NewTokenWindow"
-        Width="500" Height="400" WindowStartupLocation="CenterOwner" Name="Root"
+        Width="500" Height="550" WindowStartupLocation="CenterOwner" Name="Root"
         Title="Создание токена">
-    <Panel Margin="10">
-        <Grid Name="OptionsView" RowDefinitions="Auto Auto * Auto">
-            <TextBlock>Название токена:</TextBlock>
-            <TextBox Grid.Row="1" Margin="0 10" Name="TokenNameBox" />
-            <ListBox Grid.Row="2" SelectionMode="Multiple" Name="PluginsList"
-                     ItemsSource="{Binding ElementName=Root, Path=Plugins}">
+    <Panel Margin="5">
+        <Grid Name="OptionsView" RowDefinitions="Auto Auto Auto Auto Auto * Auto">
+            <TextBlock Margin="5">Название токена:</TextBlock>
+            <TextBox Grid.Row="1" Margin="5" Name="TokenNameBox" />
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="5" Margin="5">
+                <TextBlock VerticalAlignment="Center">Тип:</TextBlock>
+                <ComboBox Name="TokenTypeBox" SelectionChanged="TokenTypeBox_OnSelectionChanged">
+                    <ComboBoxItem>User</ComboBoxItem>
+                    <ComboBoxItem>Mask</ComboBoxItem>
+                    <ComboBoxItem>Plugins</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+
+            <TextBlock Grid.Row="3" Margin="5">Разрешения:</TextBlock>
+            <ListBox Grid.Row="4" Name="PermissionsBox" Margin="5" SelectionMode="Multiple">
+                <ListBox.DataTemplates>
+                    <DataTemplate DataType="models:TokenPermission">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="{Binding Key}" VerticalAlignment="Center" MinWidth="100" />
+                            <TextBlock Text="{Binding Key}" VerticalAlignment="Center" Foreground="Gray" FontSize="12" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.DataTemplates>
+            </ListBox>
+
+            <ListBox Grid.Row="5" SelectionMode="Multiple" Name="PluginsList" Margin="5"
+                     ItemsSource="{Binding ElementName=Root, Path=Plugins}" IsVisible="False">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Key}"></TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0 10" Spacing="10" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="5" Margin="5" Name="MaskPanel" Orientation="Vertical" IsVisible="False">
+                <TextBlock VerticalAlignment="Center">Маска:</TextBlock>
+                <TextBox Name="MaskBox"></TextBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="5" Spacing="10" HorizontalAlignment="Right">
                 <Button Click="CancelButton_OnClick">Отмена</Button>
                 <Button Click="CreateButton_OnClick">Создать</Button>
             </StackPanel>

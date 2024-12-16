@@ -31,6 +31,13 @@ public class PluginsHttpService : BodyDetailHttpService
         return await Get<PluginRead[]>("api/v1/plugins/my");
     }
 
+    private TokenPermission[]? _tokenPermissions;
+
+    public async Task<TokenPermission[]> GetTokenPermissions()
+    {
+        return _tokenPermissions ??= await Get<TokenPermission[]>("api/v1/tokens/permissions");
+    }
+
     public async Task DeleteToken(Guid tokenId)
     {
         await Delete<string>($"api/v1/tokens/{tokenId}");
