@@ -5,32 +5,8 @@ on:
       - UpdateService/UpdateService/Config.json
 
 jobs:
-  build-win-x64:
-    name: Build and publish for Windows
-    runs-on: windows-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup .Net
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-#      - name: Build C++ script
-#        run: |
-#          cd UpdateService/Worker
-#          g++ -std=c++17 main.cpp -o Worker.exe
-#          mkdir ..\UpdateService\Assets\
-#          cp Worker.exe ..\UpdateService\Assets\Worker.exe
-      
-      - name: Build and upload
-        run: |
-          dotnet tool install TestGenerator.PluginBuilder --global 
-          dotnet testgen-plugin publish -d UpdateService/UpdateService -r win-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
-
-  build-linux-x64:
-    name: Build and publish for Linux
+  build:
+    name: Build and publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,39 +16,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          
-#      - name: Build C++ script
-#        run: |
-#          cd UpdateService/Worker
-#          g++ -std=c++17 main.cpp -o Worker
-#          mkdir -p ../UpdateService/Assets
-#          cp Worker ../UpdateService/Assets/Worker
       
       - name: Build and upload
         run: |
           dotnet tool install TestGenerator.PluginBuilder --global 
-          dotnet testgen-plugin publish -d UpdateService/UpdateService -r linux-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
-
-  build-osx-x64:
-    name: Build and publish for macOS (x64)
-    runs-on: macos-13
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup .Net
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-#      - name: Build C++ script
-#        run: |
-#          cd UpdateService/Worker
-#          g++ -std=c++17 main.cpp -o Worker
-#          mkdir -p ../UpdateService/Assets
-#          cp Worker ../UpdateService/Assets/Worker
-      
-      - name: Build and upload
-        run: |
-          dotnet tool install TestGenerator.PluginBuilder --global 
-          dotnet testgen-plugin publish -d UpdateService/UpdateService -r osx-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+          dotnet testgen-plugin publish -d UpdateService/UpdateService -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}

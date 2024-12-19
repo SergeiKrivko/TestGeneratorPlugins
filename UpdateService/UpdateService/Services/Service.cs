@@ -119,12 +119,22 @@ public class Service
             return;
         if (OperatingSystem.IsWindows())
         {
+            // Process.Start(new ProcessStartInfo
+            // {
+            //     FileName = Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
+            //         "copy.bat"),
+            //     Arguments =
+            //         $"\"{ReleaseLocalPath}\" \"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\"",
+            //     CreateNoWindow = false,
+            //     UseShellExecute = true,
+            //     Verb = "runas"
+            // });
             Process.Start(new ProcessStartInfo
             {
-                FileName = Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
-                    "copy.bat"),
+                FileName = "cmd.exe",
                 Arguments =
-                    $"\"{ReleaseLocalPath}\" \"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\"",
+                    $"/C {Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
+                        "copy.bat")} \"{ReleaseLocalPath}\" \"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\"",
                 CreateNoWindow = false,
                 UseShellExecute = true,
                 Verb = "runas"
