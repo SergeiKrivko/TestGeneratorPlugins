@@ -8,7 +8,7 @@ copy_with_retries() {
     local count=0
 
     while [ $count -lt $retries ]; do
-        cp -f "$src_file" "$dst_file" && return 0
+        sudo cp -f "$src_file" "$dst_file" && return 0
         echo "Не удалось скопировать $src_file. Попытка $((count + 1)) из $retries..."
         count=$((count + 1))
         sleep 1
