@@ -1,0 +1,8 @@
+{
+  "Key": "UpdateService",
+  "Name": "UpdateService",
+  "Description": "Some description for UpdateService",
+  "Version": "1.0.0",
+  "Assembly": "UpdateService.dll",
+  "PlatformSpecific": true
+}
