@@ -136,7 +136,7 @@ public class Service
             {
                 FileName = "sudo",
                 Arguments =
-                    $"{Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "Worker")} " +
+                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "Worker")} " +
                     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}",
                 CreateNoWindow = false,
                 Verb = "runas"
@@ -148,7 +148,7 @@ public class Service
             {
                 FileName = "sudo",
                 Arguments =
-                    $"{Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "Worker")} " +
+                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "Worker")} " +
                     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}",
                 CreateNoWindow = false,
                 Verb = "runas"
