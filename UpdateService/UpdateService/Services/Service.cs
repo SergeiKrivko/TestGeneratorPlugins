@@ -138,7 +138,7 @@ public class Service
                 Arguments =
                     $"-A Terminal -- sudo bash " +
                     $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
-                    $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}"
+                    $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
             });
         }
         else if (OperatingSystem.IsLinux())
@@ -149,7 +149,7 @@ public class Service
                 Arguments =
                     $"-- sudo bash " +
                     $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
-                    $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}"
+                    $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
             });
 
             // var scriptPath = Path.Join(ReleasesDirectory, "install.sh");

@@ -4,7 +4,7 @@
 copy_with_retries() {
     local src_file="$1"
     local dst_file="$2"
-    local retries=4
+    local retries=5
     local count=0
 
     while [ $count -lt $retries ]; do
