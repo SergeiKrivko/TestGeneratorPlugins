@@ -17,12 +17,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build C++ script
-        run: |
-          cd UpdateService/Worker
-          g++ -std=c++17 main.cpp -o Worker.exe
-          mkdir ..\UpdateService\Assets\
-          cp Worker.exe ..\UpdateService\Assets\Worker.exe
+#      - name: Build C++ script
+#        run: |
+#          cd UpdateService/Worker
+#          g++ -std=c++17 main.cpp -o Worker.exe
+#          mkdir ..\UpdateService\Assets\
+#          cp Worker.exe ..\UpdateService\Assets\Worker.exe
       
       - name: Build and upload
         run: |
@@ -41,12 +41,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
           
-      - name: Build C++ script
-        run: |
-          cd UpdateService/Worker
-          g++ -std=c++17 main.cpp -o Worker
-          mkdir -p ../UpdateService/Assets
-          cp Worker ../UpdateService/Assets/Worker
+#      - name: Build C++ script
+#        run: |
+#          cd UpdateService/Worker
+#          g++ -std=c++17 main.cpp -o Worker
+#          mkdir -p ../UpdateService/Assets
+#          cp Worker ../UpdateService/Assets/Worker
       
       - name: Build and upload
         run: |
@@ -65,12 +65,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build C++ script
-        run: |
-          cd UpdateService/Worker
-          g++ -std=c++17 main.cpp -o Worker
-          mkdir -p ../UpdateService/Assets
-          cp Worker ../UpdateService/Assets/Worker
+#      - name: Build C++ script
+#        run: |
+#          cd UpdateService/Worker
+#          g++ -std=c++17 main.cpp -o Worker
+#          mkdir -p ../UpdateService/Assets
+#          cp Worker ../UpdateService/Assets/Worker
       
       - name: Build and upload
         run: |

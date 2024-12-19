@@ -122,9 +122,9 @@ public class Service
             Process.Start(new ProcessStartInfo
             {
                 FileName = Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
-                    "Worker.exe"),
+                    "copy.bat"),
                 Arguments =
-                    $"\"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\" \"{ReleaseLocalPath}\"",
+                    $"\"{ReleaseLocalPath}\" \"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\"",
                 CreateNoWindow = false,
                 UseShellExecute = true,
                 Verb = "runas"
@@ -134,11 +134,13 @@ public class Service
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = "sudo",
+                FileName = "open",
                 Arguments =
-                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "Worker")} " +
+                    $"-A Terminal -- sudo bash " +
+                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
                     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}",
                 CreateNoWindow = false,
+                UseShellExecute = true,
                 Verb = "runas"
             });
         }
@@ -146,11 +148,13 @@ public class Service
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = "sudo",
+                FileName = "gnome-terminal",
                 Arguments =
-                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "Worker")} " +
+                    $"-- sudo bash " +
+                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
                     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}",
                 CreateNoWindow = false,
+                UseShellExecute = true,
                 Verb = "runas"
             });
 
