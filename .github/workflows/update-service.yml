@@ -49,7 +49,7 @@ jobs:
       - name: Build and upload
         run: |
           dotnet tool install TestGenerator.PluginBuilder --global 
-          dotnet testgen-plugin publish -d MarkdownReports -r linux-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+          dotnet testgen-plugin publish -d UpdateService/UpdateService -r linux-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
 
   build-osx-x64:
     name: Build and publish for macOS (x64)
@@ -72,4 +72,4 @@ jobs:
       - name: Build and upload
         run: |
           dotnet tool install TestGenerator.PluginBuilder --global 
-          dotnet testgen-plugin publish -d MarkdownReports -r osx-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
+          dotnet testgen-plugin publish -d UpdateService/UpdateService -r osx-x64 -t ${{ secrets.TESTGEN_TOKEN }} --github --github-user SergeiKrivko --github-repo TestGeneratorPlugins --github-token ${{ secrets.GITHUB_TOKEN }}
