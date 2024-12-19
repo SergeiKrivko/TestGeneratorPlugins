@@ -21,7 +21,7 @@ jobs:
         run: |
           cd UpdateService/Worker
           g++ -std=c++17 main.cpp -o Worker.exe
-          cp Worker ../UpdateService/Assets
+          cp Worker.exe ..\UpdateService\Assets
       
       - name: Build and upload
         run: |
