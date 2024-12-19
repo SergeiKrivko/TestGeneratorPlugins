@@ -17,6 +17,11 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '4.8.x'
+      
       - name: Build and upload
         run: |
           dotnet build UpdateService/UpdateService.Worker -c Release
@@ -36,6 +41,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '4.8.x'
       
       - name: Build and upload
         run: |
@@ -56,6 +66,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '4.8.x'
       
       - name: Build and upload
         run: |
