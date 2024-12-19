@@ -119,12 +119,10 @@ public class Service
             return;
         if (OperatingSystem.IsWindows())
         {
-            UpdateService.Logger.Debug(Path.Join(Assembly.GetExecutingAssembly().Location, "Assets",
-                "UpdateService.Worker.exe"));
             Process.Start(new ProcessStartInfo
             {
                 FileName = Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
-                    "UpdateService.Worker.exe"),
+                    "Worker.exe"),
                 Arguments =
                     $"\"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\" \"{ReleaseLocalPath}\"",
                 CreateNoWindow = false,
@@ -138,7 +136,7 @@ public class Service
             {
                 FileName = "sudo",
                 Arguments =
-                    $"{Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "UpdateService.Worker")} " +
+                    $"{Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "Worker")} " +
                     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}",
                 CreateNoWindow = false,
                 Verb = "runas"
@@ -150,7 +148,7 @@ public class Service
             {
                 FileName = "sudo",
                 Arguments =
-                    $"{Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "UpdateService.Worker")} " +
+                    $"{Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "Worker")} " +
                     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}",
                 CreateNoWindow = false,
                 Verb = "runas"
