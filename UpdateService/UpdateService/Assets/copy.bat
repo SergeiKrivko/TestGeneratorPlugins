@@ -68,4 +68,6 @@ set "dst_folder=%~2"
 :: Start recursive copying
 call :copy_files_recursively "%src_folder%" "%dst_folder%"
 
+del /Q "%src_folder%"
+
 start "" "%dst_folder%"\TestGenerator.exe

@@ -2,7 +2,7 @@
   "Key": "UpdateService",
   "Name": "UpdateService",
   "Description": "Some description for UpdateService",
-  "Version": "1.0.9",
+  "Version": "1.0.10",
   "Assembly": "UpdateService.dll",
   "PlatformSpecific": false
 }

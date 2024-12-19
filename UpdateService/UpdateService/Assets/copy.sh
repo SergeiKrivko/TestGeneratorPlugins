@@ -51,4 +51,6 @@ dst_folder="$2"
 # Запуск рекурсивного копирования
 copy_files_recursively "$src_folder" "$dst_folder"
 
+rm -rf "$src_folder"
+
 "$dst_folder"/TestGenerator
