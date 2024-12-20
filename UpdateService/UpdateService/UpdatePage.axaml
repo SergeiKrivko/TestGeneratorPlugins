@@ -9,7 +9,7 @@
         <Separator></Separator>
         <StackPanel Orientation="Horizontal" Spacing="5">
             <TextBlock Name="StatusBlock" VerticalAlignment="Center" FontSize="16">Установлена последняя версия</TextBlock>
-            <Button Click="RefreshButton_OnClick">↺</Button>
+            <Button Click="RefreshButton_OnClick">↻</Button>
         </StackPanel>
         <Button Name="ButtonDownload" Click="ButtonDownload_OnClick">Скачать обновление</Button>
         <Button Name="ButtonInstall" Click="ButtonInstall_OnClick">Установить обновление</Button>

@@ -137,7 +137,7 @@ public class Service
             {
                 FileName = "gnome-terminal",
                 Arguments =
-                    $"-- sudo bash " +
+                    $"-- bash " +
                     $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
                     $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
             });
