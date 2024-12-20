@@ -23,6 +23,9 @@
                             <TextBlock Text="{Binding Type}" FontSize="12"></TextBlock>
                             <TextBlock FontSize="12">●</TextBlock>
                             <TextBlock Text="{Binding PermissionsString}" FontSize="12" Foreground="Gray"></TextBlock>
+                            <TextBlock FontSize="12">●</TextBlock>
+                            <TextBlock FontSize="12">Истекает</TextBlock>
+                            <TextBlock Text="{Binding ExpiresAt}" FontSize="12"></TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
