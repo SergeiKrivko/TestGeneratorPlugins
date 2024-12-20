@@ -8,7 +8,7 @@ namespace LangPython;
 
 public class LangPython : TestGenerator.Shared.Plugin
 {
-    private const string PythonIcon =
+    internal const string PythonIcon =
         "M14.719 1.70599C13.847 1.56199 12.572 1.49599 11.706 1.49999C10.895 1.50099 10.085 1.56999 9.285 " +
         "1.70599C7.14 2.07999 6.75 2.86199 6.75 4.30899V5.99999H12V6.74999H5.045C3.097 6.74999 1.515 9.07799 1.5 " +
         "11.959V12C1.5 12.504 1.548 13.006 1.647 13.5C2.082 15.67 3.439 17.25 5.045 17.25H6V14.72C6 13.253 6.977 " +
@@ -117,5 +117,7 @@ public class LangPython : TestGenerator.Shared.Plugin
         FileActions = [new FastRunAction()];
 
         FileIcons[".py"] = PythonIcon;
+
+        FileCreators = [new PythonFileCreator()];
     }
 }

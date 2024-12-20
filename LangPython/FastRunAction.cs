@@ -21,6 +21,6 @@ public class FastRunAction : IFileAction
             throw new Exception("Интерпретатор Python не найден");
         AAppService.Instance.ShowSideTab("Run");
         await python.Execute(RunProcessArgs.ProcessRunProvider.RunTab,
-            new RunProgramArgs { Args = $"{python.Path} {await python.VirtualSystem.ConvertPath(path)}" });
+            new RunProgramArgs { Args = $"{await python.VirtualSystem.ConvertPath(path)}" });
     }
 }
