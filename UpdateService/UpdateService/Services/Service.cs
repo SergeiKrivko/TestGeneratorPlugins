@@ -157,7 +157,7 @@ public class Service
 
     public async Task Update()
     {
-        if (LatestVersion == null || !Directory.Exists(ReleaseLocalPath))
+        if (LatestVersion <= AAppService.Instance.AppVersion || !Directory.Exists(ReleaseLocalPath))
             ReleaseDownloaded = DownloadingStatus.Not;
         await GetLatestVersion();
     }
