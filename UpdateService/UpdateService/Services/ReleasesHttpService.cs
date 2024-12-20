@@ -16,6 +16,12 @@ public class ReleasesHttpService : BodyDetailHttpService
             files);
     }
 
+    public async Task<Version> GetLatestVersion()
+    {
+        return await Get<Version>(
+            $"/api/v1/releases/latest?runtime={System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier}");
+    }
+
     public async Task DownloadFile(string url, string path)
     {
         var stream = await Client.GetStreamAsync(url);

@@ -44,7 +44,7 @@ public class Service
 
     private async Task GetLatestVersion()
     {
-        LatestVersion = new Version(5, 0);
+        LatestVersion = await _httpService.GetLatestVersion();
     }
 
     private async IAsyncEnumerable<AppFile> ListFiles(string root, string path)
@@ -85,12 +85,13 @@ public class Service
 
         async Task<int> BackgroundTaskFunc(IBackgroundTask task, CancellationToken token)
         {
+            task.Progress = 10;
             task.Status = "Подготовка";
 
             var zipUrl = await _httpService.CreateReleaseZip(await ListFiles().ToListAsync(token));
             token.ThrowIfCancellationRequested();
 
-            task.Progress = 40;
+            task.Progress = 45;
             task.Status = "Загрузка";
 
             Directory.CreateDirectory(ReleasesDirectory);
@@ -98,7 +99,7 @@ public class Service
             await _httpService.DownloadFile(zipUrl, zipPath);
             token.ThrowIfCancellationRequested();
 
-            task.Progress = 80;
+            task.Progress = 90;
             task.Status = "Распаковка";
 
             if (Directory.Exists(ReleaseLocalPath))
@@ -119,16 +120,6 @@ public class Service
             return;
         if (OperatingSystem.IsWindows())
         {
-            // Process.Start(new ProcessStartInfo
-            // {
-            //     FileName = Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
-            //         "copy.bat"),
-            //     Arguments =
-            //         $"\"{ReleaseLocalPath}\" \"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\"",
-            //     CreateNoWindow = false,
-            //     UseShellExecute = true,
-            //     Verb = "runas"
-            // });
             Process.Start(new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -138,17 +129,6 @@ public class Service
                 CreateNoWindow = false,
                 UseShellExecute = true,
                 Verb = "runas"
-            });
-        }
-        else if (OperatingSystem.IsMacOS())
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "open",
-                Arguments =
-                    $"-A Terminal -- sudo bash " +
-                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
-                    $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
             });
         }
         else if (OperatingSystem.IsLinux())
@@ -161,15 +141,17 @@ public class Service
                     $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
                     $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
             });
-
-            // var scriptPath = Path.Join(ReleasesDirectory, "install.sh");
-            // await File.WriteAllTextAsync(scriptPath,
-            //     $"echo \"Для установки требуются права суперпользователя. Введите пароль:\"\n" +
-            //     $"sudo {Path.Join(Assembly.GetExecutingAssembly().Location, "Assets", "UpdateService.Worker.exe")} " +
-            //     $"{Assembly.GetEntryAssembly()?.Location} {ReleaseLocalPath}\n" +
-            //     $"/opt/SergeiKrivko/TestGenerator/TestGenerator\n");
-            // Process.Start(new ProcessStartInfo
-            //     { FileName = "gnome-terminal", Arguments = $"-- bash {scriptPath}", CreateNoWindow = true });
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "open",
+                Arguments =
+                    $"-A Terminal -- sudo bash " +
+                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
+                    $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
+            });
         }
     }
 

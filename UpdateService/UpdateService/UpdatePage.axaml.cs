@@ -26,6 +26,12 @@ public partial class UpdatePage : UserControl
         try
         {
             CurrentVersionBlock.Text = $"Текущая версия: {AAppService.Instance.AppVersion}";
+            
+            ButtonDownload.IsVisible = false;
+            ProgressPanel.IsVisible = true;
+            ProgressNameBlock.Text = "Проверка обновления";
+            ButtonInstall.IsVisible = false;
+            
             await _service.Update();
             if (_service.LatestVersion > AAppService.Instance.AppVersion)
             {
@@ -50,6 +56,7 @@ public partial class UpdatePage : UserControl
 
     private async Task DownloadRelease()
     {
+        ProgressNameBlock.Text = "Загрузка обновления";
         ButtonDownload.IsVisible = false;
         ProgressPanel.IsVisible = true;
 
