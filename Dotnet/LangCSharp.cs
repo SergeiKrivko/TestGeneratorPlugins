@@ -51,7 +51,7 @@ public class LangCSharp : TestGenerator.Shared.Plugin
         }
     };
 
-    public static SideProgramFile? GetDotnet() => Dotnet.FromModel(ProjectSettings.Get<bool>("defaultPrograms")
+    public static SideProgramFile? GetDotnet() => Dotnet.FromModel(ProjectSettings.Get<bool>("defaultPrograms", true)
         ? Settings.Get<ProgramFileModel>("dotnet")
         : ProjectSettings.Get<ProgramFileModel>("dotnet"));
 

@@ -10,7 +10,7 @@ public class DotnetBuilder : BaseBuilder
     {
     }
 
-    public override async Task<int> Compile()
+    public override async Task<int> Compile(CancellationToken token = new())
     {
         LangCSharp.Logger.Info("Compiling");
 
@@ -22,12 +22,12 @@ public class DotnetBuilder : BaseBuilder
         if (!string.IsNullOrEmpty(Settings.Get<string>("configuration")))
             command += $" -c {Settings.Get<string>("configuration")}";
 
-        var res = await dotnet.Execute(new RunProgramArgs { Args = command, WorkingDirectory = Project.Path });
+        var res = await dotnet.Execute(new RunProgramArgs { Args = command, WorkingDirectory = Project.Path }, token);
         return res.ExitCode;
     }
 
     public override async Task<ICompletedProcess> Run(string args = "", string? workingDirectory = null,
-        string? stdin = null)
+        string? stdin = null, CancellationToken token = new())
     {
         var dotnet = LangCSharp.GetDotnet();
         if (dotnet == null)
@@ -38,11 +38,11 @@ public class DotnetBuilder : BaseBuilder
             command += $" --configuration {Settings.Get<string>("configuration")}";
 
         return await dotnet.Execute(new RunProgramArgs
-            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin });
+            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin }, token);
     }
 
     public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null,
-        string? stdin = null)
+        string? stdin = null, CancellationToken token = new())
     {
         var dotnet = LangCSharp.GetDotnet();
         if (dotnet == null)
@@ -53,6 +53,6 @@ public class DotnetBuilder : BaseBuilder
             command += $" --configuration {Settings.Get<string>("configuration")}";
 
         return await dotnet.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProgramArgs
-            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin });
+            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin }, token);
     }
 }
