@@ -50,7 +50,7 @@ public class LangC : TestGenerator.Shared.Plugin
             new ProjectType.ProjectTypeDetector(6, path => File.Exists(Path.Join(path, "main.c"))),
             new ProjectType.ProjectTypeDetector(6, path => File.Exists(Path.Join(path, "src/main.c"))),
             new ProjectType.ProjectTypeDetector(3, path => FileWithExtensionExists(path, ".c", 3)),
-        ])];
+        ], creators: [new CProjectCreator()])];
 
         FileCreators = [new CFileCreator(), new HFileCreator()];
 

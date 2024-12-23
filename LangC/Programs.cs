@@ -23,7 +23,7 @@ internal class Programs
     };
 
     public static SideProgramFile? GetGcc() => Programs.Gcc.FromModel(
-        LangC.ProjectSettings.Get<bool>("defaultPrograms")
+        LangC.ProjectSettings.Get<bool>("defaultPrograms", true)
             ? LangC.Settings.Get<ProgramFileModel>("gcc")
             : LangC.ProjectSettings.Get<ProgramFileModel>("gcc"));
 }
