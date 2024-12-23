@@ -72,7 +72,13 @@ public class LangCSharp : TestGenerator.Shared.Plugin
                 ]
             }
         ];
-        ProjectTypes = [new ProjectType("CSharp", "C#", CSharpIcon)];
+        ProjectTypes =
+        [
+            new ProjectType("CSharp", "C#", CSharpIcon, [
+                new ProjectType.ProjectTypeDetector(8, p => FileWithExtensionExists(p, ".sln")),
+                new ProjectType.ProjectTypeDetector(4, p => FileWithExtensionExists(p, ".csproj", 4)),
+            ])
+        ];
         SettingsControls =
         [
             new SettingsPage("Языки/.Net", Settings.Name ?? "", [
@@ -87,5 +93,15 @@ public class LangCSharp : TestGenerator.Shared.Plugin
 
         FileCreators = [new CSharpFileCreator()];
         FileIcons[".cs"] = CSharpIcon;
+    }
+
+    private static bool FileWithExtensionExists(string path, string extension, int recurseLevel = 1)
+    {
+        if (Directory.EnumerateFiles(path).Any(f => f.EndsWith(extension)))
+            return true;
+        if (recurseLevel > 1)
+            return Directory.EnumerateDirectories(path)
+                .Any(d => FileWithExtensionExists(d, extension, recurseLevel - 1));
+        return false;
     }
 }

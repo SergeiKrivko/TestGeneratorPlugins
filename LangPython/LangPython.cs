@@ -100,7 +100,14 @@ public class LangPython : TestGenerator.Shared.Plugin
                 ]
             }
         ];
-        ProjectTypes = [new ProjectType("Python", "Python", PythonIcon)];
+        ProjectTypes = [new ProjectType("Python", "Python", PythonIcon, [
+            new ProjectType.ProjectTypeDetector(7, path => File.Exists(Path.Join("main.py"))),
+            new ProjectType.ProjectTypeDetector(7, path => File.Exists(Path.Join(path, "src/main.py"))),
+            new ProjectType.ProjectTypeDetector(5, path => File.Exists(Path.Join(path, "requirements.txt"))),
+            new ProjectType.ProjectTypeDetector(5, path => Directory.Exists(Path.Join(path, "venv"))),
+            new ProjectType.ProjectTypeDetector(5, path => Directory.Exists(Path.Join(path, ".venv"))),
+            new ProjectType.ProjectTypeDetector(5, path => FileWithExtensionExists(path, ".py", 3)),
+        ])];
 
         SettingsControls =
         [
@@ -119,5 +126,15 @@ public class LangPython : TestGenerator.Shared.Plugin
         FileIcons[".py"] = PythonIcon;
 
         FileCreators = [new PythonFileCreator()];
+    }
+
+    private static bool FileWithExtensionExists(string path, string extension, int recurseLevel = 1)
+    {
+        if (Directory.EnumerateFiles(path).Any(f => f.EndsWith(extension)))
+            return true;
+        if (recurseLevel > 1)
+            return Directory.EnumerateDirectories(path)
+                .Any(d => FileWithExtensionExists(d, extension, recurseLevel - 1));
+        return false;
     }
 }
