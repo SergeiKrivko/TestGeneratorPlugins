@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+﻿using LangPython.Creators;
 using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
@@ -107,7 +107,7 @@ public class LangPython : TestGenerator.Shared.Plugin
             new ProjectType.ProjectTypeDetector(5, path => Directory.Exists(Path.Join(path, "venv"))),
             new ProjectType.ProjectTypeDetector(5, path => Directory.Exists(Path.Join(path, ".venv"))),
             new ProjectType.ProjectTypeDetector(5, path => FileWithExtensionExists(path, ".py", 3)),
-        ])];
+        ], [new PythonProjectCreator()])];
 
         SettingsControls =
         [
