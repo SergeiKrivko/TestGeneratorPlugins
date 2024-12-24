@@ -58,7 +58,7 @@ public class PythonProjectCreator : IProjectCreator
             project.Name = name;
 
         var python = await CreateVenv(project, settings);
-        await InstallDependencies();
+        await InstallDependencies(python);
         await CreateFiles(project, settings);
         var build = await CreateBuild(project, settings);
 
@@ -85,7 +85,7 @@ public class PythonProjectCreator : IProjectCreator
         return LangPython.Python.FromPath(venvPythonPath, python.VirtualSystem);
     }
 
-    protected virtual async Task InstallDependencies()
+    protected virtual async Task InstallDependencies(SideProgramFile python)
     {
     }
 
