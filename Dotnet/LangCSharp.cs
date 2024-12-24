@@ -1,4 +1,5 @@
-﻿using TestGenerator.Shared.Settings;
+﻿using Dotnet.Creators;
+using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
@@ -77,7 +78,7 @@ public class LangCSharp : TestGenerator.Shared.Plugin
             new ProjectType("CSharp", "C#", CSharpIcon, [
                 new ProjectType.ProjectTypeDetector(8, p => FileWithExtensionExists(p, ".sln")),
                 new ProjectType.ProjectTypeDetector(4, p => FileWithExtensionExists(p, ".csproj", 4)),
-            ])
+            ], [new ConsoleProjectCreator(), new ClassLibProjectCreator(), new AspNetProjectCreator()])
         ];
         SettingsControls =
         [
