@@ -44,7 +44,9 @@ public class PythonProjectCreator : IProjectCreator
 
     public string GetPath(Control control)
     {
-        return (control as SettingsControl)?.Section?.Get<string>("path") ?? throw new Exception();
+        if (control is not SettingsControl settingsControl)
+            throw new Exception();
+        return Path.Join(settingsControl.Section?.Get<string>("path"), settingsControl.Section?.Get<string>("name"));
     }
 
     public async Task Initialize(AProject project, Control control)
@@ -52,10 +54,6 @@ public class PythonProjectCreator : IProjectCreator
         var settings = (control as SettingsControl)?.Section;
         if (settings == null)
             return;
-
-        var name = settings.Get<string>("name");
-        if (!string.IsNullOrEmpty(name))
-            project.Name = name;
 
         var python = await CreateVenv(project, settings);
         await InstallDependencies(python);

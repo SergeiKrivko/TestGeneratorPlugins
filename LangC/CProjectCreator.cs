@@ -22,7 +22,9 @@ public class CProjectCreator : IProjectCreator
 
     public string GetPath(Control control)
     {
-        return (control as SettingsControl)?.Section?.Get<string>("path") ?? throw new Exception();
+        if (control is not SettingsControl settingsControl)
+            throw new Exception();
+        return Path.Join(settingsControl.Section?.Get<string>("path"), settingsControl.Section?.Get<string>("name"));
     }
 
     public async Task Initialize(AProject project, Control control)
@@ -30,10 +32,6 @@ public class CProjectCreator : IProjectCreator
         var settings = (control as SettingsControl)?.Section;
         if (settings == null)
             return;
-
-        var name = settings.Get<string>("name");
-        if (!string.IsNullOrEmpty(name))
-            project.Name = name;
 
         await File.WriteAllTextAsync(Path.Join(project.Path, "main.c"), "#include <stdio.h>\n\n" +
                                                                         "int main(void)\n" +
