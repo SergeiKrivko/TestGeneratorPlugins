@@ -9,9 +9,9 @@ public class ReleasesHttpService : BodyDetailHttpService
         Client.BaseAddress = new Uri("https://testgenerator-api.nachert.art");
     }
 
-    public async Task<string> CreateReleaseZip(ICollection<AppFile> files)
+    public async Task<ZipResponseModel> CreateReleaseZip(ICollection<AppFile> files)
     {
-        return await Post<string>(
+        return await Post<ZipResponseModel>(
             $"/api/v1/releases/download?runtime={System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier}",
             files);
     }

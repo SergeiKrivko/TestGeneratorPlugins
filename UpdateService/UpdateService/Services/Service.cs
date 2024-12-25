@@ -54,7 +54,7 @@ public class Service
             using (var stream = File.OpenRead(file))
             {
                 var hashBytes = await _sha256.ComputeHashAsync(stream);
-                var fileHash = BitConverter.ToString(hashBytes);
+                var fileHash = BitConverter.ToString(hashBytes).Replace("-", "");
                 yield return new AppFile { Filename = Path.GetRelativePath(root, file), Hash = fileHash };
                 UpdateService.Logger.Debug($"{file} - {fileHash}");
             }
@@ -88,7 +88,7 @@ public class Service
             task.Progress = 10;
             task.Status = "Подготовка";
 
-            var zipUrl = await _httpService.CreateReleaseZip(await ListFiles().ToListAsync(token));
+            var zipUrl = (await _httpService.CreateReleaseZip(await ListFiles().ToListAsync(token))).Url;
             token.ThrowIfCancellationRequested();
 
             task.Progress = 45;
