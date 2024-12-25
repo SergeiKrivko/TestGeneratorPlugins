@@ -21,4 +21,6 @@ public class TokenRead
     [JsonPropertyName("permissions")] public required string[] Permissions { get; init; }
 
     [JsonIgnore] public string PermissionsString => string.Join(", ", Permissions);
+
+    [JsonIgnore] public DateTime? ExpiresAtLocal => ExpiresAt == null ? null : ExpiresAt.Value.ToLocalTime();
 }
