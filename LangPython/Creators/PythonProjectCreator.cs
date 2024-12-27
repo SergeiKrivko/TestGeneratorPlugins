@@ -58,11 +58,11 @@ public class PythonProjectCreator : IProjectCreator
 
         task.Progress = 10;
         var python = await CreateVenv(project, settings, task, token);
-        task.Progress = 25;
+        task.Progress = 40;
         await InstallDependencies(python, task, token);
-        task.Progress = 65;
-        await CreateFiles(project, settings, task, token);
         task.Progress = 85;
+        await CreateFiles(project, settings, task, token);
+        task.Progress = 90;
         var build = await CreateBuild(project, settings, task, token);
         task.Progress = 100;
 

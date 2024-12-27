@@ -30,7 +30,7 @@ public class FastApiCreator : PythonProjectCreator
     {
         task.Status = "Установка FastApi";
         await python.Execute(new RunProgramArgs{Args = "-m pip install fastapi"}, token);
-        task.Progress = 40;
+        task.Progress = 65;
         
         task.Status = "Установка uvicorn";
         await python.Execute(new RunProgramArgs{Args = "-m pip install uvicorn"}, token);
