@@ -33,8 +33,10 @@ public abstract class BaseProjectCreator : IProjectCreator
     protected abstract string TemplateName { get; }
     protected virtual bool CreateBuild => true;
 
-    public async Task Initialize(AProject project, Control control)
+    public async Task Initialize(AProject project, Control control, IBackgroundTask task, CancellationToken token)
     {
+        task.Progress = 0;
+        
         var settings = (control as SettingsControl)?.Section;
         if (settings == null)
             return;
@@ -43,21 +45,34 @@ public abstract class BaseProjectCreator : IProjectCreator
 
         var projectName = settings.Get("projectName", TemplateName + "App");
 
+        task.Progress = 5;
+        task.Status = "Создание решения";
         await dotnet.Execute(new RunProgramArgs
-            { Args = $"new solution --name {settings.Get<string>("solutionName")}", WorkingDirectory = project.Path });
-        await dotnet.Execute(new RunProgramArgs
-            { Args = $"new {TemplateName} --name {projectName}", WorkingDirectory = project.Path });
-        await dotnet.Execute(new RunProgramArgs
-            { Args = $"sln add {projectName}", WorkingDirectory = project.Path });
+            { Args = $"new solution --name {settings.Get<string>("solutionName")}", WorkingDirectory = project.Path }, token);
+        task.Progress = 25;
 
+        task.Status = "Создание проекта";
+        await dotnet.Execute(new RunProgramArgs
+            { Args = $"new {TemplateName} --name {projectName}", WorkingDirectory = project.Path }, token);
+        task.Progress = 40;
+
+        task.Status = "Добавление проекта в решение";
+        await dotnet.Execute(new RunProgramArgs
+            { Args = $"sln add {projectName}", WorkingDirectory = project.Path }, token);
+        task.Progress = 75;
+
+        task.Status = "Создание конфигурации сборки";
         if (CreateBuild)
         {
-            var build = await AAppService.Instance.Request<ABuild>("createBuild", "Dotnet");
+            var build = await AAppService.Instance.Request<ABuild>("createBuild", "Dotnet", token);
+            task.Progress = 95;
             build.Name = projectName;
             build.Builder.Settings.Set("project", projectName);
             build.Builder.Settings.Set("configuration", "Debug");
             project.Settings.Set("selectedBuild", build.Id);
         }
+        
+        task.Progress = 100;
 
         project.Settings.Set("defaultPrograms", true);
     }
