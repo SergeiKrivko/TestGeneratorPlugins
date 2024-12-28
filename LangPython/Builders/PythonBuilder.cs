@@ -1,4 +1,5 @@
-﻿using TestGenerator.Shared.SidePrograms;
+﻿using TestGenerator.Shared.Settings.Shared;
+using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
 
@@ -20,26 +21,30 @@ public class PythonBuilder : BaseBuilder
     }
 
     public override async Task<ICompletedProcess> Run(string args = "", string? workingDirectory = null,
-        string? stdin = null, CancellationToken token = new())
+        string? stdin = null, EnvironmentModel? environment = null, CancellationToken token = new())
     {
         var python = Python;
         if (python == null)
             throw new Exception("Python interpreter not found");
         return await python.Execute(new RunProgramArgs
         {
-            Args = $"\"{await python.VirtualSystem.ConvertPath(MainFile)}\" {args}", WorkingDirectory = workingDirectory
+            Args = $"\"{await python.VirtualSystem.ConvertPath(MainFile)}\" {args}",
+            WorkingDirectory = workingDirectory,
+            Environment = environment
         }, token);
     }
 
     public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null,
-        string? stdin = null, CancellationToken token = new())
+        string? stdin = null, EnvironmentModel? environment = null, CancellationToken token = new())
     {
         var python = Python;
         if (python == null)
             throw new Exception("Python interpreter not found");
         return await python.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProgramArgs
         {
-            Args = $"\"{await python.VirtualSystem.ConvertPath(MainFile)}\" {args}", WorkingDirectory = workingDirectory
+            Args = $"\"{await python.VirtualSystem.ConvertPath(MainFile)}\" {args}",
+            WorkingDirectory = workingDirectory,
+            Environment = environment,
         }, token);
     }
 }

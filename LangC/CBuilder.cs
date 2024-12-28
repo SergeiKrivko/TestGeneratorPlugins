@@ -1,4 +1,5 @@
-﻿using TestGenerator.Shared.SidePrograms;
+﻿using TestGenerator.Shared.Settings.Shared;
+using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
 
@@ -10,7 +11,7 @@ public class CBuilder : BaseBuilder
     {
     }
 
-    public string ExePath
+    private string ExePath
     {
         get
         {
@@ -69,11 +70,11 @@ public class CBuilder : BaseBuilder
     }
 
     public override async Task<ICompletedProcess> Run(string args = "", string? workingDirectory = null,
-        string? stdin = null, CancellationToken token = new())
+        string? stdin = null, EnvironmentModel? environment = null, CancellationToken token = new())
     {
         var gcc = Programs.GetGcc();
         if (gcc == null)
-            return await base.Run(args, workingDirectory, stdin, token);
+            return await base.Run(args, workingDirectory, stdin, environment, token);
         return await gcc.VirtualSystem.Execute(new RunProcessArgs
         {
             Filename = await gcc.VirtualSystem.ConvertPath(ExePath),
@@ -84,11 +85,11 @@ public class CBuilder : BaseBuilder
     }
 
     public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null,
-        string? stdin = null, CancellationToken token = new())
+        string? stdin = null, EnvironmentModel? environment = null, CancellationToken token = new())
     {
         var gcc = Programs.GetGcc();
         if (gcc == null)
-            return await base.RunConsole(args, workingDirectory, stdin, token);
+            return await base.RunConsole(args, workingDirectory, stdin, environment, token);
         return await gcc.VirtualSystem.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProcessArgs
         {
             Filename = await gcc.VirtualSystem.ConvertPath(ExePath),

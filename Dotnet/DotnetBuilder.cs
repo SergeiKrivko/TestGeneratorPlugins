@@ -1,4 +1,5 @@
-﻿using TestGenerator.Shared.SidePrograms;
+﻿using TestGenerator.Shared.Settings.Shared;
+using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
 using TestGenerator.Shared.Utils;
 
@@ -27,7 +28,7 @@ public class DotnetBuilder : BaseBuilder
     }
 
     public override async Task<ICompletedProcess> Run(string args = "", string? workingDirectory = null,
-        string? stdin = null, CancellationToken token = new())
+        string? stdin = null, EnvironmentModel? environment = null, CancellationToken token = new())
     {
         var dotnet = LangCSharp.GetDotnet();
         if (dotnet == null)
@@ -38,11 +39,11 @@ public class DotnetBuilder : BaseBuilder
             command += $" --configuration {Settings.Get<string>("configuration")}";
 
         return await dotnet.Execute(new RunProgramArgs
-            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin }, token);
+            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin, Environment = environment }, token);
     }
 
     public override async Task<ICompletedProcess> RunConsole(string args = "", string? workingDirectory = null,
-        string? stdin = null, CancellationToken token = new())
+        string? stdin = null, EnvironmentModel? environment = null, CancellationToken token = new())
     {
         var dotnet = LangCSharp.GetDotnet();
         if (dotnet == null)
@@ -53,6 +54,6 @@ public class DotnetBuilder : BaseBuilder
             command += $" --configuration {Settings.Get<string>("configuration")}";
 
         return await dotnet.Execute(RunProcessArgs.ProcessRunProvider.RunTab, new RunProgramArgs
-            { Args = command, WorkingDirectory = workingDirectory, Stdin = stdin }, token);
+            { Args = command, WorkingDirectory = workingDirectory, Environment = environment, Stdin = stdin }, token);
     }
 }
