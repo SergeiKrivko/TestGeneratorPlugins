@@ -136,7 +136,7 @@ public class Service
             await CreateCopyCommands("copy") + "\n\n" +
             CreateDeleteCommands("del", ["unins000.dat", "unins000.exe"]) + "\n" +
             $"del /Q {ReleaseLocalPath}\n" +
-            $"start {AppLocation.Replace(":\\", ":\\\"")}\\Nachert.App.exe\"\n"
+            $"start {AppLocation.Replace(":\\", ":\\\"")}\\TestGenerator.exe\"\n"
         );
     }
 
@@ -151,7 +151,7 @@ public class Service
                 "icon_256.png"
             ]) + "\n" +
             $"rm -rf \"{ReleaseLocalPath}\"\n" +
-            $"\"{AppLocation}/Nachert.App\"\n"
+            $"\"{AppLocation}/TestGenerator\"\n"
         );
     }
 
@@ -162,7 +162,7 @@ public class Service
             await CreateCopyCommands() + "\n\n" +
             CreateDeleteCommands() + "\n" +
             $"rm -rf \"{ReleaseLocalPath}\"\n" +
-            "open -a Nachert\n"
+            "open -a TestGenerator\n"
         );
     }
 
