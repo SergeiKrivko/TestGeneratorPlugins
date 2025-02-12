@@ -212,7 +212,7 @@ public class Service
             Process.Start(new ProcessStartInfo
             {
                 FileName = "bash",
-                Arguments = ScriptPath
+                Arguments = $"\"{ScriptPath}\""
             });
         }
     }
