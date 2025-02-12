@@ -27,9 +27,22 @@ public class Service
         Completed,
     }
 
+    public string[] FilesToDelete
+    {
+        get => _settings.Get<string[]>("filesToDelete", []);
+        private set => _settings.Set("filesToDelete", value);
+    }
+
     private static string ReleasesDirectory => Path.Join(AAppService.Instance.AppDataPath, "Temp", "Releases");
 
     private string ReleaseLocalPath { get; } = Path.Join(ReleasesDirectory, "release");
+
+    private static string ScriptPath => OperatingSystem.IsWindows()
+        ? Path.Join(ReleasesDirectory, "script.bat")
+        : Path.Join(ReleasesDirectory, "script.sh");
+
+    private static string AppLocation => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ??
+                                         throw new Exception("Invalid program location");
 
     public DownloadingStatus ReleaseDownloaded
     {
@@ -114,18 +127,70 @@ public class Service
         ReleaseDownloaded = DownloadingStatus.Completed;
     }
 
+
+    private async Task WriteBatchScript()
+    {
+        await File.WriteAllTextAsync(ScriptPath,
+            "@echo off\n" +
+            "timeout /t 1 >nul\n\n" +
+            await CreateCopyCommands("copy") + "\n\n" +
+            CreateDeleteCommands("del", ["unins000.dat", "unins000.exe"]) + "\n" +
+            $"del /Q {ReleaseLocalPath}\n" +
+            $"start {AppLocation.Replace(":\\", ":\\\"")}\\Nachert.App.exe\"\n"
+        );
+    }
+
+    private async Task WriteBashScript()
+    {
+        await File.WriteAllTextAsync(ScriptPath,
+            "sleep 1\n\n" +
+            await CreateCopyCommands("sudo cp") + "\n\n" +
+            CreateDeleteCommands("sudo rm",
+            [
+                "icon.png", "icon_16.png", "icon_24.png", "icon_32.png", "icon_48.png", "icon_64.png", "icon_128.png",
+                "icon_256.png"
+            ]) + "\n" +
+            $"rm -rf \"{ReleaseLocalPath}\"\n" +
+            $"\"{AppLocation}/Nachert.App\"\n"
+        );
+    }
+
+    private async Task WriteMacosScript()
+    {
+        await File.WriteAllTextAsync(ScriptPath,
+            "sleep 1\n\n" +
+            await CreateCopyCommands() + "\n\n" +
+            CreateDeleteCommands() + "\n" +
+            $"rm -rf \"{ReleaseLocalPath}\"\n" +
+            "open -a Nachert\n"
+        );
+    }
+
+    private async Task<string> CreateCopyCommands(string command = "cp")
+    {
+        return string.Join('\n', await ListFiles(ReleaseLocalPath)
+            .Select(f =>
+                $"{command} \"{Path.Join(ReleaseLocalPath, f.Filename)}\" \"{Path.Join(AppLocation, f.Filename)}\"")
+            .ToArrayAsync());
+    }
+
+    private string CreateDeleteCommands(string command = "rm", string[]? ignore = null)
+    {
+        return string.Join('\n', FilesToDelete
+            .Where(f => ignore == null || !ignore.Contains(f))
+            .Select(f => $"{command} \"{Path.Join(AppLocation, f)}\""));
+    }
+
     public async Task InstallRelease()
     {
         if (LatestVersion == null || ReleaseDownloaded != DownloadingStatus.Completed)
             return;
         if (OperatingSystem.IsWindows())
         {
+            await WriteBatchScript();
             Process.Start(new ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                Arguments =
-                    $"/C {Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets",
-                        "copy.bat")} \"{ReleaseLocalPath}\" \"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\"",
+                FileName = ScriptPath,
                 CreateNoWindow = false,
                 UseShellExecute = true,
                 Verb = "runas"
@@ -133,24 +198,21 @@ public class Service
         }
         else if (OperatingSystem.IsLinux())
         {
+            await WriteBashScript();
             Process.Start(new ProcessStartInfo
             {
                 FileName = "gnome-terminal",
                 Arguments =
-                    $"-- bash " +
-                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
-                    $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
+                    $"-- bash \"{ScriptPath}\""
             });
         }
         else if (OperatingSystem.IsMacOS())
         {
+            await WriteMacosScript();
             Process.Start(new ProcessStartInfo
             {
-                FileName = "open",
-                Arguments =
-                    $"-A Terminal -- sudo bash " +
-                    $"{Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Assets", "copy.sh")} " +
-                    $"{ReleaseLocalPath} {Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}"
+                FileName = "bash",
+                Arguments = ScriptPath
             });
         }
     }
