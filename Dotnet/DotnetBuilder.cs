@@ -1,13 +1,13 @@
-﻿using TestGenerator.Shared.Settings.Shared;
+﻿using AvaluxUI.Utils;
+using TestGenerator.Shared.Settings.Shared;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace Dotnet;
 
 public class DotnetBuilder : BaseBuilder
 {
-    public DotnetBuilder(Guid id, AProject project, SettingsSection settings) : base(id, project, settings)
+    public DotnetBuilder(Guid id, IProject project, ISettingsSection settings) : base(id, project, settings)
     {
     }
 

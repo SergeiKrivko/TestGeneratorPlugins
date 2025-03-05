@@ -10,9 +10,13 @@
              x:Class="PluginAdmin.UI.TokensTab">
     <Grid RowDefinitions="Auto *">
         <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 0 0 10">
-            <Button Click="CreateButton_OnClick">+</Button>
-            <Button Click="RefreshButton_OnClick">↺</Button>
-            <Button Click="DeleteButton_OnClick">✕</Button>
+            <Button Click="CreateButton_OnClick" Classes="Accent">
+                <PathIcon Data="{StaticResource IconPlus}" />
+            </Button>
+            <Button Click="RefreshButton_OnClick" Classes="Accent">↻</Button>
+            <Button Click="DeleteButton_OnClick" Classes="Danger">
+                <PathIcon Data="{StaticResource IconTrash}" />
+            </Button>
         </StackPanel>
         <ListBox Grid.Row="1" Name="TokensListBox" ItemsSource="{Binding Items}">
             <ListBox.ItemTemplate>

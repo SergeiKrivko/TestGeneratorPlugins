@@ -1,4 +1,5 @@
-﻿using Dotnet.Creators;
+﻿using AvaluxUI.Utils;
+using Dotnet.Creators;
 using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
@@ -8,10 +9,10 @@ namespace Dotnet;
 
 public class LangCSharp : TestGenerator.Shared.Plugin
 {
-    public static Logger Logger { get; } = AAppService.Instance.GetLogger();
-    public static SettingsSection Settings { get; } = AAppService.Instance.GetSettings();
-    public static SettingsSection ProjectSettings => AAppService.Instance.CurrentProject.GetSettings();
-    public static SettingsSection ProjectData => AAppService.Instance.CurrentProject.GetData();
+    public static Logger Logger { get; } = Injector.Inject<IAppService>().GetLogger();
+    public static ISettingsSection Settings { get; } = Injector.Inject<IAppService>().GetSettings();
+    public static ISettingsSection ProjectSettings => Injector.Inject<IProjectsService>().Current.GetSettings();
+    public static ISettingsSection ProjectData => Injector.Inject<IProjectsService>().Current.GetData();
 
     public const string CSharpIcon =
         "M12.0133 9.77166H10.0211C9.96431 9.44496 9.85955 9.15554 9.70685 8.90341C9.55415 8.64773 9.36417 8.43111 " +
@@ -52,7 +53,7 @@ public class LangCSharp : TestGenerator.Shared.Plugin
         }
     };
 
-    public static SideProgramFile? GetDotnet() => Dotnet.FromModel(ProjectSettings.Get<bool>("defaultPrograms", true)
+    public static SideProgramFile? GetDotnet() => Dotnet.FromModel(ProjectSettings.Get("defaultPrograms", true)
         ? Settings.Get<ProgramFileModel>("dotnet")
         : ProjectSettings.Get<ProgramFileModel>("dotnet"));
 
@@ -89,7 +90,7 @@ public class LangCSharp : TestGenerator.Shared.Plugin
                 new DefaultField([
                     new ProgramField { Program = Dotnet, FieldName = ".Net", Key = "dotnet" }
                 ]) { Key = "defaultPrograms", FieldName = "Программы по умолчанию", Inversion = true }
-            ], SettingsPageType.ProjectSettings, () => AAppService.Instance.CurrentProject.Type == ProjectTypes[0])
+            ], SettingsPageType.ProjectSettings, () => Injector.Inject<IProjectsService>().Current.Type == ProjectTypes[0])
         ];
 
         FileCreators = [new CSharpFileCreator()];

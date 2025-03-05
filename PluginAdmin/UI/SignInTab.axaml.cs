@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
+using AvaluxUI.Utils;
 using PluginAdmin.Models;
 using PluginAdmin.Services;
 
@@ -7,6 +8,9 @@ namespace PluginAdmin.UI;
 
 public partial class SignInTab : UserControl
 {
+    private readonly PluginAdminService _pluginAdminService = Injector.Inject<PluginAdminService>();
+    private readonly PluginsHttpService _pluginsHttpService = Injector.Inject<PluginsHttpService>();
+
     public SignInTab()
     {
         InitializeComponent();
@@ -18,8 +22,8 @@ public partial class SignInTab : UserControl
     {
         var auth = new AuthModel
             { Login = LoginEdit.Text ?? "", Password = PasswordEdit?.Text ?? "" };
-        PluginsHttpService.Instance.Auth = auth;
-        PluginAdminService.Instance.Settings.Set("user", auth);
+        _pluginsHttpService.Auth = auth;
+        _pluginAdminService.Settings.Set("user", auth);
         UserChanged?.Invoke();
     }
 }

@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using AvaluxUI.Utils;
 using PluginAdmin.Exceptions;
 using PluginAdmin.Models;
 using PluginAdmin.Services;
@@ -12,8 +12,10 @@ namespace PluginAdmin.UI;
 
 public partial class PluginsTab : UserControl
 {
+    private readonly PluginsHttpService _pluginsHttpService = Injector.Inject<PluginsHttpService>();
+
     public ObservableCollection<PluginRead> Items { get; } = [];
-    
+
     public PluginsTab()
     {
         InitializeComponent();
@@ -25,8 +27,8 @@ public partial class PluginsTab : UserControl
     {
         try
         {
-            var plugins = await PluginsHttpService.Instance.GetAllPlugins();
-            
+            var plugins = await _pluginsHttpService.GetAllPlugins();
+
             Items.Clear();
             foreach (var plugin in plugins)
             {

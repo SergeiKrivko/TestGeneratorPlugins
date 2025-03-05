@@ -1,24 +1,26 @@
-﻿using TestGenerator.Shared.Settings;
+﻿using AvaluxUI.Utils;
+using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace LangPython;
 
 public class PythonFileCreator : IFileCreator
 {
+    private readonly IProjectsService _projectsService = Injector.Inject<IProjectsService>();
+
     public virtual string Key => "CreatePython";
     public virtual string Name => "Python source file";
-    public virtual int Priority => AAppService.Instance.CurrentProject.Type.Key == "Python" ? 6 : 3;
-    public virtual string? Icon => LangPython.PythonIcon;
+    public virtual int Priority => _projectsService.Current.Type.Key == "Python" ? 6 : 3;
+    public virtual string Icon => LangPython.PythonIcon;
 
     public SettingsControl GetSettingsControl()
     {
         var settingsControl = new SettingsControl();
-        settingsControl.Add(new StringField{Key = "Name", FieldName = "Имя файла"});
+        settingsControl.Add(new StringField { Key = "Name", FieldName = "Имя файла" });
         return settingsControl;
     }
 
-    public void Create(string root, SettingsSection options)
+    public void Create(string root, ISettingsSection options)
     {
         var filename = options.Get<string>("Name");
         if (filename != null && !filename.EndsWith(".py"))

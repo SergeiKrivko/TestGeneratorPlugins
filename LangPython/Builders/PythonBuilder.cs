@@ -1,22 +1,22 @@
-﻿using TestGenerator.Shared.Settings.Shared;
+﻿using AvaluxUI.Utils;
+using TestGenerator.Shared.Settings.Shared;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace LangPython.Builders;
 
 public class PythonBuilder : BaseBuilder
 {
     private SideProgramFile? Python => LangPython.Python.FromModel(
-        Settings.Get<bool>("defaultInterpreter", true)
-            ? LangPython.ProjectSettings.Get<bool>("defaultInterpreter", true)
+        Settings.Get("defaultInterpreter", true)
+            ? LangPython.ProjectSettings.Get("defaultInterpreter", true)
                 ? LangPython.Settings.Get<ProgramFileModel>("interpreter")
                 : LangPython.ProjectSettings.Get<ProgramFileModel>("interpreter")
             : Settings.Get<ProgramFileModel>("interpreter"));
 
     private string MainFile => Settings.Get<string>("mainFile") ?? "";
 
-    public PythonBuilder(Guid id, AProject project, SettingsSection settings) : base(id, project, settings)
+    public PythonBuilder(Guid id, IProject project, ISettingsSection settings) : base(id, project, settings)
     {
     }
 

@@ -1,13 +1,15 @@
 ﻿using Avalonia.Controls;
+using AvaluxUI.Utils;
 using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace Dotnet.Creators;
 
 public abstract class BaseProjectCreator : IProjectCreator
 {
+    private readonly IAppService _appService = Injector.Inject<IAppService>();
+
     public abstract string Key { get; }
     public abstract string Name { get; }
     public virtual string Icon => LangCSharp.CSharpIcon;
@@ -33,10 +35,10 @@ public abstract class BaseProjectCreator : IProjectCreator
     protected abstract string TemplateName { get; }
     protected virtual bool CreateBuild => true;
 
-    public async Task Initialize(AProject project, Control control, IBackgroundTask task, CancellationToken token)
+    public async Task Initialize(IProject project, Control control, IBackgroundTask task, CancellationToken token)
     {
         task.Progress = 0;
-        
+
         var settings = (control as SettingsControl)?.Section;
         if (settings == null)
             return;
@@ -48,7 +50,10 @@ public abstract class BaseProjectCreator : IProjectCreator
         task.Progress = 5;
         task.Status = "Создание решения";
         await dotnet.Execute(new RunProgramArgs
-            { Args = $"new solution --name {settings.Get<string>("solutionName")}", WorkingDirectory = project.Path }, token);
+            {
+                Args = $"new solution --name {settings.Get<string>("solutionName")}", WorkingDirectory = project.Path
+            },
+            token);
         task.Progress = 25;
 
         task.Status = "Создание проекта";
@@ -64,14 +69,14 @@ public abstract class BaseProjectCreator : IProjectCreator
         task.Status = "Создание конфигурации сборки";
         if (CreateBuild)
         {
-            var build = await AAppService.Instance.Request<ABuild>("createBuild", "Dotnet", token);
+            var build = await _appService.Request<IBuild>("createBuild", "Dotnet", token);
             task.Progress = 95;
             build.Name = projectName;
             build.Builder.Settings.Set("project", projectName);
             build.Builder.Settings.Set("configuration", "Debug");
             project.Settings.Set("selectedBuild", build.Id);
         }
-        
+
         task.Progress = 100;
 
         project.Settings.Set("defaultPrograms", true);

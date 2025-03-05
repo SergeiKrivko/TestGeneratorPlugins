@@ -1,4 +1,6 @@
-﻿using PluginAdmin.UI;
+﻿using AvaluxUI.Utils;
+using PluginAdmin.Services;
+using PluginAdmin.UI;
 
 namespace PluginAdmin;
 
@@ -6,12 +8,9 @@ public class PluginAdmin : TestGenerator.Shared.Plugin
 {
     public PluginAdmin()
     {
-        Name = "NewPlugin";
+        Injector.AddService<PluginsHttpService>();
+        Injector.AddService<PluginAdminService>();
 
         MainTabs = [new PluginAdminTab()];
-        SideTabs = [];
-
-        BuildTypes = [];
-        ProjectTypes = [];
     }
 }

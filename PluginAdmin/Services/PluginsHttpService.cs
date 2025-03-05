@@ -5,17 +5,6 @@ namespace PluginAdmin.Services;
 
 public class PluginsHttpService : BodyDetailHttpService
 {
-    private static PluginsHttpService? _instance;
-
-    public static PluginsHttpService Instance
-    {
-        get
-        {
-            _instance ??= new PluginsHttpService();
-            return _instance;
-        }
-    }
-    
     public PluginsHttpService()
     {
         BaseUrl = "https://testgenerator-api.nachert.art/";

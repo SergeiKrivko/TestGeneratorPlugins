@@ -2,16 +2,17 @@
 using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
+using AvaluxUI.Utils;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 using UpdateService.Models;
 
 namespace UpdateService.Services;
 
 public class Service
 {
+    private readonly IAppService _appService = Injector.Inject<IAppService>();
     private readonly ReleasesHttpService _httpService;
-    private readonly SettingsSection _settings = UpdateService.Settings;
+    private readonly ISettingsSection _settings = UpdateService.Settings;
     private readonly SHA256 _sha256 = SHA256.Create();
 
     public Version? LatestVersion
@@ -33,11 +34,11 @@ public class Service
         private set => _settings.Set("filesToDelete", value);
     }
 
-    private static string ReleasesDirectory => Path.Join(AAppService.Instance.AppDataPath, "Temp", "Releases");
+    private string ReleasesDirectory => Path.Join(_appService.AppDataPath, "Temp", "Releases");
 
-    private string ReleaseLocalPath { get; } = Path.Join(ReleasesDirectory, "release");
+    private string ReleaseLocalPath => Path.Join(ReleasesDirectory, "release");
 
-    private static string ScriptPath => OperatingSystem.IsWindows()
+    private string ScriptPath => OperatingSystem.IsWindows()
         ? Path.Join(ReleasesDirectory, "script.bat")
         : Path.Join(ReleasesDirectory, "script.sh");
 
@@ -123,7 +124,7 @@ public class Service
             return 0;
         }
 
-        await AAppService.Instance.RunBackgroundTask("Загрузка обновления", BackgroundTaskFunc).Wait();
+        await _appService.RunBackgroundTask("Загрузка обновления", BackgroundTaskFunc).Wait();
         ReleaseDownloaded = DownloadingStatus.Completed;
     }
 
@@ -219,7 +220,7 @@ public class Service
 
     public async Task Update()
     {
-        if (LatestVersion <= AAppService.Instance.AppVersion || !Directory.Exists(ReleaseLocalPath))
+        if (LatestVersion <= _appService.AppVersion || !Directory.Exists(ReleaseLocalPath))
             ReleaseDownloaded = DownloadingStatus.Not;
         await GetLatestVersion();
     }

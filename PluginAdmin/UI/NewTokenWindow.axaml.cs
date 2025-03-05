@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using AvaluxUI.Utils;
 using PluginAdmin.Exceptions;
 using PluginAdmin.Models;
 using PluginAdmin.Services;
@@ -11,6 +10,8 @@ namespace PluginAdmin.UI;
 
 public partial class NewTokenWindow : Window
 {
+    private readonly PluginsHttpService _pluginsHttpService = Injector.Inject<PluginsHttpService>();
+
     private ObservableCollection<PluginRead> Plugins { get; } = [];
 
     public NewTokenWindow()
@@ -26,13 +27,14 @@ public partial class NewTokenWindow : Window
         try
         {
             Plugins.Clear();
-            PermissionsBox.ItemsSource = (await PluginsHttpService.Instance.GetTokenPermissions()).Where(p => p.TokenTypes.Contains(GetSelectedType()));
-            foreach (var plugin in await PluginsHttpService.Instance.GetAllPlugins())
+            PermissionsBox.ItemsSource =
+                (await _pluginsHttpService.GetTokenPermissions()).Where(p => p.TokenTypes.Contains(GetSelectedType()));
+            foreach (var plugin in await _pluginsHttpService.GetAllPlugins())
             {
                 Plugins.Add(plugin);
             }
         }
-        catch (ConnectionException e)
+        catch (ConnectionException)
         {
         }
     }
@@ -41,7 +43,7 @@ public partial class NewTokenWindow : Window
     {
         Close();
     }
-    
+
     private TokenType GetSelectedType() => TokenTypeBox.SelectedIndex switch
     {
         0 => TokenType.User,
@@ -71,7 +73,7 @@ public partial class NewTokenWindow : Window
         OptionsView.IsVisible = false;
         SpinnerView.IsVisible = true;
 
-        var token = await PluginsHttpService.Instance.CreateToken(new TokenCreate
+        var token = await _pluginsHttpService.CreateToken(new TokenCreate
         {
             Name = TokenNameBox.Text ?? "", Plugins = plugins.ToArray(), Type = GetSelectedType(),
             Permissions = permissions.ToArray(), Mask = MaskBox.Text
@@ -86,6 +88,7 @@ public partial class NewTokenWindow : Window
     {
         MaskPanel.IsVisible = TokenTypeBox.SelectedIndex == 1;
         PluginsList.IsVisible = TokenTypeBox.SelectedIndex == 2;
-        PermissionsBox.ItemsSource = (await PluginsHttpService.Instance.GetTokenPermissions()).Where(p => p.TokenTypes.Contains(GetSelectedType()));
+        PermissionsBox.ItemsSource =
+            (await _pluginsHttpService.GetTokenPermissions()).Where(p => p.TokenTypes.Contains(GetSelectedType()));
     }
 }

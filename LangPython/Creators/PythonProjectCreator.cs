@@ -1,13 +1,15 @@
 ﻿using Avalonia.Controls;
+using AvaluxUI.Utils;
 using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace LangPython.Creators;
 
 public class PythonProjectCreator : IProjectCreator
 {
+    private readonly IAppService _appService = Injector.Inject<IAppService>();
+
     public virtual string Key => "Python";
     public virtual string Name => "Чистый Python";
     public virtual string Icon => LangPython.PythonIcon;
@@ -22,7 +24,7 @@ public class PythonProjectCreator : IProjectCreator
         return control;
     }
 
-    protected virtual void ApplyDefaultSettings(SettingsSection settings)
+    protected virtual void ApplyDefaultSettings(ISettingsSection settings)
     {
         settings.Set("createVenv", true);
         settings.Set("venvPath", "venv");
@@ -49,7 +51,7 @@ public class PythonProjectCreator : IProjectCreator
         return Path.Join(settingsControl.Section?.Get<string>("path"), settingsControl.Section?.Get<string>("name"));
     }
 
-    public async Task Initialize(AProject project, Control control, IBackgroundTask task, CancellationToken token)
+    public async Task Initialize(IProject project, Control control, IBackgroundTask task, CancellationToken token)
     {
         task.Progress = 0;
         var settings = (control as SettingsControl)?.Section;
@@ -71,10 +73,11 @@ public class PythonProjectCreator : IProjectCreator
         project.Settings.Set("selectedBuild", build.Id);
     }
 
-    protected virtual async Task<SideProgramFile> CreateVenv(AProject project, SettingsSection settings, IBackgroundTask task, CancellationToken token)
+    protected virtual async Task<SideProgramFile> CreateVenv(IProject project, ISettingsSection settings,
+        IBackgroundTask task, CancellationToken token)
     {
         task.Status = "Создание виртуального окружения";
-        
+
         var python = LangPython.Python.FromModel(settings.Get<ProgramFileModel>("baseInterpreter")) ??
                      throw new Exception("Base interpreter not found");
         if (!settings.Get("createVenv", false))
@@ -91,23 +94,27 @@ public class PythonProjectCreator : IProjectCreator
         return LangPython.Python.FromPath(venvPythonPath, python.VirtualSystem);
     }
 
-    protected virtual async Task InstallDependencies(SideProgramFile python, IBackgroundTask task, CancellationToken token)
+    protected virtual Task InstallDependencies(SideProgramFile python, IBackgroundTask task,
+        CancellationToken token)
     {
         task.Status = "Установка зависимостей";
+        return Task.CompletedTask;
     }
 
-    protected virtual async Task CreateFiles(AProject project, SettingsSection settings, IBackgroundTask task, CancellationToken token)
+    protected virtual async Task CreateFiles(IProject project, ISettingsSection settings, IBackgroundTask task,
+        CancellationToken token)
     {
         task.Status = "Создание файлов проекта";
 
         await File.WriteAllTextAsync(Path.Join(project.Path, "main.py"), "print('Hello world!')\n", token);
     }
 
-    protected virtual async Task<ABuild> CreateBuild(AProject project, SettingsSection settings, IBackgroundTask task, CancellationToken token)
+    protected virtual async Task<IBuild> CreateBuild(IProject project, ISettingsSection settings, IBackgroundTask task,
+        CancellationToken token)
     {
         task.Status = "Создание конфигурации запуска";
 
-        var build = await AAppService.Instance.Request<ABuild>("createBuild", "Python", token);
+        var build = await _appService.Request<IBuild>("createBuild", "Python", token);
         build.Name = "main";
         build.Builder.Settings.Set("mainFile", "main.py");
         build.Builder.Settings.Set("defaultInterpreter", true);

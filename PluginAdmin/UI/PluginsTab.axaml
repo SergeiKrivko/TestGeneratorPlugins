@@ -9,7 +9,9 @@
              x:Class="PluginAdmin.UI.PluginsTab">
     <Grid RowDefinitions="Auto *">
         <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-            <Button Click="CreateButton_OnClick">+</Button>
+            <Button Click="CreateButton_OnClick" Classes="Accent">
+                <PathIcon Data="{StaticResource IconPlus}" />
+            </Button>
         </StackPanel>
         <ListBox Grid.Row="1" Name="PluginsListBox" ItemsSource="{Binding Items}">
             <ListBox.ItemTemplate>

@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using AvaluxUI.Utils;
 using PluginAdmin.Models;
 using PluginAdmin.Services;
 
@@ -9,6 +10,8 @@ namespace PluginAdmin.UI;
 
 public partial class CreatePluginWindow : Window
 {
+    private readonly PluginsHttpService _pluginsHttpService = Injector.Inject<PluginsHttpService>();
+
     public CreatePluginWindow()
     {
         InitializeComponent();
@@ -24,8 +27,8 @@ public partial class CreatePluginWindow : Window
         OptionsView.IsVisible = false;
         SpinnerView.IsVisible = true;
 
-        await PluginsHttpService.Instance.CreatePlugin(new PluginCreate{Key = PluginKeyBox.Text ?? ""});
-        
+        await _pluginsHttpService.CreatePlugin(new PluginCreate { Key = PluginKeyBox.Text ?? "" });
+
         SpinnerView.IsVisible = false;
         CreatedView.IsVisible = true;
     }

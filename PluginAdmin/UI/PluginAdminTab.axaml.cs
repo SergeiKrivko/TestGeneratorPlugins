@@ -1,4 +1,4 @@
-﻿using Avalonia.Interactivity;
+﻿using AvaluxUI.Utils;
 using PluginAdmin.Models;
 using PluginAdmin.Services;
 using TestGenerator.Shared.Types;
@@ -7,23 +7,25 @@ namespace PluginAdmin.UI;
 
 public partial class PluginAdminTab : MainTab
 {
+    private readonly PluginAdminService _pluginAdminService = Injector.Inject<PluginAdminService>();
+    private readonly PluginsHttpService _pluginsHttpService = Injector.Inject<PluginsHttpService>();
+
     public override string TabKey => "PluginAdmin";
     public override string TabName => "Plugin Admin";
 
     public PluginAdminTab()
     {
-        PluginAdminService.Init();
         InitializeComponent();
         SignInView.UserChanged += Update;
         UserView.UserChanged += Update;
-        
+
         Update();
     }
 
     private void Update()
     {
-        var user = PluginAdminService.Instance.Settings.Get<AuthModel>("user");
-        PluginsHttpService.Instance.Auth = user;
+        var user = _pluginAdminService.Settings.Get<AuthModel>("user");
+        _pluginsHttpService.Auth = user;
 
         SignInTab.IsVisible = user == null;
         SignInTab.IsSelected = user == null;

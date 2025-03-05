@@ -11,8 +11,8 @@
             <TextBlock Name="StatusBlock" VerticalAlignment="Center" FontSize="16">Установлена последняя версия</TextBlock>
             <Button Click="RefreshButton_OnClick">↻</Button>
         </StackPanel>
-        <Button Name="ButtonDownload" Click="ButtonDownload_OnClick">Скачать обновление</Button>
-        <Button Name="ButtonInstall" Click="ButtonInstall_OnClick">Установить обновление</Button>
+        <Button Name="ButtonDownload" Click="ButtonDownload_OnClick" Classes="Accent">Скачать обновление</Button>
+        <Button Name="ButtonInstall" Click="ButtonInstall_OnClick" Classes="Accent">Установить обновление</Button>
         <StackPanel Orientation="Horizontal" Name="ProgressPanel" Spacing="5">
             <Arc Classes="Spinner" Width="24" Height="24"></Arc>
             <TextBlock Name="ProgressNameBlock" VerticalAlignment="Center">Загрузка обновления...</TextBlock>

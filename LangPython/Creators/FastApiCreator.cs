@@ -1,17 +1,20 @@
 ﻿using System.Reflection;
+using AvaluxUI.Utils;
 using TestGenerator.Shared.SidePrograms;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace LangPython.Creators;
 
 public class FastApiCreator : PythonProjectCreator
 {
+    private readonly IAppService _appService = Injector.Inject<IAppService>();
+
     public override string Key => "FastApi";
     public override string Name => "FastApi";
     public override string Icon => LangPython.FastApiIcon;
 
-    protected override async Task CreateFiles(AProject project, SettingsSection settings, IBackgroundTask task, CancellationToken token)
+    protected override async Task CreateFiles(IProject project, ISettingsSection settings, IBackgroundTask task,
+        CancellationToken token)
     {
         task.Status = "Создание файлов проекта";
 
@@ -26,21 +29,23 @@ public class FastApiCreator : PythonProjectCreator
         }, token);
     }
 
-    protected override async Task InstallDependencies(SideProgramFile python, IBackgroundTask task, CancellationToken token)
+    protected override async Task InstallDependencies(SideProgramFile python, IBackgroundTask task,
+        CancellationToken token)
     {
         task.Status = "Установка FastApi";
-        await python.Execute(new RunProgramArgs{Args = "-m pip install fastapi"}, token);
+        await python.Execute(new RunProgramArgs { Args = "-m pip install fastapi" }, token);
         task.Progress = 65;
-        
+
         task.Status = "Установка uvicorn";
-        await python.Execute(new RunProgramArgs{Args = "-m pip install uvicorn"}, token);
+        await python.Execute(new RunProgramArgs { Args = "-m pip install uvicorn" }, token);
     }
 
-    protected override async Task<ABuild> CreateBuild(AProject project, SettingsSection settings, IBackgroundTask task, CancellationToken token)
+    protected override async Task<IBuild> CreateBuild(IProject project, ISettingsSection settings, IBackgroundTask task,
+        CancellationToken token)
     {
         task.Status = "Создание конфигурации запуска";
 
-        var build = await AAppService.Instance.Request<ABuild>("createBuild", "FastApi", token);
+        var build = await _appService.Request<IBuild>("createBuild", "FastApi", token);
         build.Name = "server";
         build.Builder.Settings.Set("entrypoint", "main:app");
         build.Builder.Settings.Set("defaultInterpreter", true);

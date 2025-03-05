@@ -1,12 +1,14 @@
 ﻿using Avalonia.Controls;
+using AvaluxUI.Utils;
 using TestGenerator.Shared.Settings;
 using TestGenerator.Shared.Types;
-using TestGenerator.Shared.Utils;
 
 namespace LangC;
 
 public class CProjectCreator : IProjectCreator
 {
+    private readonly IAppService _appService = Injector.Inject<IAppService>();
+
     public string Key => "CExe";
     public string Name => "C executable";
     public string Icon => LangC.CIcon;
@@ -27,7 +29,7 @@ public class CProjectCreator : IProjectCreator
         return Path.Join(settingsControl.Section?.Get<string>("path"), settingsControl.Section?.Get<string>("name"));
     }
 
-    public async Task Initialize(AProject project, Control control, IBackgroundTask task, CancellationToken token)
+    public async Task Initialize(IProject project, Control control, IBackgroundTask task, CancellationToken token)
     {
         task.Progress = 0;
         var settings = (control as SettingsControl)?.Section;
@@ -43,15 +45,15 @@ public class CProjectCreator : IProjectCreator
                                                                         "    return 0;\n" +
                                                                         "}\n", token);
         task.Progress = 50;
-        
+
         task.Status = "Создание конфигурации сборки";
-        var build = await AAppService.Instance.Request<ABuild>("createBuild", "CExe", token);
+        var build = await _appService.Request<IBuild>("createBuild", "CExe", token);
         build.Name = "Debug";
         build.Builder.Settings.Set("exePath", "app.exe");
-        build.Builder.Settings.Set("files", new [] { "main.c" });
-        
+        build.Builder.Settings.Set("files", new[] { "main.c" });
+
         task.Progress = 100;
-        
+
         project.Settings.GetSection("LangC").Set("defaultPrograms", true);
         project.Settings.Set("selectedBuild", build.Id);
     }

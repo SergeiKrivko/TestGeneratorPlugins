@@ -6,6 +6,6 @@
              x:Class="PluginAdmin.UI.UserTab">
     
     <Grid RowDefinitions="Auto">
-        <Button Click="SignOutButton_OnClick">Выйти</Button>
+        <Button Click="SignOutButton_OnClick" Classes="Danger">Выйти</Button>
     </Grid>
 </UserControl>

@@ -47,8 +47,8 @@
             </StackPanel>
 
             <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="5" Spacing="10" HorizontalAlignment="Right">
-                <Button Click="CancelButton_OnClick">Отмена</Button>
-                <Button Click="CreateButton_OnClick">Создать</Button>
+                <Button Click="CancelButton_OnClick" Classes="Danger">Отмена</Button>
+                <Button Click="CreateButton_OnClick" Classes="Accent">Создать</Button>
             </StackPanel>
         </Grid>
         <Arc Name="SpinnerView" Classes="Spinner" IsVisible="False" Height="100" Width="100" />
@@ -56,7 +56,7 @@
             <TextBlock FontSize="16">Токен успешно создан</TextBlock>
             <TextBox Grid.Row="1" IsReadOnly="True" TextWrapping="Wrap" Name="TokenBox"></TextBox>
             <TextBlock Grid.Row="2" TextWrapping="Wrap">Сохраните токен в надежном месте. После закрытия этого окна посмотреть его будет нельзя</TextBlock>
-            <Button Grid.Row="3" Click="CancelButton_OnClick">Ок</Button>
+            <Button Grid.Row="3" Click="CancelButton_OnClick" Classes="Accent">Ок</Button>
         </Grid>
     </Panel>
 </Window>

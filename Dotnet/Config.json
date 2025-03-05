@@ -2,6 +2,6 @@
   "Key": "Dotnet",
   "Name": ".Net",
   "Description": "Поддержка .Net",
-  "Version": "1.2.2",
+  "Version": "1.3.0",
   "Assembly": "Dotnet.dll"
 }

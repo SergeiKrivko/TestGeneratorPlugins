@@ -1,37 +1,32 @@
 ﻿using System.Collections.ObjectModel;
-using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using AvaluxUI.Utils;
 using PluginAdmin.Exceptions;
 using PluginAdmin.Models;
 using PluginAdmin.Services;
-using ReactiveUI;
 
 namespace PluginAdmin.UI;
 
 public partial class TokensTab : UserControl
 {
+    private readonly PluginsHttpService _pluginsHttpService = Injector.Inject<PluginsHttpService>();
     private ObservableCollection<TokenRead> Items { get; } = [];
 
-    // public ReactiveCommand<Guid, Unit> DeleteCommand { get; }
-    
     public TokensTab()
     {
-        // DeleteCommand = ReactiveCommand.CreateFromTask<Guid>(DeleteToken);
-        
         InitializeComponent();
         TokensListBox.ItemsSource = Items;
         Update();
     }
-    
+
     public async void Update()
     {
         try
         {
-            var tokens = await PluginsHttpService.Instance.GetAllTokens();
+            var tokens = await _pluginsHttpService.GetAllTokens();
             Items.Clear();
             foreach (var plugin in tokens)
             {
@@ -52,7 +47,7 @@ public partial class TokensTab : UserControl
     {
         if (TokensListBox.SelectedItem is TokenRead token)
         {
-            await PluginsHttpService.Instance.DeleteToken(token.TokenId);
+            await _pluginsHttpService.DeleteToken(token.TokenId);
             Update();
         }
     }

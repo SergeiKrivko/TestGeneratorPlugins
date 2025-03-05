@@ -10,7 +10,7 @@
             <TextBox Name="LoginEdit"></TextBox>
             <TextBlock>Пароль:</TextBlock>
             <TextBox Name="PasswordEdit" PasswordChar="●"></TextBox>
-            <Button HorizontalAlignment="Center" Click="SignInButton_OnClick">Войти</Button>
+            <Button HorizontalAlignment="Center" Click="SignInButton_OnClick" Classes="Accent">Войти</Button>
         </StackPanel>
     </Grid>
 </UserControl>

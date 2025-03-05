@@ -2,6 +2,6 @@
   "Key": "PluginAdmin",
   "Name": "PluginAdmin",
   "Description": "Позволяет управлять плагинами и токенами от TestGenerator Plugin API",
-  "Version": "1.1.2",
+  "Version": "1.2.0",
   "Assembly": "PluginAdmin.dll"
 }
